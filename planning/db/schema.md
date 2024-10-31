@@ -2,8 +2,7 @@
 ## Database Schema Design
 
 
- <!-- TODO -- Comment > Questions -->
- <!--  -->
+
 
 ### Table: Users
 ```sql
@@ -19,7 +18,7 @@ Table users {
 }
 ```
 
-### Table: Questions (posts)
+### Table: Questions
 ```sql
 Table questions {
   id int [pk, increment, not null] -- auto-increment primary key, required
@@ -42,7 +41,7 @@ Table questions {
  }
 ```
 
-### Comments
+### Table: Comments
 ```sql
 Table comments {
   id int [pk, increment, not null]-- auto-increment primary key, required
@@ -64,7 +63,7 @@ Table saves {
     content_id int -- required foreign_key question.id or answer.id or comment.id
   }
 ```
-### Table: Tag
+### Table: Tags
 ```sql
  Table tags {
   id int [pk, increment, not null] -- autoincrement primary key, required

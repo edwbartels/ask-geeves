@@ -472,3 +472,74 @@ Delete an existing comment.
     * Method: DELETE
     * Route path: /api/comments/<int: comment_id>
 
+## Saves
+
+### Get all of the Current User's Saves
+
+Return all the saves that the current user has made.
+
+* Require Authentication: true
+* Request
+    * Method: GET
+    * Route path: /api/saves/current
+
+### Add a question to the Current User's Saves
+
+Update and return the current user's saves
+
+* Require Authentication: true
+* Require proper authorization: Save must belong to the current user
+* Request
+    * POST
+    * Route path: /api/saves/<int: save_id>
+
+### Remove a question from the Current User's Saves
+
+Remove an existing save.
+
+* Require Authentication: true
+* Require proper authorization: Save must belong to the current user
+* Request
+    * DELETE
+    * Route path: /api/saves/<int: save_id>
+
+## Topics
+
+### Get all Topics by Question id
+
+Return all the topics for a question specified by id
+
+* Require Authentication: false
+* Request
+    * Method: GET
+    * Route path: /api/questions/<int: question_id>/topics
+
+### Add a Topic to a Question by id
+
+* Require Authentication: true
+* Require proper authorization: Question must belong to the current user
+* Request
+    * Method: POST
+    * Route path: /api/questions/<int: question_id>/topics
+
+### Delete a Topic to a question by id
+
+* Require Authentication: true
+* Require proper authorization: Question must belong to the current user
+* Request
+    * Method: DELETE
+    * Route path: /api/questions/<int: question_id>/topics
+
+### Update Topics of a Question by id
+
+* Require Authentication: true
+* Require proper authorization: Question must belong to the current user
+* Request
+    * Method: PUT
+    * Route path: /api/questions/<int question_id>/topics
+
+    * Combination of POST and DELETE. Look into how to effectively do this
+
+    
+
+

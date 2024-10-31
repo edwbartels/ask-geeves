@@ -1,4 +1,5 @@
-# Database Schema
+# Stack Overflow Replica
+## Database Schema Design
 
 ### Table: Users
 ```sql

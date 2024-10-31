@@ -8,6 +8,7 @@ Table users {
   first_name varchar [not null] -- required
   last_name varchar [not null] -- required
   email varchar [unique, not null] -- unique, required
+  username varchar [unique, not null] -- unique, required
   hashed_password varchar [not null] -- required
   created_at datetime [not null, default: 'datetime.utcnow'] -- required
 }

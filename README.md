@@ -1,3 +1,3 @@
 # Stack Overflow Replica App
 
-## colloborators: Eddie Bartels, Tina Konopko, Joshua Wang, Ziwen Zhang
+## collaborators: Eddie Bartels, Tina Konopko, Joshua Wang, Ziwen Zhang

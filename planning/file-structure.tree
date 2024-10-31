@@ -1,0 +1,80 @@
+//  │   = ALT-179
+//  ├── = ALT-195+TAB (to autocomplete)
+//  └── = ALT-192+TAB (to autocomplete)
+//  ↑ = ALT-24
+
+
+│ project-root/
+│
+├── backend/
+│   ├── app/
+│   │   ├── __init__.py            
+│   │   ├── config.py              
+│   │   ├── models/                # Consider one model file instead?
+│   │   │   ├── __init__.py        
+│   │   │   ├── users.py           
+│   │   │   ├── questions.py       
+│   │   │   ├── comments.py        
+│   │   │   ├── saves.py           
+│   │   │   ├── topics.py          
+│   │   │   ├── question_topics.py 
+│   │   ├── routes/                # Consider consolidating?
+│   │   │   ├── __init__.py        
+│   │   │   ├── auth.py            # Could rename session (also in frontend for consistency) Can decide as group
+│   │   │   ├── users.py    
+│   │   │   ├── questions.py
+│   │   │   ├── comments.py 
+│   │   │   ├── saves.py    
+│   │   │   ├── topics.py   
+│   │   ├── utils/                 # Potentially unnecessary. Flask modules handle a lot of things for us.
+│   │   │   ├── __init__.py
+│   │   │   ├── validators.py
+│   │   │   ├── csrf.py            # || Auth.py || session.py
+│   │   │   └── forms.py           # Probably unnecessary? Not yet clear how flask forms interact with react components
+│   │   ├── migrations/            # Help I afk'd the migrations part of this week!
+│   ├── instance/
+│   │   └── dev.db
+│   ├── venv/
+│   │   ├── Include/
+│   │   ├── Lib/                   # List dependencies to install here. Maybe remove these from this tree and just make a .txt file
+│   │   │   ├── tbd
+│   │   │   └── tbd 
+│   │   └── Scripts/
+│   ├── static/                    # Unlikely to use? I think static assets will be held in frontend & js scripting unneccesary if not using jinja templates
+│   ├── templates/                 # ↑ See above ↑
+│   ├── .env
+│   ├── .flaskenv
+│   └── .gitignore        
+│
+│
+├── frontend/                      # Copied from last project and made some slight changes. Looking for feedback especially here.
+│   ├── public/
+│   ├── src/
+│   │   ├── components/            # A lot to add here, I like dirs with index.js personally, so we can decide that before writing all the subc-components here
+│   │   │   ├── Navbar.jsx      
+│   │   │   ├── Questions.jsx
+│   │   │   ├── Comments.jsx    
+│   │   │   ├── User.jsx 
+│   │   ├── context/               # Modals are cool
+│   │   │   ├── Modal.css
+│   │   │   └── Modal.jsx
+│   │   ├── store/                 # I didn't use 'slice' naming convention last project, but I think it's standard practice?
+│   │   │   ├── index.js
+│   │   │   ├── csrf.js            
+│   │   │   ├── authSlice.js       # Could rename session (also in backend for consistency) Can decide as group
+│   │   │   ├── questionSlice.js 
+│   │   │   ├── topicSlice.js 
+│   │   │   ├── commentSlice.js
+│   │   │   └── selectors.js
+│   │   ├── App.jsx     
+│   │   ├── index.css    
+│   │   └── Main.jsx
+│   ├── index.html
+│   ├── .env                       # Is there a .env here? My project didn't have one?? Am I high?  
+│   ├── package.json    
+│   ├── package-lock.json
+│   ├── vite.config.js
+│   └── .gitignore
+│
+├── README.md           
+

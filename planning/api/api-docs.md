@@ -301,7 +301,7 @@ Returns all the questions created by the current user.
 
 ### Get details of a Question from an id
 
-Returns the details of a question specificed by its id.
+Returns the details of a question specified by its id.
 
 * Require Authentication: false
 * Request
@@ -408,3 +408,67 @@ Creates and returns a new question.
       }
     }
     ```
+
+### Edit a Question
+
+Updates and returns an existing question
+
+* Require Authentication: true
+* Require proper authorization: Question must belong to current user
+
+* Request
+    * Method: PUT
+    * Route path: /api/spots/<int: spotId>
+
+
+### Delete a question
+
+Deletes an existing question
+
+* Require Authentication: true
+* Require proper authorization: Question must belong to current user
+
+* Request
+    * Method: DELETE
+    * Route path: /api/spots/<int: spotId>
+
+## Comments
+
+### Get all Comments by Question id
+
+Returns all the comments for a Question by the specified id
+
+* Require Authentication: false
+* Request 
+    * Method: GET
+    * Route path: /api/questions/<int: question_id>/comments
+
+### Create a Comment for a Question based on the Question's id
+
+Create and return a new comment for a question specified by id.
+
+* Require Authentication: true
+* Request
+    * Method: POST
+    * Route path: /api/questions/<int: question_id>/comments
+
+### Edit a comment
+
+Update an return an existing comment
+
+* Require Authentication: true
+* Require proper authorization: Comment must belong to the current user
+* Request
+    * Method: PUT
+    * Route path: /api/comments/<int: comment_id>
+
+### Delete a comment
+
+Delete an existing comment.
+
+* Require Authentication: true
+* Require proper authorization: Comment must belong to the current user
+* Request
+    * Method: DELETE
+    * Route path: /api/comments/<int: comment_id>
+

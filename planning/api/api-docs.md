@@ -536,10 +536,10 @@ Return all the topics for a question specified by id
 * Require proper authorization: Question must belong to the current user
 * Request
     * Method: PUT
-    * Route path: /api/questions/<int question_id>/topics
+    * Route path: /api/questions/<int: question_id>/topics
 
     * Combination of POST and DELETE. Look into how to effectively do this
 
-    
+
 
 

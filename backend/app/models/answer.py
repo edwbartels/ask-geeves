@@ -16,7 +16,7 @@ def formatted_date_with_suffix(date):
 class Answer(db.Model):
     __tablename__ = "answers"
 
-    id = db.Column(db.integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey("questions.id"), nullable=False)
     content = db.Column(db.Text, nullable=False)
@@ -27,7 +27,7 @@ class Answer(db.Model):
     updated_at = db.Column(
         db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
     )
-    comments = db.relationship("Comment", backref="answer", cascade="all delete-orphan")
+    comments = db.relationship("Comment", backref="answer", cascade="all, delete-orphan")
     saves = db.relationship(
         "Save",
         primaryjoin="and_(foreign(Save.content_id) == Answer.id, Save.content_type == 'answer')",

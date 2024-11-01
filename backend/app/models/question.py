@@ -25,9 +25,9 @@ class Question(db.Model):
     updated_at = db.Column(
         db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
     )
-    answers = db.relationship("Answer", backref="question", cascade="all delete-orphan")
+    answers = db.relationship("Answer", backref="question", cascade="all, delete-orphan")
     comments = db.relationship(
-        "Comment", backref="question", cascade="all delete-orphan"
+        "Comment", backref="question", cascade="all, delete-orphan"
     )
     saves = db.relationship(
         "Save",

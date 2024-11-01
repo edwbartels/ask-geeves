@@ -2,7 +2,7 @@ from flask import Flask
 from .config import Config
 from flask_login import LoginManager
 from .models.db import db
-from .models.users import User
+from .models.user import User
 from .routes import session
 
 app = Flask(__name__)

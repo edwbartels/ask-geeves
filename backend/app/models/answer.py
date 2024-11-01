@@ -28,6 +28,13 @@ class Answer(db.Model):
         db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
     )
     comments = db.relationship("Comment", backref="answer", cascade="all delete-orphan")
+    saves = db.relationship(
+        "Save",
+        primaryjoin="and_(foreign(Save.content_id) == Answer.id, Save.content_type == 'answer')",
+        cascade="all, delete-orphan",
+        viewonly=True,
+        uselist=True,
+    )
 
     @property
     def formatted_created_at(self):

@@ -27,6 +27,13 @@ class Comment(db.Model):
     )
     content_id = db.Column(db.Integer, nullable=False)
     content_type = db.Column(db.String(20), nullable=False)
+    saves = db.relationship(
+        "Save",
+        primaryjoin="and_(foreign(Save.content_id) == Comment.id, Save.content_type=='comment')",
+        cascade="all, delete-orphan",
+        viewonly=True,
+        uselist=True,
+    )
 
     @property
     def formatted_created_at(self):

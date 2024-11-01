@@ -29,6 +29,13 @@ class Question(db.Model):
     comments = db.relationship(
         "Comment", backref="question", cascade="all delete-orphan"
     )
+    saves = db.relationship(
+        "Save",
+        primaryjoin="and_(foreign(Save.content_id) == Question.id, Save.content_type=='question')",
+        cascade="all, delete-orphan",
+        viewonly=True,
+        uselist=True,
+    )
 
     @property
     def formatted_created_at(self):

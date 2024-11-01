@@ -1,6 +1,5 @@
 from .db import db
-from .question import Question
-from .tag import Tag
+
 
 question_tags = db.Table(
     "question_tags",

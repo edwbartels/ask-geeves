@@ -3,12 +3,13 @@ from .config import Config
 from flask_login import LoginManager
 from .models.db import db
 from .models.user import User
-from .routes import session
+from .routes import session,user
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
 app.register_blueprint(session.bp)
+app.register_blueprint(user.bp)
 db.init_app(app)
 
 login = LoginManager(app)

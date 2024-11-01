@@ -1,4 +1,4 @@
-from flask import Blueprint,jsonify
+from flask import Blueprint,jsonify,request
 from flask_login import current_user
 from ..models.question import Question
 from ..models.db import db
@@ -38,3 +38,5 @@ def get_question_by_id(id):
         return jsonify({"error": "Question not found"})
 
 
+# @bp.route("/", methods=["POST"])
+# def create_question():

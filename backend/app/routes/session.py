@@ -1,6 +1,5 @@
 from flask import Blueprint,jsonify,request
 from flask_login import current_user, login_user, logout_user
-from ..utils.forms import LoginForm
 from ..models.user import User
 
 bp = Blueprint("session", __name__, url_prefix="/session")
@@ -23,7 +22,7 @@ def login():
     if current_user.is_authenticated:
         return jsonify({"message": "already logged in bro"})
     #should hide login button
-    
+
     data = request.get_json()
     if not data:
         return jsonify({"error": "something wrong with request format"})

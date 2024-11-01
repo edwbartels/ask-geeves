@@ -37,14 +37,14 @@ def seed_tags():
     db.session.commit()
 
 
-# def seed_question_tags():
-#     for entry in question_tags_list:
-#         db.session.execute(
-#             question_tags.insert().values(
-#                 question_id=entry["question_id"], tag_id=entry["tag_id"]
-#             )
-#         )
-#     db.session.commit()
+def seed_question_tags():
+    for entry in question_tags_list:
+        db.session.execute(
+            question_tags.insert().values(
+                question_id=entry["question_id"], tag_id=entry["tag_id"]
+            )
+        )
+    db.session.commit()
 
 
 def seed_all():
@@ -53,4 +53,14 @@ def seed_all():
     seed_questions()
     seed_answers()
     seed_comments()
-    # seed_question_tags()
+    seed_question_tags()
+
+
+def clear_all_data():
+    db.session.execute(question_tags.delete())  # Clear join table entries first
+    db.session.query(Comment).delete()
+    db.session.query(Answer).delete()
+    db.session.query(Question).delete()
+    db.session.query(Tag).delete()
+    db.session.query(User).delete()
+    db.session.commit()

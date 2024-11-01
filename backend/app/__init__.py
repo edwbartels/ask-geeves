@@ -5,7 +5,7 @@ from .models.db import db
 from .models.user import User
 from .routes import session
 from flask_migrate import Migrate
-from .seeders.seed_funcs import seed_all
+from .seeders.seed_funcs import seed_all, clear_all_data
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -29,6 +29,12 @@ def load_user(id):
 def seed_all_command():
     seed_all()
     print("Database seeded")
+
+
+@app.cli.command("clear-seed")
+def clear_all_command():
+    clear_all_data()
+    print("Seed data removed from database")
 
 
 "hi there"

@@ -23,5 +23,3 @@ login.login_view = "session.login"
 def load_user(id):
     return User.query.get(int(id))
 
-
-"hi there"

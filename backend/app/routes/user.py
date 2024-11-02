@@ -1,6 +1,5 @@
 from flask import Blueprint,jsonify,request
 from flask_login import current_user
-from ..utils.forms import SignupForm
 from ..models.user import User
 from ..models.db import db
 bp = Blueprint("user", __name__, url_prefix="/user")
@@ -11,7 +10,7 @@ def sign_up():
         return jsonify({"message": "already logged in bro"}), 200
     #should hide signup button
     data = request.get_json()
-    print(data)
+    # print(data)
     if not data:
         return jsonify({"error": "something wrong with request format"})
 
@@ -31,7 +30,7 @@ def sign_up():
         last_name=data['last_name']
     )
     new_user.password = data['password']
-    print(new_user)
+    # print(new_user)
     db.session.add(new_user)
     db.session.commit()
     return jsonify({

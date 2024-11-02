@@ -24,7 +24,7 @@ def login():
     #should hide login button
 
     data = request.get_json()
-    print(data)
+    # print(data)
     if not data:
         return jsonify({"error": "something wrong with request format"})
 

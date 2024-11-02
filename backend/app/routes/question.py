@@ -8,9 +8,11 @@ bp = Blueprint("question", __name__, url_prefix="/questions")
 
 @bp.route("/", methods=["GET"])
 def get_all_questions():
-    allQuestions = Question.query.all()
+    all_questions = Question.query.all()
+    if not all_questions:
+        return jsonify({"message": "No questions found"}), 404
     questions_list = []
-    for question in allQuestions:
+    for question in all_questions:
         eachQuestion = {
             "id": question.id,
             "user_id": question.user_id,
@@ -22,9 +24,9 @@ def get_all_questions():
     return jsonify({"Questions": questions_list})
 
 
-@bp.route("/<int:id>", methods=["GET"])
-def get_question_by_id(id):
-    question = Question.query.get(id)
+@bp.route("/<int:question_id>", methods=["GET"])
+def get_question_by_id(question_id):
+    question = Question.query.get(question_id)
     if question:
         question_data = {
             "id": question.id,
@@ -36,6 +38,27 @@ def get_question_by_id(id):
         return jsonify({"Question": question_data})
     else:
         return jsonify({"error": "Question not found"})
+
+
+@bp.route("/current", methods=["GET"])
+def get_questions_by_current_user():
+    if not current_user.is_authenticated:
+        return jsonify({"error": "not authenticated"})
+    user_questions = Question.query.filter_by(user_id=current_user.id).all()
+    if not user_questions:
+        return jsonify({"message": "No questions found"}), 404
+    questions_list = [
+        {
+            "id": question.id,
+            "user_id": question.user_id,
+            "content": question.content,
+            "created_at": question.created_at,
+            "updated_at": question.updated_at,
+        }
+        for question in user_questions
+    ]
+    return jsonify({"Questions": questions_list}), 200
+
 
 
 @bp.route("/", methods=["POST"])
@@ -53,7 +76,7 @@ def create_question():
     ##?more stuff?
     )
     db.session.add(new_question)
-    db.seesion.commit()
+    db.session.commit()
     return jsonify({
             "id": new_question.id,
             "user_id": new_question.user_id,

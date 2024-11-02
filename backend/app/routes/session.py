@@ -24,6 +24,7 @@ def login():
     #should hide login button
 
     data = request.get_json()
+    print(data)
     if not data:
         return jsonify({"error": "something wrong with request format"})
 
@@ -52,4 +53,4 @@ def logout():
         return jsonify({"error": "No user logged in"}), 400
 
     logout_user()
-    return jsonify({"message": "success"}), 200
+    return jsonify({"message": "Logout success"}), 200

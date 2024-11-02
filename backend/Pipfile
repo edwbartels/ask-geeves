@@ -20,3 +20,10 @@ flask-login = "*"
 [requires]
 python_version = "3.9"
 python_full_version = "3.9.6"
+
+[scripts]
+d = "rm instance/dev.db"
+m = "pipenv run flask db migrate"
+u = "pipenv run flask db upgrade"
+i = "sh -c 'pipenv run u && flask seed && flask run'"
+db = "sh -c 'pipenv run d && pipenv run u && flask seed && flask run'"

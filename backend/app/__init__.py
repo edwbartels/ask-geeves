@@ -3,7 +3,7 @@ from .config import Config
 from flask_login import LoginManager
 from .models.db import db
 from .models.user import User
-from .routes import session,user,question,answer
+from .routes import session, user, question, answer
 from flask_migrate import Migrate
 from .seeders.seed_funcs import seed_all, clear_all_data
 from flask_wtf.csrf import CSRFProtect
@@ -40,4 +40,3 @@ def seed_all_command():
 def clear_all_command():
     clear_all_data()
     print("Seed data removed from database")
-

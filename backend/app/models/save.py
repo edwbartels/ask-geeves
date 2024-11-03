@@ -8,6 +8,7 @@ class Save(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     content_id = db.Column(db.Integer, nullable=False)
     content_type = db.Column(db.String(20), nullable=False)
+    parent_type = db.Column(db.String(20), nullable=True)
 
     def __repr__(self):
         return f"<Save {self.id} - {self.content_type} {self.content_id}"
@@ -17,5 +18,6 @@ class Save(db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "content_id": self.content_id,
-            "content_type": self.content_type
+            "content_type": self.content_type,
+            "parent_type": self.parent_type
         }

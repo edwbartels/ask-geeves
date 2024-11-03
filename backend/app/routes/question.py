@@ -2,8 +2,11 @@ from flask import Blueprint,jsonify,request
 from flask_login import current_user
 from ..models.question import Question
 from ..models.answer import Answer
+from ..models.comment import Comment
 from ..models.db import db
-from ..utils.decorator import auth_check,question_exist_check,question_ownership_check
+from ..utils.decorator import (auth_check,question_exist_check,question_ownership_check,
+answer_exist_check,answer_ownership_check,comment_for_question_exist_check,
+comment_for_question_ownership_check,comment_for_answer_exist_check,comment_for_answer_ownership_check)
 
 bp = Blueprint("question", __name__, url_prefix="/questions")
 
@@ -33,10 +36,7 @@ def get_question_by_id(question_id):
 @bp.route("/current", methods=["GET"])
 @auth_check
 def get_questions_by_current_user():
-
     user_questions = Question.query.filter_by(user_id=current_user.id).all()
-    if not user_questions:
-        return jsonify({"message": "No questions found"}), 404
     questions_list = [ question.to_dict() for question in user_questions]
     return jsonify({"questions_owned": questions_list}), 200
 
@@ -100,8 +100,6 @@ def get_all_answers_by_current_user():
 @question_exist_check
 def get_all_answers_by_questionId_and_currentUser(question_id):
     answers = Answer.query.filter_by(question_id=question_id,user_id=current_user.id).all()
-    # if not answers:
-    #     return jsonify({"message": "No answers found by this user"})   
     answers_list = [answer.to_dict() for answer in answers]
     return jsonify({"answers": answers_list}), 200
 
@@ -121,13 +119,10 @@ def create_answer_by_questionId(question_id):
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>", methods=["PUT"])
 @auth_check
-@question_exist_check
+@answer_exist_check
+@answer_ownership_check
 def edit_answer_by_questionId_and_answerId(question_id,answer_id):
     answer = Answer.query.get(answer_id)
-    if not answer:
-        return jsonify({"error": "Answer not found"})
-    if not current_user.id == answer.user_id:
-        return jsonify({"error": "not authorized , not owned of this answer"})
     data = request.get_json()
     # ? validate check
     # if not data:
@@ -138,13 +133,10 @@ def edit_answer_by_questionId_and_answerId(question_id,answer_id):
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>", methods=["DELETE"])
 @auth_check
-@question_exist_check
+@answer_exist_check
+@answer_ownership_check
 def delete_answer_by_questionId_and_answerId(question_id,answer_id):
     answer = Answer.query.get(answer_id)
-    if not answer:
-        return jsonify({"error": "Answer not found"})
-    if not current_user.id == answer.user_id:
-        return jsonify({"error": "not authorized , not owned of this answer"})
     db.session.delete(answer)
     db.session.commit()
     return jsonify({"message":"answer deleted"})
@@ -162,3 +154,123 @@ def mark_answer_accepted_by_questionId_and_answerId(question_id,answer_id):
     db.session.commit()
     return jsonify({"answer":answer.to_dict()}), 200
 
+
+@bp.route("/<int:question_id>/comments", methods=["GET"])
+@question_exist_check
+def get_all_comments_for_question(question_id):
+    comments = Comment.query.filter_by(content_id=question_id, content_type='question').all()
+    comments_list = [comment.to_dict() for comment in comments]
+    return jsonify({"comments": comments_list}), 200
+
+@bp.route("/<int:question_id>/answers/<int:answer_id>/comments", methods=["GET"])
+@question_exist_check
+def get_all_comments_for_an_answer(question_id, answer_id):
+    comments = Comment.query.filter_by(content_id=answer_id, content_type='answer').all()
+    comments_list = [comment.to_dict() for comment in comments]
+    return jsonify({"comments": comments_list}), 200
+
+@bp.route("/<int:question_id>/allcomments", methods=["GET"])
+@question_exist_check
+def get_all_comments(question_id):
+    comments_list = []
+
+    question_comments = Comment.query.filter_by(content_id=question_id, content_type='question').all()
+    for comment in question_comments:
+        comments_list.append(comment.to_dict())
+
+    answer_comments = []
+    answer_ids = [answer.id for answer in Answer.query.filter_by(question_id=question_id).all()]
+    for id in answer_ids:
+        comments = Comment.query.filter_by(content_id=id, content_type='answer').all()
+        answer_comments.extend(comments)
+
+    for comment in answer_comments:
+        comments_list.append(comment.to_dict())
+
+    return jsonify({"comments": comments_list}), 200
+
+
+@bp.route("/<int:question_id>/comments", methods=["POST"])
+@auth_check
+@question_exist_check
+def create_comment_for_question(question_id):
+    data = request.get_json()
+    content = data.get("content")
+    #? validation check?
+    new_comment = Comment(
+        user_id=current_user.id,
+        content=content,
+        content_id=question_id,
+        content_type="question"
+    )
+    db.session.add(new_comment)
+    db.session.commit()
+    return jsonify({"comment":new_comment.to_dict()})
+
+
+@bp.route("/<int:question_id>/comments/<int:comment_id>", methods=["PUT"])
+@auth_check
+@comment_for_question_exist_check
+@comment_for_question_ownership_check
+def edit_comment_for_question(question_id,comment_id):
+    data = request.get_json()
+    new_content = data.get("content")
+    #? validation check?
+    comment = Comment.query.get(comment_id)
+    comment.content = new_content
+    db.session.commit()
+    return jsonify({"comment":comment.to_dict()})
+
+
+@bp.route("/<int:question_id>/comments/<int:comment_id>", methods=["DELETE"])
+@auth_check
+@comment_for_question_exist_check   
+@comment_for_question_ownership_check
+def delete_comment_for_question(question_id,comment_id):
+    comment = Comment.query.get(comment_id)
+    db.session.delete(comment)
+    db.session.commit()
+    return jsonify({"message":"comment for question deleted"})
+
+
+@bp.route("/<int:question_id>/answers/<int:answer_id>/comments", methods=["POST"])
+@auth_check
+@question_exist_check
+@answer_exist_check
+def create_comment_for_answer(question_id,answer_id):
+    data = request.get_json()
+    content = data.get("content")
+    #? validation check?
+    new_comment = Comment(
+        user_id=current_user.id,
+        content=content,
+        content_id=answer_id,
+        content_type="answer"
+    )
+    db.session.add(new_comment)
+    db.session.commit()
+    return jsonify({"comment":new_comment.to_dict()})
+
+@bp.route("/<int:question_id>/answers/<int:answer_id>/comments/<int:comment_id>", methods=["PUT"])
+@auth_check
+@comment_for_answer_exist_check
+@comment_for_answer_ownership_check
+def edit_comment_for_answer(question_id,answer_id,comment_id):
+    data = request.get_json()
+    new_content = data.get("content")
+    #? validation check?
+    comment = Comment.query.get(comment_id)
+    comment.content = new_content
+    db.session.commit()
+    return jsonify({"comment":comment.to_dict()})
+
+
+@bp.route("/<int:question_id>/answers/<int:answer_id>/comments/<int:comment_id>", methods=["DELETE"])
+@auth_check
+@comment_for_answer_exist_check
+@comment_for_answer_ownership_check
+def delete_comment_for_answer(question_id,answer_id,comment_id):
+    comment = Comment.query.get(comment_id)
+    db.session.delete(comment)
+    db.session.commit()
+    return jsonify({"message":"comment for answer deleted"})

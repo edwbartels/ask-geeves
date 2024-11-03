@@ -45,3 +45,15 @@ class Comment(db.Model):
 
     def __repr__(self):
         return f"<Comment {self.id}"
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "content": self.content,
+            "created_at": self.formatted_created_at,
+            "updated_at": self.formatted_updated_at,
+            "content_id": self.content_id,
+            "content_type": self.content_type,
+            "saves": [save.to_dict() for save in self.saves]
+        }

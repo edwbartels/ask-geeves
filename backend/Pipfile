@@ -14,6 +14,7 @@ flask-migrate = "*"
 flask-wtf = "*"
 wtforms = "*"
 flask-login = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 

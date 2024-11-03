@@ -4,7 +4,7 @@ from .config import config_dict
 from flask_login import LoginManager
 from .models.db import db
 from .models.user import User
-from .routes import session, user, question, answer
+from .routes import session, user, question
 from flask_migrate import Migrate
 from .seeders.seed_funcs import seed_all, clear_all_data
 from flask_wtf.csrf import CSRFProtect
@@ -22,7 +22,6 @@ migrate = Migrate(app, db)
 app.register_blueprint(session.bp)
 app.register_blueprint(user.bp)
 app.register_blueprint(question.bp)
-app.register_blueprint(answer.bp)
 
 login = LoginManager(app)
 login.login_view = "session.login"

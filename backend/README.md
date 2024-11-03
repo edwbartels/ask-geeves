@@ -35,34 +35,37 @@ i = "sh -c 'pipenv run u && flask seed && flask run'"
 db = "sh -c 'pipenv run d && pipenv run u && flask seed && flask run'"
 ```
 
-## Setting up local PostgreSQL database
+# Setting up local ```PostgreSQL``` database
 
-### Install PostgreSQL
+## Install PostgreSQL
 
-```bash
-sudo apt update
-sudo apt install postgresql postgresql-contrib
-```
 
-### Install Psycorpg2-Binary (-binary for local use)
+```sudo apt update```
 
-This should be handled by pipenv install.
+```sudo apt install postgresql postgresql-contrib```
+
+## Install Psycorpg2-Binary (-binary for local use)
+
+### This should be handled automatically by pipenv install reading pipfile.
 
 Manual setup (shouldn't be necessary):
-```bash
-cd backend/
-pipenv shell # Ensure you're in the venv
-pipenv install psycopg2-binary
-```
 
-### Setup up PSQL User and DB
+```cd backend/```
+
+```pipenv shell```  Ensure you're in the venv
+
+```pipenv install psycopg2-binary```
 
 
-```bash
-    # Log in to PSQL as the default 'postgres' user
-sudo -i -u postgres
-psql
-```
+## Setup up PSQL User and DB
+
+
+
+### Log in to PSQL as the default 'postgres' user
+
+```sudo -i -u postgres```
+
+```psql```
 
 ```sql
     -- Create PSQL user (skip if have dedicated user already)
@@ -79,12 +82,15 @@ ALTER DATABASE ask_geeves_dev OWNER TO username;
 \q
     -- Likely need to CTRL+D to get back out to base terminal agin.
 ```
-```bash
-    # Verify Database was created
-psql -U username -d ask_geeves_dev # Should see asked_geeves_dev=> in terminal
-```
-### Configure the Flask App for PSQL Database
-Most of this will be done already. Modifying the DATABASE_TYPE and POSTGRES_URL in .env should be the only step required.
+
+### Verify Database was created:
+
+```psql -U username -d ask_geeves_dev```
+
+Should see asked_geeves_dev=> in terminal
+
+## Configure the Flask App for PSQL Database
+### Most of this will be done already. Modifying the DATABASE_TYPE and POSTGRES_URL in .env should be the only step required.
 
 ```python
     # backend/.env
@@ -153,21 +159,27 @@ migrate = Migrate(app, db)
     # ...
 ```
 
-### Create Initial Migrations
+## Create Initial Migrations
 
-```bash
-    # Skip to upgrade if migrations were done previously with sqlite
-flask db init
-flask db migrate -m 'initial migration'
-flask db upgrade
-flask seed # Seeds psql db with seeder data (considering moving this step to be included in previous command)
+
+### Skip to upgrade if migrations were done previously with sqlite
+
+```flask db init```
+
+```flask db migrate -m 'initial migration'```
+
+```flask db upgrade```
+
+```flask seed``` Seeds psql db with seeder data (considering moving this step to be included in previous command)
+
+
+## Verify Database Connection
+
+### Log in to PSQL Database via user we created earlier
+
+```psql -U username -d ask_geeves_dev```
+```sql
+\dt -- Should see tables
+SELECT * FROM comments -- Should see all comments if seeding & privilege grant was successful
 ```
-
-### Verify Database Connection
-```bash
-flask run
-    # Log in to psql db via user we created earlier
-psql -U username -d ask_geeves_dev
-\dt # Should see tables
-SELECT * FROM comments # Should see all comments if seeding & privilege grant was successful
 

@@ -8,13 +8,7 @@ bp = Blueprint("session", __name__, url_prefix="/session")
 @bp.route("/", methods=["GET"])
 def get_current_user():
     if current_user.is_authenticated:
-        return jsonify({"user": {
-            "id": current_user.id,
-            "username": current_user.username,
-            "email": current_user.email,
-            "first_name": current_user.first_name,
-            "last_name": current_user.last_name
-        }}), 200
+        return jsonify({"user":current_user.to_dict()}), 200
     return jsonify({"user": "null"})
 
 @bp.route("/", methods=["POST"])
@@ -24,7 +18,6 @@ def login():
     #should hide login button
 
     data = request.get_json()
-    # print(data)
     if not data:
         return jsonify({"error": "something wrong with request format"})
 
@@ -39,13 +32,7 @@ def login():
         return jsonify({"error": "Invalid username or password"}), 401
 
     login_user(user)
-    return jsonify({"user": {
-        "id": user.id,
-        "username": user.username,
-        "email": user.email,
-        "first_name": user.first_name,
-        "last_name": user.last_name
-    }}), 200
+    return jsonify({"user":user.to_dict()}), 200
 
 @bp.route('/logout', methods=["POST"])
 def logout():

@@ -10,7 +10,6 @@ def sign_up():
         return jsonify({"message": "already logged in bro"}), 200
     #should hide signup button
     data = request.get_json()
-    # print(data)
     if not data:
         return jsonify({"error": "something wrong with request format"})
 
@@ -33,12 +32,4 @@ def sign_up():
     # print(new_user)
     db.session.add(new_user)
     db.session.commit()
-    return jsonify({
-        "user": {
-            "id": new_user.id,
-            "username": new_user.username,
-            "email": new_user.email,
-            "first_name": new_user.first_name,
-            "last_name": new_user.last_name
-        }
-    }), 201
+    return jsonify({"user": new_user.to_dict()}), 201

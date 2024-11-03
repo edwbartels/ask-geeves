@@ -53,3 +53,16 @@ class Answer(db.Model):
 
     def __repr__(self):
         return f"<Answer {self.id}. Accept: {'Yes' if self.accepted else 'No'}"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "question_id": self.question_id,
+            "content": self.content,
+            "accepted": self.accepted,
+            "created_at": self.formatted_created_at,
+            "updated_at": self.formatted_updated_at,
+            # "comments": [comment.to_dict() for comment in self.comments], 
+            # "saves": [save.to_dict() for save in self.saves]
+        }

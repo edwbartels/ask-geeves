@@ -1,0 +1,884 @@
+{
+	"info": {
+		"_postman_id": "6438526c-8581-4cba-8e87-e1d8e4955d66",
+		"name": "Ask geeves",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37744806"
+	},
+	"item": [
+		{
+			"name": "Get current user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/session/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"session",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all questions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get question by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/3",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all questions owned by current user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/current",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"current"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sign up",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"testUsername\",\r\n  \"email\": \"test@gmail.com\",\r\n  \"password\": \"password1\",\r\n  \"confirm_password\": \"password1\",\r\n  \"first_name\": \"John\",\r\n  \"last_name\": \"Wick\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/user/register",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Log out",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/session/logout",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"session",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "log in demo user(admin)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"adminadmin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/session/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"session",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a question",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\":\"testquestion\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/questions/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit a question by ID",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\":\"edit test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/questions/26",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"26"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a question by ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/26",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"26"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all answers by questionId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/2/answers",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"2",
+						"answers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all answers from current user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/all/answers/current",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"all",
+						"answers",
+						"current"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all answers by questionID from current user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/2/answers/current",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"2",
+						"answers",
+						"current"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create an answer by questionID",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\":\"test answer\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/questions/2/answers",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"2",
+						"answers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit an answer by questionID and answerID",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\":\"edit test answer\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/questions/2/answers/14",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"2",
+						"answers",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete an answer",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/2/answers/14",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"2",
+						"answers",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Switch answer accepted true/false",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/1/answers/1/accept",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"1",
+						"answers",
+						"1",
+						"accept"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all comments by questionID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/1/allcomments",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"1",
+						"allcomments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all quesiton comments by questionID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/2/comments",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"2",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all answer comments by answerID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/2/answers/3/comments",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"2",
+						"answers",
+						"3",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a comment for a question",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\":\"testcomment2 for question\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/questions/2/comments",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"2",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit a comment for question",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\":\"edit comment for question test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/questions/2/comments/41",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"2",
+						"comments",
+						"41"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a comment for question",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/2/comments/41",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"2",
+						"comments",
+						"41"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a comment for answer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\":\"comment for answer test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/questions/2/answers/2/comments",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"2",
+						"answers",
+						"2",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit a comment for answer",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\":\"edit comment for answer test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/questions/2/answers/2/comments/41",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"2",
+						"answers",
+						"2",
+						"comments",
+						"41"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a comment for answer",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/2/answers/2/comments/41",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"2",
+						"answers",
+						"2",
+						"comments",
+						"41"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all saves from current user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/usersaves",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"usersaves"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a question to saves",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/1/saves",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"1",
+						"saves"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a saved question",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/1/saves",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"1",
+						"saves"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add an answer to saves",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/3/answers/3/saves",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"3",
+						"answers",
+						"3",
+						"saves"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a saved answer",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/3/answers/3/saves",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"3",
+						"answers",
+						"3",
+						"saves"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add comment in question to saves",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/3/comments/40/saves",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"3",
+						"comments",
+						"40",
+						"saves"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete saved comment in question",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/3/comments/40/saves",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"3",
+						"comments",
+						"40",
+						"saves"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add comment in answer to saves",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/3/answers/3/comments/3/saves",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"3",
+						"answers",
+						"3",
+						"comments",
+						"3",
+						"saves"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete saved comment in answer",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/3/answers/3/comments/3/saves",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"3",
+						"answers",
+						"3",
+						"comments",
+						"3",
+						"saves"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all tags by questoinID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/1/tags",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"1",
+						"tags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a tag",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tag\":\"tagtest\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/questions/1/tags",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"1",
+						"tags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete tag by tagID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/questions/1/tags/12",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"questions",
+						"1",
+						"tags",
+						"12"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://127.0.0.1:5000/",
+			"type": "string"
+		}
+	]
+}

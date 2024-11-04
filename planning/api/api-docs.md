@@ -48,7 +48,7 @@ Primarily handled by flask-login. Custom response route if necessary.
 * Require Authentication: false
 * Request
   * Method: GET
-  * Route path: /api/session
+  * Route path: /session
   * Body: none
 
 * Successful Response when there is a logged in user
@@ -166,7 +166,7 @@ user's information.
 * Require Authentication: false
 * Request
   * Method: POST
-  * Route path: /api/users/register
+  * Route path: /users/register
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -244,7 +244,7 @@ Returns all questions
 * Require Authentication: false
 * Request
     * Method: Get
-    * Route path: /api/questions
+    * Route path: /questions
     * Body: none
 
 * Succesfful Response
@@ -255,15 +255,75 @@ Returns all questions
 
         ```json
         {
-            "Questions": [
-                {
-                "id": 1,
-                "user_id": 1,
-                "content": "Is this a sample question?",
-                "created_at": "2024-10-31 14:18:30",
-                "updated_at": "2024-10-31 14:18:30",
-                }
+      "questions": 
+              [
+              {
+                  "id": 1,
+                  "user_id": 1,
+                  "content": "What is the difference between Flask and Django?",
+                  "created_at": "November 4th, 2024",
+                  "updated_at": "November 4th, 2024",
 
+                  "answers": [
+                      {
+                          "id": 1,
+                          "user_id": 1,
+                          "content": "123",
+                          "question_id": 1,
+                          "created_at": "November 4th, 2024",
+                          "updated_at": "November 4th, 2024",
+                          "saves": [],
+                          "accepted": true,
+                          "comments": [
+                              {
+                                  "content": "This is a great answer!",
+                                  "content_id": 1,
+                                  "content_type": "answer",
+                                  "created_at": "November 4th, 2024",
+                                  "id": 1,
+                                  "saves": [
+                                      {
+                                          "content_id": 1,
+                                          "content_type": "comment",
+                                          "id": 1,
+                                          "parent_type": "answer",
+                                          "user_id": 1
+                                      }
+                                  ],
+                                  "updated_at": "November 4th, 2024",
+                                  "user_id": 1
+                              },
+                          ],
+                      }
+                  ],
+                  "comments": [
+                      {
+                          "content": "I had the same question, thanks for this!",
+                          "content_id": 1,
+                          "content_type": "question",
+                          "created_at": "November 4th, 2024",
+                          "id": 14,
+                          "saves": [],
+                          "updated_at": "November 4th, 2024",
+                          "user_id": 4
+                      },
+                  ],
+                  "saves": [
+                      {
+                          "content_id": 1,
+                          "content_type": "question",
+                          "id": 1,
+                          "parent_type": null,
+                          "user_id": 1
+                      }
+                  ],
+                  "tags": [
+                      {
+                          "id": 9,
+                          "name": "HTML"
+                      },
+                  ],
+              }
             ]
         }
         ```
@@ -275,7 +335,7 @@ Returns all the questions created by the current user.
 * Require authentication: true
 * Request
     * Method: GET
-    * Route path: /api/questions/current
+    * Route path: /questions/current
     * Body: none
 
 * Successful Response
@@ -306,7 +366,7 @@ Returns the details of a question specified by its id.
 * Require Authentication: false
 * Request
     * Method: GET
-    * Route path: /api/questions/<int:question_id>
+    * Route path: /questions/<int:question_id>
     * Body: None
 
 * Successful Response
@@ -329,7 +389,7 @@ Returns the details of a question specified by its id.
                     "content": "This is a sample comment.",
                 }
             ],
-            "Topics": [
+            "tags": [
                 {
                     "id":1,
                     "name": "Python"
@@ -360,7 +420,7 @@ Creates and returns a new question.
 * Require Authentication: true
 * Request
   * Method: POST
-  * Route path: /api/questions
+  * Route path: /questions
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -368,7 +428,7 @@ Creates and returns a new question.
     ```json
     {
         "content": "Is this a sample question?",
-        "Topics":[
+        "tags":[
             {
                 "name": "Python"
             },
@@ -418,7 +478,7 @@ Updates and returns an existing question
 
 * Request
     * Method: PUT
-    * Route path: /api/spots/<int: spotId>
+    * Route path: /questions/<int:question_id>
 
 
 ### Delete a question
@@ -430,18 +490,28 @@ Deletes an existing question
 
 * Request
     * Method: DELETE
-    * Route path: /api/spots/<int: spotId>
+    * Route path: /questions/<int:question_id>
 
 ## Comments
 
-### Get all Comments by Question id
+### Get all Comments(question and answers) by Question id
 
 Returns all the comments for a Question by the specified id
 
 * Require Authentication: false
 * Request 
     * Method: GET
-    * Route path: /api/questions/<int: question_id>/comments
+    * Route path: /questions/<int:question_id>/allcomments
+
+### optional vvv
+
+### Get all Comments from question by question id
+  * Route path: /questions/<int:question_id>/comments
+### Get all Comments from an answer by question id and answer id
+  * Route path: /questions/<int:question_id>/answers/<int:answer_id>/comments
+
+### ^^^
+
 
 ### Create a Comment for a Question based on the Question's id
 
@@ -450,7 +520,7 @@ Create and return a new comment for a question specified by id.
 * Require Authentication: true
 * Request
     * Method: POST
-    * Route path: /api/questions/<int: question_id>/comments
+    * Route path: /questions/<int:question_id>/comments
 
 ### Edit a comment
 
@@ -460,7 +530,7 @@ Update an return an existing comment
 * Require proper authorization: Comment must belong to the current user
 * Request
     * Method: PUT
-    * Route path: /api/comments/<int: comment_id>
+    * Route path: /questions/<int:question_id>/comments/<int:comment_id>
 
 ### Delete a comment
 
@@ -470,7 +540,17 @@ Delete an existing comment.
 * Require proper authorization: Comment must belong to the current user
 * Request
     * Method: DELETE
-    * Route path: /api/comments/<int: comment_id>
+    * Route path: /questions/<int:question_id>/comments/<int:comment_id>
+
+
+### Create a Comment for an answer based on the Question's id and answer id
+* Require Authentication: true
+* Request
+    * Method: POST
+    * Route path: /questions/<int:question_id>/answers/<int:answer_id>/comments
+
+### Edit and delete are same routes, just different method ^^^
+
 
 ## Saves
 
@@ -481,17 +561,14 @@ Return all the saves that the current user has made.
 * Require Authentication: true
 * Request
     * Method: GET
-    * Route path: /api/saves/current
+    * Route path: /questions/usersaves
 
 ### Add a question to the Current User's Saves
-
-Update and return the current user's saves
-
 * Require Authentication: true
-* Require proper authorization: Save must belong to the current user
 * Request
     * POST
-    * Route path: /api/saves/<int: save_id>
+    * Route path: /questions/<int:question_id>/saves
+
 
 ### Remove a question from the Current User's Saves
 
@@ -501,44 +578,103 @@ Remove an existing save.
 * Require proper authorization: Save must belong to the current user
 * Request
     * DELETE
-    * Route path: /api/saves/<int: save_id>
+    * Route path: /questions/<int:question_id>/saves
 
-## Topics
 
-### Get all Topics by Question id
+### Add an answer to the Current User's Saves
+* Require Authentication: true
+* Request
+    * POST
+    * Route path: /questions/<int:question_id>/answers/<int:answer_id>/saves
+  
+### Remove an answer from the Current User's Saves
 
-Return all the topics for a question specified by id
+Remove an existing save.
+
+* Require Authentication: true
+* Require proper authorization: Save must belong to the current user
+* Request
+    * DELETE
+    * Route path: /questions/<int:question_id>/answers/<int:answer_id>/saves
+
+
+### Add a question comment to the Current User's Saves
+* Require Authentication: true
+* Request
+    * POST
+    * Route path: /questions/<int:question_id>/comments/<int:comment_id>/saves
+  
+### Remove a question comment from the Current User's Saves
+
+Remove an existing save.
+
+* Require Authentication: true
+* Require proper authorization: Save must belong to the current user
+* Request
+    * DELETE
+    * Route path: /questions/<int:question_id>/comments/<int:comment_id>/saves
+
+
+### Add an answer comment to the Current User's Saves
+* Require Authentication: true
+* Request
+    * POST
+    * Route path: /questions/<int:question_id>/answers/<int:answer_id>/comments/<int:comment_id>/saves
+  
+### Remove an answer comment from the Current User's Saves
+
+Remove an existing save.
+
+* Require Authentication: true
+* Require proper authorization: Save must belong to the current user
+* Request
+    * DELETE
+    * Route path: /questions/<int:question_id>/answers/<int:answer_id>/comments/<int:comment_id>/saves
+
+
+
+## Tags
+
+### Get all Tags
+Return all the tags in the database
+* Require Authentication: false
+* Request
+    * Method: GET
+    * Route path: /questions/tags
+
+### Get all Tags by Question id
+
+Return all the tags for a question specified by id
 
 * Require Authentication: false
 * Request
     * Method: GET
-    * Route path: /api/questions/<int: question_id>/topics
+    * Route path: /questions/<int:question_id>/tags
 
-### Add a Topic to a Question by id
+### Add a tag to a Question by id
 
 * Require Authentication: true
 * Require proper authorization: Question must belong to the current user
 * Request
     * Method: POST
-    * Route path: /api/questions/<int: question_id>/topics
+    * Route path: /questions/<int:question_id>/tags
 
-### Delete a Topic to a question by id
-
-* Require Authentication: true
-* Require proper authorization: Question must belong to the current user
-* Request
-    * Method: DELETE
-    * Route path: /api/questions/<int: question_id>/topics
-
-### Update Topics of a Question by id
+### Update tags of a Question by id
 
 * Require Authentication: true
 * Require proper authorization: Question must belong to the current user
 * Request
     * Method: PUT
-    * Route path: /api/questions/<int: question_id>/topics
+    * Route path: /questions/<int:question_id>/tags
 
-    * Combination of POST and DELETE. Look into how to effectively do this
+### Delete a tag to a question by id
+
+* Require Authentication: true
+* Require proper authorization: Question must belong to the current user
+* Request
+    * Method: DELETE
+    * Route path: /questions/<int:question_id>/tags
+
 
 
 

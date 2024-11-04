@@ -3,7 +3,7 @@ from flask_login import current_user
 from ..models.tag import Tag
 from ..models.question import Question
 from ..models.db import db
-from ..utils.decorator import question_exist_check,question_ownership_check
+from ..utils.decorator import question_exist_check,question_ownership_check,login_check
 
 bp = Blueprint("tags", __name__, url_prefix="/questions")
 
@@ -25,6 +25,7 @@ def get_all_tags_by_questionId(question_id):
     return jsonify({"tags":tags_list}),200
 
 @bp.route("/<int:question_id>/tags", methods=["POST"])
+@login_check
 @question_exist_check
 @question_ownership_check
 def add_tag_to_question(question_id):
@@ -53,6 +54,9 @@ def add_tag_to_question(question_id):
 
 
 @bp.route("/<int:question_id>/tags/<int:tag_id>", methods=["DELETE"])
+@login_check
+@question_exist_check
+@question_ownership_check
 def delete_tag_from_question(question_id, tag_id):
     question = Question.query.get(question_id)
     if not question:

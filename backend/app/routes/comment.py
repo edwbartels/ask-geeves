@@ -9,8 +9,6 @@ comment_for_question_ownership_check,comment_for_answer_exist_check,comment_for_
 
 bp = Blueprint("comment", __name__, url_prefix="/questions")
 
-
-
 @bp.route("/<int:question_id>/comments", methods=["GET"])
 @question_exist_check
 def get_all_comments_for_question(question_id):
@@ -45,7 +43,6 @@ def get_all_comments(question_id):
 
     return jsonify({"comments": comments_list}), 200
 
-
 @bp.route("/<int:question_id>/comments", methods=["POST"])
 @login_check
 @question_exist_check
@@ -61,8 +58,7 @@ def create_comment_for_question(question_id):
     )
     db.session.add(new_comment)
     db.session.commit()
-    return jsonify({"comment":new_comment.to_dict()})
-
+    return jsonify({"comment": new_comment.to_dict()}), 201
 
 @bp.route("/<int:question_id>/comments/<int:comment_id>", methods=["PUT"])
 @login_check
@@ -75,8 +71,7 @@ def edit_comment_for_question(question_id,comment_id):
     comment = Comment.query.get(comment_id)
     comment.content = new_content
     db.session.commit()
-    return jsonify({"comment":comment.to_dict()})
-
+    return jsonify({"comment": comment.to_dict()}), 200
 
 @bp.route("/<int:question_id>/comments/<int:comment_id>", methods=["DELETE"])
 @login_check
@@ -86,8 +81,7 @@ def delete_comment_for_question(question_id,comment_id):
     comment = Comment.query.get(comment_id)
     db.session.delete(comment)
     db.session.commit()
-    return jsonify({"message":"comment for question deleted"})
-
+    return jsonify({"message": "comment for question deleted"}), 200
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>/comments", methods=["POST"])
 @login_check
@@ -105,7 +99,7 @@ def create_comment_for_answer(question_id,answer_id):
     )
     db.session.add(new_comment)
     db.session.commit()
-    return jsonify({"comment":new_comment.to_dict()})
+    return jsonify({"comment": new_comment.to_dict()}), 201
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>/comments/<int:comment_id>", methods=["PUT"])
 @login_check
@@ -118,8 +112,7 @@ def edit_comment_for_answer(question_id,answer_id,comment_id):
     comment = Comment.query.get(comment_id)
     comment.content = new_content
     db.session.commit()
-    return jsonify({"comment":comment.to_dict()})
-
+    return jsonify({"comment": comment.to_dict()}), 200
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>/comments/<int:comment_id>", methods=["DELETE"])
 @login_check
@@ -129,4 +122,4 @@ def delete_comment_for_answer(question_id,answer_id,comment_id):
     comment = Comment.query.get(comment_id)
     db.session.delete(comment)
     db.session.commit()
-    return jsonify({"message":"comment for answer deleted"})
+    return jsonify({"message": "comment for answer deleted"}), 200

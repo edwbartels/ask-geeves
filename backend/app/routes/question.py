@@ -17,7 +17,7 @@ def get_all_questions():
     for question in all_questions:
         eachQuestion = question.to_dict()
         questions_list.append(eachQuestion)
-    return jsonify({"questions": questions_list})
+    return jsonify({"questions": questions_list}),200
 
 
 @bp.route("/<int:question_id>", methods=["GET"])
@@ -26,7 +26,7 @@ def get_question_by_id(question_id):
     if question:
         return jsonify({"question": question.to_dict()})
     else:
-        return jsonify({"error": "Question not found"})
+        return jsonify({"error": "Question not found"}),404
 
 
 @bp.route("/current", methods=["GET"])

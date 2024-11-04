@@ -6,6 +6,13 @@ export default defineConfig({
   plugins: [react()],
   server: {
     open: true,
+    proxy:{
+      '/session': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure:false
+      }
+    }
   },
   test: {
     globals: true,

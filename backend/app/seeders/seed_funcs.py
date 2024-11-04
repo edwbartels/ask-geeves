@@ -1,5 +1,13 @@
-from .seed_lists import users, questions, answers, comments, tags, question_tags_list
-from ..models import db, User, Question, Answer, Comment, Tag, question_tags
+from .seed_lists import (
+    users,
+    questions,
+    answers,
+    comments,
+    tags,
+    question_tags_list,
+    votes,
+)
+from ..models import db, User, Question, Answer, Comment, Tag, question_tags, Vote
 
 
 def seed_users():
@@ -44,6 +52,13 @@ def seed_question_tags():
                 question_id=entry["question_id"], tag_id=entry["tag_id"]
             )
         )
+    db.session.commit()
+
+
+def seed_votes():
+    for entry in votes:
+        vote = Vote(**entry)
+        db.session.add(vote)
     db.session.commit()
 
 

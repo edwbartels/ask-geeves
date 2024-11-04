@@ -1,0 +1,23 @@
+.post {
+  width: 90%;
+}
+.post-title-input,
+.post-body-textarea {
+  box-sizing: border-box;
+  /* font-size: 1rem; */
+  width: 100%;
+  text-wrap: nowrap;
+  padding: 10px;
+}
+
+.post-body pre {
+  background-color: #eeeeee;
+  padding: 10px 5px;
+  border-radius: 5px;
+}
+
+.post-body code {
+  background-color: #eeeeee;
+  padding: 5px;
+  border-radius: 5px;
+}

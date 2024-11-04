@@ -1,3 +1,3 @@
 export const Logo = () => {
-  return <p>Logo here</p>
+  return <a href="/">Logo here</a>
 }

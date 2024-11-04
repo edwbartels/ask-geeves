@@ -1,0 +1,8 @@
+/* NavLink active links */
+.sidebar a {
+  padding: 5px;
+}
+.sidebar .active {
+  background-color: lightgray;
+  border-radius: 5px;
+}

@@ -2,6 +2,7 @@ import React from "react"
 import { createRoot } from "react-dom/client"
 import { Provider } from "react-redux"
 import App from "./App"
+import { Modal, ModalProvider } from "./context/Modal"
 import { store } from "./app/store"
 import "./index.css"
 
@@ -12,9 +13,12 @@ if (container) {
 
   root.render(
     <React.StrictMode>
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <ModalProvider>
+        <Provider store={store}>
+          <App />
+          <Modal />
+        </Provider>
+      </ModalProvider>
     </React.StrictMode>,
   )
 } else {

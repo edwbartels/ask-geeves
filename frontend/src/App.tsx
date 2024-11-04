@@ -1,4 +1,9 @@
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom"
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+  Navigate,
+} from "react-router-dom"
 import { NavLink } from "react-router-dom"
 import "./App.css"
 import { Counter } from "./features/counter/Counter"
@@ -6,20 +11,18 @@ import { Quotes } from "./features/quotes/Quotes"
 import logo from "./logo.svg"
 
 import { NavBar } from "./components/NavBar/NavBar"
+import { Sidebar } from "./components/Sidebar/Sidebar"
 import { HomePage } from "./components/HomePage/HomePage"
 import { AllQuestions } from "./components/AllQuestions/AllQuestions"
 import { QuestionMain } from "./components/Question/QuestionMain"
+import { CreateOrEditPost } from "./components/Post/CreateOrEditPost"
 
 const Layout = () => {
   return (
     <>
       <NavBar />
       <div className="main">
-        <div className="sidebar">
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="questions">Questions</NavLink>
-          <NavLink to="tagged">Tagged</NavLink>
-        </div>
+        <Sidebar />
         <Outlet />
       </div>
     </>
@@ -37,13 +40,15 @@ const router = createBrowserRouter([
       {
         path: "questions",
         children: [
+          { path: "", element: <AllQuestions /> },
+          { path: "ask", element: <CreateOrEditPost /> },
           {
-            path: "",
-            element: <AllQuestions />,
-          },
-          {
-            path: ":questionId/*",
-            element: <QuestionMain />,
+            path: ":questionId",
+            children: [
+              { path: "", element: <QuestionMain /> },
+              { path: "edit", element: <CreateOrEditPost /> },
+              { path: "*", element: <QuestionMain /> },
+            ],
           },
         ],
       },

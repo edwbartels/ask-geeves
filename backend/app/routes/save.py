@@ -5,7 +5,7 @@ from ..models.db import db
 from ..utils.decorator import (login_check, question_exist_check,
 answer_exist_check, comment_for_question_exist_check,comment_for_answer_exist_check)
 
-bp = Blueprint("save", __name__, url_prefix="/questions")
+bp = Blueprint("save", __name__, url_prefix="/api/questions")
 
 @bp.route("/usersaves")
 @login_check

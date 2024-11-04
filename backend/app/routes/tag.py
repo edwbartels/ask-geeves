@@ -5,7 +5,7 @@ from ..models.question import Question
 from ..models.db import db
 from ..utils.decorator import question_exist_check,question_ownership_check,login_check
 
-bp = Blueprint("tags", __name__, url_prefix="/questions")
+bp = Blueprint("tags", __name__, url_prefix="/api/questions")
 
 
 @bp.route("/tags")

@@ -7,7 +7,7 @@ from ..utils.decorator import (login_check,question_exist_check,
 answer_exist_check,comment_for_question_exist_check,
 comment_for_question_ownership_check,comment_for_answer_exist_check,comment_for_answer_ownership_check)
 
-bp = Blueprint("comment", __name__, url_prefix="/questions")
+bp = Blueprint("comment", __name__, url_prefix="/api/questions")
 
 @bp.route("/<int:question_id>/comments", methods=["GET"])
 @question_exist_check
@@ -49,7 +49,8 @@ def get_all_comments(question_id):
 def create_comment_for_question(question_id):
     data = request.get_json()
     content = data.get("content")
-    #? validation check?
+    if not content:
+        return jsonify({"error":"content is required"}),400
     new_comment = Comment(
         user_id=current_user.id,
         content=content,
@@ -67,7 +68,8 @@ def create_comment_for_question(question_id):
 def edit_comment_for_question(question_id,comment_id):
     data = request.get_json()
     new_content = data.get("content")
-    #? validation check?
+    if not new_content:
+        return jsonify({"error":"content is required"}),400
     comment = Comment.query.get(comment_id)
     comment.content = new_content
     db.session.commit()
@@ -90,7 +92,8 @@ def delete_comment_for_question(question_id,comment_id):
 def create_comment_for_answer(question_id,answer_id):
     data = request.get_json()
     content = data.get("content")
-    #? validation check?
+    if not content:
+        return jsonify({"error":"content is required"}),400
     new_comment = Comment(
         user_id=current_user.id,
         content=content,
@@ -108,7 +111,8 @@ def create_comment_for_answer(question_id,answer_id):
 def edit_comment_for_answer(question_id,answer_id,comment_id):
     data = request.get_json()
     new_content = data.get("content")
-    #? validation check?
+    if not new_content:
+        return jsonify({"error":"content is required"}),400
     comment = Comment.query.get(comment_id)
     comment.content = new_content
     db.session.commit()

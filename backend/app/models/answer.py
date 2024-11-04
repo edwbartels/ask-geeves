@@ -58,6 +58,9 @@ class Answer(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
+            "username":self.user.username,
+            "first_name": self.user.first_name,
+            "last_name": self.user.last_name, 
             "question_id": self.question_id,
             "content": self.content,
             "accepted": self.accepted,

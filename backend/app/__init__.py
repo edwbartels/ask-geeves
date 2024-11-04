@@ -4,13 +4,18 @@ from .config import config_dict
 from flask_login import LoginManager
 from .models.db import db
 from .models.user import User
-from .routes import session, user, question ,save , tag,answer,comment
+from .routes import session, user, question, save, tag, answer, comment
 from flask_migrate import Migrate
 from .seeders.seed_funcs import seed_all, clear_all_data
 from flask_wtf.csrf import CSRFProtect
+from flask_cors import CORS
 
 app = Flask(__name__)
 env = os.getenv("FLASK_ENV", "development")
+if env == "development":
+    # Only enable cors if in development
+    CORS(app)
+
 config_class = config_dict.get(env, "development")
 app.config.from_object(config_class)
 

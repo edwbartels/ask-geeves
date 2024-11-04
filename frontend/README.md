@@ -12,6 +12,7 @@ Mod 6 full stack project
 ## Development
 
 1. Install packages with `npm install`
+1. Add an `API_URL` variable to `.env` with the link to the API server (usually http://localhost:5000)
 1. Start the dev server with `npm run dev`
 
 ## Build

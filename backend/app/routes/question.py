@@ -2,7 +2,7 @@ from flask import Blueprint,jsonify,request
 from flask_login import current_user
 from ..models.question import Question
 from ..models.db import db
-from ..utils.decorator import (auth_check,question_exist_check,question_ownership_check)
+from ..utils.decorator import (login_check,question_exist_check,question_ownership_check)
 
 bp = Blueprint("question", __name__, url_prefix="/questions")
 
@@ -30,7 +30,7 @@ def get_question_by_id(question_id):
 
 
 @bp.route("/current", methods=["GET"])
-@auth_check
+@login_check
 def get_questions_by_current_user():
     user_questions = Question.query.filter_by(user_id=current_user.id).all()
     questions_list = [ question.to_dict() for question in user_questions]
@@ -38,7 +38,7 @@ def get_questions_by_current_user():
 
 
 @bp.route("/", methods=["POST"])
-@auth_check
+@login_check
 def create_question():
     data = request.get_json()
     #? validate check
@@ -55,7 +55,7 @@ def create_question():
 
 
 @bp.route("/<int:question_id>", methods=["PUT"])
-@auth_check
+@login_check
 @question_exist_check
 @question_ownership_check
 def edit_question(question_id):
@@ -70,11 +70,11 @@ def edit_question(question_id):
     return jsonify({"question":question.to_dict()}), 200
 
 @bp.route("/<int:question_id>", methods=["DELETE"])
-@auth_check
+@login_check
 @question_exist_check
 @question_ownership_check
 def delete_question(question_id):
     question = Question.query.get(question_id)
     db.session.delete(question)
     db.session.commit()
-    return jsonify({"message": "question deleted"})
+    return jsonify({"message": "question deleted"}), 200

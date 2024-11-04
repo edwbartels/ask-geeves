@@ -5,7 +5,7 @@ from ..models.question import Question
 from ..models.answer import Answer
 from ..models.comment import Comment
 
-def auth_check(func):
+def login_check(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if not current_user.is_authenticated:

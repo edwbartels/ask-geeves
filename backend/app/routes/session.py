@@ -1,6 +1,7 @@
 from flask import Blueprint,jsonify,request
 from flask_login import current_user, login_user, logout_user
 from ..models.user import User
+from sqlalchemy import or_
 
 bp = Blueprint("session", __name__, url_prefix="/session")
 
@@ -21,15 +22,17 @@ def login():
     if not data:
         return jsonify({"error": "something wrong with request format"})
 
-    username = data.get('username')
+    credential = data.get('username')
     password = data.get('password')
 
-    if not username or not password:
-        return jsonify({"error": "Username and password are required"}), 400
+    if not credential or not password:
+        return jsonify({"error": "username/email and password are required"}), 404
 
-    user = User.query.filter_by(username=username).first()
+    user = User.query.filter(or_(User.username == credential, User.email == credential)).first()
+
+    user = User.query.filter_by(username=credential).first()
     if not user or not user.check_password(password):
-        return jsonify({"error": "Invalid username or password"}), 401
+        return jsonify({"error": "Invalid username or password"}), 400
 
     login_user(user)
     return jsonify({"user":user.to_dict()}), 200
@@ -37,7 +40,7 @@ def login():
 @bp.route('/logout', methods=["POST"])
 def logout():
     if not current_user.is_authenticated:
-        return jsonify({"error": "No user logged in"}), 400
+        return jsonify({"error": "No user logged in"}), 401
 
     logout_user()
     return jsonify({"message": "Logout success"}), 200

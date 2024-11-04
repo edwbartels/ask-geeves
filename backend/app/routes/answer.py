@@ -2,7 +2,7 @@ from flask import Blueprint,jsonify,request
 from flask_login import current_user
 from ..models.answer import Answer
 from ..models.db import db
-from ..utils.decorator import (auth_check,question_exist_check,question_ownership_check,
+from ..utils.decorator import (login_check,question_exist_check,question_ownership_check,
 answer_exist_check,answer_ownership_check)
 
 bp = Blueprint("answer", __name__, url_prefix="/questions")
@@ -15,7 +15,7 @@ def get_all_answers_by_questionId(question_id):
     return jsonify({"answers": answers_list}), 200
 
 @bp.route("/all/answers/current", methods=["GET"])
-@auth_check
+@login_check
 def get_all_answers_by_current_user():
     answers = Answer.query.filter_by(user_id=current_user.id).all()
     answers_list = [answer.to_dict() for answer in answers]
@@ -29,7 +29,7 @@ def get_all_answers_by_questionId_and_currentUser(question_id):
     return jsonify({"answers": answers_list}), 200
 
 @bp.route("/<int:question_id>/answers", methods=["POST"])
-@auth_check
+@login_check
 @question_exist_check
 def create_answer_by_questionId(question_id):
     data = request.get_json()
@@ -43,7 +43,7 @@ def create_answer_by_questionId(question_id):
     return jsonify({"answer":new_answer.to_dict()}), 201
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>", methods=["PUT"])
-@auth_check
+@login_check
 @answer_exist_check
 @answer_ownership_check
 def edit_answer_by_questionId_and_answerId(question_id,answer_id):
@@ -57,7 +57,7 @@ def edit_answer_by_questionId_and_answerId(question_id,answer_id):
     return jsonify({"answer":answer.to_dict()}), 200
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>", methods=["DELETE"])
-@auth_check
+@login_check
 @answer_exist_check
 @answer_ownership_check
 def delete_answer_by_questionId_and_answerId(question_id,answer_id):
@@ -68,7 +68,7 @@ def delete_answer_by_questionId_and_answerId(question_id,answer_id):
 
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>/accept", methods=["PUT"])
-@auth_check
+@login_check
 @question_exist_check
 @question_ownership_check
 def mark_answer_accepted_by_questionId_and_answerId(question_id,answer_id):

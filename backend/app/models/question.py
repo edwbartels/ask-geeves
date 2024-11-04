@@ -1,6 +1,6 @@
 from .db import db
 from datetime import datetime, timezone
-
+from .join_tables import question_tags
 
 def formatted_date_with_suffix(date):
     if date is None:
@@ -44,6 +44,8 @@ class Question(db.Model):
         uselist=True,
     )
 
+    tags = db.relationship("Tag", secondary=question_tags, back_populates="questions")
+
     @property
     def formatted_created_at(self):
         return formatted_date_with_suffix(self.created_at)
@@ -64,5 +66,6 @@ class Question(db.Model):
         "updated_at": self.formatted_updated_at,
         "answers": [answer.to_dict() for answer in self.answers],
         "comments": [comment.to_dict() for comment in self.comments],
-        "saves": [save.to_dict() for save in self.saves]
+        "saves": [save.to_dict() for save in self.saves],
+        "tags":[tag.to_dict() for tag in self.tags],
     }

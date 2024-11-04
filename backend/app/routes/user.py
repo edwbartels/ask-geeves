@@ -2,7 +2,7 @@ from flask import Blueprint,jsonify,request
 from flask_login import current_user
 from ..models.user import User
 from ..models.db import db
-bp = Blueprint("user", __name__, url_prefix="/user")
+bp = Blueprint("user", __name__, url_prefix="/api/user")
 
 @bp.route("/register",methods=["POST"])
 def sign_up():

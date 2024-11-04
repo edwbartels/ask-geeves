@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user
 from ..models.user import User
 from sqlalchemy import or_
 
-bp = Blueprint("session", __name__, url_prefix="/session")
+bp = Blueprint("session", __name__, url_prefix="/api/session")
 
 
 @bp.route("/", methods=["GET"])
@@ -22,7 +22,7 @@ def login():
     if not data:
         return jsonify({"error": "something wrong with request format"})
 
-    credential = data.get('username')
+    credential = data.get('credential')
     password = data.get('password')
 
     if not credential or not password:

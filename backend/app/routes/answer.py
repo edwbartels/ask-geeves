@@ -5,7 +5,7 @@ from ..models.db import db
 from ..utils.decorator import (login_check,question_exist_check,question_ownership_check,
 answer_exist_check,answer_ownership_check)
 
-bp = Blueprint("answer", __name__, url_prefix="/questions")
+bp = Blueprint("answer", __name__, url_prefix="/api/questions")
 
 
 @bp.route("/<int:question_id>/answers", methods=["GET"])
@@ -33,6 +33,9 @@ def get_all_answers_by_questionId_and_currentUser(question_id):
 @question_exist_check
 def create_answer_by_questionId(question_id):
     data = request.get_json()
+    new_content = data.get("content")
+    if not new_content:
+        return jsonify({"error": "Content is required"}),400
     new_answer= Answer(
         user_id=current_user.id,
         question_id=question_id,
@@ -49,10 +52,10 @@ def create_answer_by_questionId(question_id):
 def edit_answer_by_questionId_and_answerId(question_id,answer_id):
     answer = Answer.query.get(answer_id)
     data = request.get_json()
-    # ? validate check
-    # if not data:
-    #     return jsonify({"error": "Content is required"})
-    answer.content = data['content']
+    new_content = data.get("content")
+    if not new_content:
+        return jsonify({"error": "Content is required"}),400
+    answer.content = new_content
     db.session.commit()
     return jsonify({"answer":answer.to_dict()}), 200
 
@@ -74,7 +77,7 @@ def delete_answer_by_questionId_and_answerId(question_id,answer_id):
 def mark_answer_accepted_by_questionId_and_answerId(question_id,answer_id):
     answer = Answer.query.get(answer_id)
     if not answer:
-        return jsonify({"error": "Answer not found"})
+        return jsonify({"error": "Answer not found"}),404
     answer.accepted = not answer.accepted
     db.session.commit()
     return jsonify({"answer":answer.to_dict()}), 200

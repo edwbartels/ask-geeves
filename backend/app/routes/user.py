@@ -10,17 +10,30 @@ def sign_up():
         return jsonify({"message": "already logged in bro"}), 200
     #should hide signup button
     data = request.get_json()
-    if not data:
-        return jsonify({"error": "something wrong with request format"})
 
     errors = {}
-    #? validation check?
+    if not data.get('username'):
+        errors['username'] = 'Username is required'
+    if not data.get('email'):
+        errors['email'] = 'Email is required'
+    if not data.get('first_name'):
+        errors['firstName'] = 'First Name is required'
+    if not data.get('last_name'):
+        errors['lastName'] = 'Last Name is required'
+    if not data.get('password'):
+        errors['password'] = 'Password is required'
+    if not data.get('confirm_password'):
+        errors['confirm_Password'] = 'Confirm Password is required'
+    if data.get('password') and data.get('confirm_password'):
+        if data['password'] != data['confirm_password']:
+            errors['password'] = 'Passwords must match'
+    
     if User.query.filter_by(username=data.get('username')).first():
         errors['username'] = 'Username is already registered'
     if User.query.filter_by(email=data.get('email')).first():
         errors['email'] = 'Email is already registered'
     if errors:
-        return jsonify({"errors": errors}), 400
+        return jsonify({"message": "Bad Request","errors": errors}), 400
 
     new_user = User(
         username=data['username'],
@@ -29,7 +42,6 @@ def sign_up():
         last_name=data['last_name']
     )
     new_user.password = data['password']
-    # print(new_user)
     db.session.add(new_user)
     db.session.commit()
     return jsonify({"user": new_user.to_dict()}), 201

@@ -63,6 +63,6 @@ class Answer(db.Model):
             "accepted": self.accepted,
             "created_at": self.formatted_created_at,
             "updated_at": self.formatted_updated_at,
-            # "comments": [comment.to_dict() for comment in self.comments], 
-            # "saves": [save.to_dict() for save in self.saves]
+            "comments": [comment.to_dict() for comment in self.comments], 
+            "saves": [save.to_dict() for save in self.saves]
         }

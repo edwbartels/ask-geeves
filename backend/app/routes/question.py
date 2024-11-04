@@ -1,0 +1,164 @@
+from flask import Blueprint,jsonify,request
+from flask_login import current_user
+from ..models.question import Question
+from ..models.answer import Answer
+from ..models.db import db
+from ..utils.decorator import auth_check,question_exist_check,question_ownership_check
+
+bp = Blueprint("question", __name__, url_prefix="/questions")
+
+
+
+@bp.route("/", methods=["GET"])
+def get_all_questions():
+    all_questions = Question.query.all()
+    if not all_questions:
+        return jsonify({"message": "No questions found"}), 404
+    questions_list = []
+    for question in all_questions:
+        eachQuestion = question.to_dict()
+        questions_list.append(eachQuestion)
+    return jsonify({"questions": questions_list})
+
+
+@bp.route("/<int:question_id>", methods=["GET"])
+def get_question_by_id(question_id):
+    question = Question.query.get(question_id)
+    if question:
+        return jsonify({"question": question.to_dict()})
+    else:
+        return jsonify({"error": "Question not found"})
+
+
+@bp.route("/current", methods=["GET"])
+@auth_check
+def get_questions_by_current_user():
+
+    user_questions = Question.query.filter_by(user_id=current_user.id).all()
+    if not user_questions:
+        return jsonify({"message": "No questions found"}), 404
+    questions_list = [ question.to_dict() for question in user_questions]
+    return jsonify({"questions_owned": questions_list}), 200
+
+
+@bp.route("/", methods=["POST"])
+@auth_check
+def create_question():
+    data = request.get_json()
+    #? validate check
+    # if not data:
+    #     return jsonify({"error": "Content is required"})
+    new_question = Question(
+        user_id=current_user.id,
+        content = data['content']
+    ##?more stuff?
+    )
+    db.session.add(new_question)
+    db.session.commit()
+    return jsonify({"question": new_question.to_dict()}), 201   
+
+
+@bp.route("/<int:question_id>", methods=["PUT"])
+@auth_check
+@question_exist_check
+@question_ownership_check
+def edit_question(question_id):
+    question = Question.query.get(question_id)
+    data = request.get_json()
+    # ? validate check
+    # if not data:
+    #     return jsonify({"error": "Content is required"})
+    question.content = data['content']
+    db.session.commit()
+
+    return jsonify({"question":question.to_dict()}), 200
+
+@bp.route("/<int:question_id>", methods=["DELETE"])
+@auth_check
+@question_exist_check
+@question_ownership_check
+def delete_question(question_id):
+    question = Question.query.get(question_id)
+    db.session.delete(question)
+    db.session.commit()
+    return jsonify({"message": "Question deleted"})
+
+@bp.route("/<int:question_id>/answers", methods=["GET"])
+def get_all_answers_by_questionId(question_id):
+    answers = Answer.query.filter_by(question_id=question_id).all()
+    answers_list = [answer.to_dict() for answer in answers]
+    return jsonify({"answers": answers_list}), 200
+
+@bp.route("/all/answers/current", methods=["GET"])
+@auth_check
+def get_all_answers_by_current_user():
+    answers = Answer.query.filter_by(user_id=current_user.id).all()
+    answers_list = [answer.to_dict() for answer in answers]
+    return jsonify({"answers": answers_list}), 200
+
+@bp.route("/<int:question_id>/answers/current", methods=["GET"])
+@question_exist_check
+def get_all_answers_by_questionId_and_currentUser(question_id):
+    answers = Answer.query.filter_by(question_id=question_id,user_id=current_user.id).all()
+    # if not answers:
+    #     return jsonify({"message": "No answers found by this user"})   
+    answers_list = [answer.to_dict() for answer in answers]
+    return jsonify({"answers": answers_list}), 200
+
+@bp.route("/<int:question_id>/answers", methods=["POST"])
+@auth_check
+@question_exist_check
+def create_answer_by_questionId(question_id):
+    data = request.get_json()
+    new_answer= Answer(
+        user_id=current_user.id,
+        question_id=question_id,
+        content=data["content"],
+    )
+    db.session.add(new_answer)
+    db.session.commit()
+    return jsonify({"answer":new_answer.to_dict()}), 201
+
+@bp.route("/<int:question_id>/answers/<int:answer_id>", methods=["PUT"])
+@auth_check
+@question_exist_check
+def edit_answer_by_questionId_and_answerId(question_id,answer_id):
+    answer = Answer.query.get(answer_id)
+    if not answer:
+        return jsonify({"error": "Answer not found"})
+    if not current_user.id == answer.user_id:
+        return jsonify({"error": "not authorized , not owned of this answer"})
+    data = request.get_json()
+    # ? validate check
+    # if not data:
+    #     return jsonify({"error": "Content is required"})
+    answer.content = data['content']
+    db.session.commit()
+    return jsonify({"answer":answer.to_dict()}), 200
+
+@bp.route("/<int:question_id>/answers/<int:answer_id>", methods=["DELETE"])
+@auth_check
+@question_exist_check
+def delete_answer_by_questionId_and_answerId(question_id,answer_id):
+    answer = Answer.query.get(answer_id)
+    if not answer:
+        return jsonify({"error": "Answer not found"})
+    if not current_user.id == answer.user_id:
+        return jsonify({"error": "not authorized , not owned of this answer"})
+    db.session.delete(answer)
+    db.session.commit()
+    return jsonify({"message":"answer deleted"})
+
+
+@bp.route("/<int:question_id>/answers/<int:answer_id>/accept", methods=["PUT"])
+@auth_check
+@question_exist_check
+@question_ownership_check
+def mark_answer_accepted_by_questionId_and_answerId(question_id,answer_id):
+    answer = Answer.query.get(answer_id)
+    if not answer:
+        return jsonify({"error": "Answer not found"})
+    answer.accepted = not answer.accepted
+    db.session.commit()
+    return jsonify({"answer":answer.to_dict()}), 200
+

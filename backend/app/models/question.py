@@ -25,9 +25,16 @@ class Question(db.Model):
     updated_at = db.Column(
         db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
     )
-    answers = db.relationship("Answer", backref="question", cascade="all delete-orphan")
+    answers = db.relationship(
+        "Answer", backref="question", cascade="all, delete-orphan"
+    )
     comments = db.relationship(
-        "Comment", backref="question", cascade="all delete-orphan"
+        "Comment",
+        primaryjoin="and_(Comment.content_id==foreign(Question.id), Comment.content_type=='question')",
+        backref="question",
+        cascade="all, delete-orphan",
+        viewonly=True,
+        uselist=True,
     )
     saves = db.relationship(
         "Save",
@@ -47,3 +54,15 @@ class Question(db.Model):
 
     def __repr__(self):
         return f"Question {self.id}"
+
+    def to_dict(self):
+        return {
+        "id": self.id,
+        "user_id": self.user_id,
+        "content": self.content,
+        "created_at": self.formatted_created_at,
+        "updated_at": self.formatted_updated_at,
+        "answers": [answer.to_dict() for answer in self.answers],
+        # "comments": [comment.to_dict() for comment in self.comments],
+        # "saves": [save.to_dict() for save in self.saves]
+    }

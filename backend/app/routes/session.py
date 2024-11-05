@@ -30,7 +30,7 @@ def login():
 
     user = User.query.filter(or_(User.username == credential, User.email == credential)).first()
 
-    user = User.query.filter_by(username=credential).first()
+
     if not user or not user.check_password(password):
         return jsonify({"error": "Invalid username or password"}), 400
 

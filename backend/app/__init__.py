@@ -4,10 +4,10 @@ from .config import config_dict
 from flask_login import LoginManager
 from .models.db import db
 from .models.user import User
-from .routes import session, user, question, save, tag, answer, comment
+from .routes import session, user, question, save, tag, answer, comment ,vote
 from flask_migrate import Migrate
 from .seeders.seed_funcs import seed_all, clear_all_data
-from flask_wtf.csrf import CSRFProtect
+# from flask_wtf.csrf import CSRFProtect
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -31,6 +31,7 @@ app.register_blueprint(save.bp)
 app.register_blueprint(tag.bp)
 app.register_blueprint(answer.bp)
 app.register_blueprint(comment.bp)
+app.register_blueprint(vote.bp)
 
 login = LoginManager(app)
 login.login_view = "session.login"

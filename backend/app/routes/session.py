@@ -10,7 +10,7 @@ bp = Blueprint("session", __name__, url_prefix="/api/session")
 def get_current_user():
     if current_user.is_authenticated:
         return jsonify({"user":current_user.to_dict()}), 200
-    return jsonify({"user": "null"})
+    return jsonify({"user": None})
 
 @bp.route("/", methods=["POST"])
 def login():
@@ -37,7 +37,7 @@ def login():
     login_user(user)
     return jsonify({"user":user.to_dict()}), 200
 
-@bp.route('/logout', methods=["POST"])
+@bp.route('/', methods=["DELETE"])
 def logout():
     if not current_user.is_authenticated:
         return jsonify({"error": "No user logged in"}), 401

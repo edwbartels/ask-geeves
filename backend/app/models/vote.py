@@ -13,3 +13,12 @@ class Vote(db.Model):
         db.UniqueConstraint("user_id", "content_type", "content_id"),
         db.CheckConstraint("value IN (-1, 0, 1)", name="check_vote_value"),
     )
+
+    def to_dict(self):
+        return{
+            # "id":self.id,
+            # "user_id":self.user_id,
+            "value":self.value,
+            "content_type":self.content_type,
+            "content_id":self.content_id
+        }

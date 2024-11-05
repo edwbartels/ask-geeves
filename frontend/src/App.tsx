@@ -17,6 +17,8 @@ import { AllQuestions } from "./components/AllQuestions/AllQuestions"
 import { QuestionMain } from "./components/Question/QuestionMain"
 import { CreateOrEditPost } from "./components/Post/CreateOrEditPost"
 
+import { restoreSession } from "./features/sessionSlice"
+
 const Layout = () => {
   return (
     <>

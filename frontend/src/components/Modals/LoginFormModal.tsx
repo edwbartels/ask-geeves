@@ -1,6 +1,10 @@
 import { useState } from "react"
 import { useModal } from "../../context/Modal"
 import { Errors } from "../Errors/Errors"
+import { useAppDispatch } from "../../app/hooks"
+import { restoreSession } from "../../features/sessionSlice"
+import { loginAsync, loginDemoUserAsync } from "../../features/sessionSlice"
+import { log } from "console"
 
 export const LoginFormModal = () => {
   const [loginForm, setLoginForm] = useState({
@@ -9,6 +13,7 @@ export const LoginFormModal = () => {
   })
   const [errors, setErrors] = useState({})
   const { closeModal } = useModal()
+  const dispatch = useAppDispatch()
 
   // Disable submit button if credential length < 4 or password length < 6
   const isDisabledSubmit =
@@ -26,6 +31,7 @@ export const LoginFormModal = () => {
     e.preventDefault()
     setErrors({})
     // Send login request to back end
+    dispatch(loginAsync(loginForm))
     // Set errors if any come back
     closeModal()
   }
@@ -33,7 +39,18 @@ export const LoginFormModal = () => {
   const handleLogInDemo = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setErrors({})
-    closeModal()
+    try {
+      const response = await dispatch(loginDemoUserAsync()).unwrap()
+      closeModal()
+    } catch (e) {
+      console.log("error", e)
+    }
+
+    // if (loginDemoUserAsync.fulfilled.match(response)) {
+    //   closeModal()
+    // } else if (loginDemoUserAsync.rejected.match(response)) {
+    //   console.log("an error", response)
+    // }
   }
 
   return (

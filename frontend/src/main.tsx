@@ -5,8 +5,17 @@ import App from "./App"
 import { Modal, ModalProvider } from "./context/Modal"
 import { store } from "./app/store"
 import "./index.css"
+import { restoreCSRF } from "./app/csrfFetch"
+
+import { csrfFetch } from "./app/csrfFetch"
 
 const container = document.getElementById("root")
+
+if (import.meta.env.MODE !== "production") {
+  restoreCSRF()
+  // @ts-expect-error aA crap
+  window.csrfFetch = csrfFetch
+}
 
 if (container) {
   const root = createRoot(container)

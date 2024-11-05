@@ -28,9 +28,7 @@ def get_all_questions():
 def get_question_by_id(question_id):
     question = Question.query.get(question_id)
     if question:
-        return jsonify(
-            {"question": question.to_dict(), "user": question.user.to_dict()}
-        )
+        return jsonify({"question": question.to_dict()})
     else:
         return jsonify({"error": "Question not found"}), 404
 

@@ -43,6 +43,8 @@ def get_questions_by_current_user():
 def create_question():
     data = request.get_json()       
     content = data.get("content")
+    if not content:
+        return jsonify({"error":"content is required"})
     input_tags = data.get("tag") 
     tags = []
     if input_tags:

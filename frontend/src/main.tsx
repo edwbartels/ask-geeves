@@ -6,7 +6,14 @@ import { Modal, ModalProvider } from "./context/Modal"
 import { store } from "./app/store"
 import "./index.css"
 
+import { csrfFetch } from "./app/csrfFetch"
+
 const container = document.getElementById("root")
+
+if (import.meta.env.MODE !== "production") {
+  // @ts-expect-error aA crap
+  window.csrfFetch = csrfFetch
+}
 
 if (container) {
   const root = createRoot(container)

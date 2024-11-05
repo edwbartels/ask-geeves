@@ -1,0 +1,80 @@
+answers = [
+    {
+        "user_id": 1,
+        "question_id": 1,
+        "content": "Flask is simpler and more flexible, while Django is more opinionated and comes with more built-in features.",
+        "accepted": True,
+    },
+    {
+        "user_id": 2,
+        "question_id": 2,
+        "content": "Flask manages sessions by storing session data on the client side, encrypted by a secret key on the server.",
+        "accepted": False,
+    },
+    {
+        "user_id": 3,
+        "question_id": 3,
+        "content": "SQLAlchemy acts as an ORM in Flask applications, translating Python classes to database tables.",
+        "accepted": False,
+    },
+    {
+        "user_id": 4,
+        "question_id": 4,
+        "content": "To secure a Flask API, you can use tokens, SSL, rate limiting, and proper authentication methods.",
+        "accepted": True,
+    },
+    {
+        "user_id": 5,
+        "question_id": 5,
+        "content": "GET requests retrieve data, while POST requests are used to send data to be processed.",
+        "accepted": False,
+    },
+    {
+        "user_id": 1,
+        "question_id": 6,
+        "content": "Flask uses route decorators to map URLs to view functions, simplifying URL handling.",
+        "accepted": False,
+    },
+    {
+        "user_id": 2,
+        "question_id": 7,
+        "content": "Jinja is a templating engine in Flask that allows us to create dynamic HTML by embedding Python code.",
+        "accepted": True,
+    },
+    {
+        "user_id": 3,
+        "question_id": 8,
+        "content": "You can connect Flask to PostgreSQL by using the `psycopg2` library or SQLAlchemy for ORM.",
+        "accepted": False,
+    },
+    {
+        "user_id": 4,
+        "question_id": 9,
+        "content": "Middleware intercepts requests and responses, allowing you to apply functionality across all endpoints.",
+        "accepted": False,
+    },
+    {
+        "user_id": 5,
+        "question_id": 10,
+        "content": "Testing in Flask can be done using Python’s unittest library or the pytest framework.",
+        "accepted": True,
+    },
+    {
+        "user_id": 1,
+        "question_id": 11,
+        "content": "You can handle file uploads in Flask with `Flask-Uploads` or `Flask-WTF` for form handling.",
+        "accepted": False,
+    },
+    {
+        "user_id": 2,
+        "question_id": 12,
+        "content": "Blueprints are a way to organize Flask code by splitting it into modules, improving code maintainability.",
+        "accepted": True,
+    },
+    {
+        "user_id": 3,
+        "question_id": 13,
+        "content": "You can set up a Flask app to serve a React frontend using CORS and proxy settings.",
+        "accepted": False,
+    },
+]

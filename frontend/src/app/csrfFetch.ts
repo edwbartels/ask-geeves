@@ -1,8 +1,10 @@
+import Cookies from "js-cookie"
 interface csrfFetchOptions {
   method?: "GET" | "POST" | "PUT" | "DELETE"
   headers?: {
     ["Content-Type"]?: "application/json"
     ["XSRF-Token"]?: string
+    ["session"]?: string
   }
   body?: string
 }
@@ -23,8 +25,9 @@ export const csrfFetch = async (
     options.headers["Content-Type"] =
       options.headers["Content-Type"] || "application/json"
     // options.headers["XSRF-Token"] = Cookies.get("XSRF-TOKEN")
+    options.headers["session"] = Cookies.get("session")
   }
-
+  console.log(options)
   // call the default window's fetch with the url and the options passed in
   const res = await window.fetch(url, options)
 

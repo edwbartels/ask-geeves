@@ -61,8 +61,11 @@ export const sessionSlice = createAppSlice({
       >(
         async (_, thunkApi) => {
           try {
-            const response = await csrfFetch("/api/session", {
+            const response = await csrfFetch("/api/session/", {
               method: "POST",
+              // headers: {
+              //   "Content-Type": "application/json",
+              // },
               body: JSON.stringify({
                 credential: "admin@admin.com",
                 password: "adminadmin",
@@ -92,7 +95,7 @@ export const sessionSlice = createAppSlice({
       ),
       restoreSession: create.asyncThunk(
         async () => {
-          const response = await csrfFetch("/api/session")
+          const response = await fetch("/api/session/")
           const userSession = await response.json()
           return userSession
         },
@@ -120,7 +123,7 @@ export const sessionSlice = createAppSlice({
       >(
         async (loginInfo, thunkApi) => {
           try {
-            const response = await csrfFetch(`/api/session`, {
+            const response = await csrfFetch(`/api/session/`, {
               method: "POST",
               body: JSON.stringify(loginInfo),
             })
@@ -154,7 +157,9 @@ export const sessionSlice = createAppSlice({
       ),
       logoutAsync: create.asyncThunk(
         async () => {
-          const response = await csrfFetch("/api/session", { method: "DELETE" })
+          const response = await csrfFetch("/api/session/", {
+            method: "DELETE",
+          })
           const sessionInfo = await response.json()
           return sessionInfo
         },

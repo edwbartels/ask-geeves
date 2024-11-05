@@ -1,0 +1,9 @@
+.question-body {
+  display: grid;
+  grid-template-columns: 1fr 9fr;
+}
+
+.question-meta {
+  display: flex;
+  justify-content: space-between;
+}

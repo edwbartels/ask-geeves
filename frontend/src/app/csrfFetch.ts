@@ -1,10 +1,10 @@
 import Cookies from "js-cookie"
+
 interface csrfFetchOptions {
   method?: "GET" | "POST" | "PUT" | "DELETE"
   headers?: {
     ["Content-Type"]?: "application/json"
-    ["XSRF-Token"]?: string
-    ["session"]?: string
+    ["X-CSRF-Token"]?: string
   }
   body?: string
 }
@@ -24,10 +24,9 @@ export const csrfFetch = async (
   if (options.method.toUpperCase() !== "GET") {
     options.headers["Content-Type"] =
       options.headers["Content-Type"] || "application/json"
-    // options.headers["XSRF-Token"] = Cookies.get("XSRF-TOKEN")
-    options.headers["session"] = Cookies.get("session")
+    options.headers["X-CSRF-Token"] = Cookies.get("X-CSRF-Token")
+    // options.headers["session"] = Cookies.get("session")
   }
-  console.log(options)
   // call the default window's fetch with the url and the options passed in
   const res = await window.fetch(url, options)
 
@@ -38,4 +37,9 @@ export const csrfFetch = async (
   // if the response status code is under 400, then return the response to the
   // next promise chain
   return res
+}
+
+// call this to get the "XSRF-TOKEN" cookie, should only be used in development
+export function restoreCSRF() {
+  return fetch("/api/csrf/")
 }

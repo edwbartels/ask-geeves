@@ -41,7 +41,7 @@ export const LoginFormModal = () => {
     setErrors({})
     try {
       const response = await dispatch(loginDemoUserAsync()).unwrap()
-      console.log("response", response)
+      closeModal()
     } catch (e) {
       console.log("error", e)
     }

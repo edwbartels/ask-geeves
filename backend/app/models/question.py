@@ -50,7 +50,7 @@ class Question(db.Model):
     tags = db.relationship("Tag", secondary=question_tags, back_populates="questions")
     votes = db.relationship(
         "Vote",
-        primaryjoin="and_(foreign(Vote.content_type =='question', Vote.content_id == Question.id)",
+        primaryjoin="and_(foreign(Vote.content_type) =='question', Vote.content_id == Question.id)",
         cascade="all, delete-orphan",
         viewonly=True,
     )

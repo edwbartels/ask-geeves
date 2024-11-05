@@ -6,8 +6,9 @@ from .seed_lists import (
     tags,
     question_tags_list,
     votes,
+    saves,
 )
-from ..models import db, User, Question, Answer, Comment, Tag, question_tags, Vote
+from ..models import db, User, Question, Answer, Comment, Tag, question_tags, Vote, Save
 
 
 def seed_users():
@@ -21,14 +22,14 @@ def seed_questions():
     for entry in questions:
         question = Question(**entry)
         db.session.add(question)
-    db.session.commit
+    db.session.commit()
 
 
 def seed_answers():
     for entry in answers:
         answer = Answer(**entry)
         db.session.add(answer)
-    db.session.commit
+    db.session.commit()
 
 
 def seed_comments():
@@ -62,6 +63,29 @@ def seed_votes():
     db.session.commit()
 
 
+def seed_saves():
+    for entry in saves:
+        save = Save(**entry)
+        db.session.add(save)
+    db.session.commit()
+
+
+def update_all_total_scores():
+    questions = Question.query.all()
+    for question in questions:
+        question.update_total_score(db.session)
+
+    answers = Answer.query.all()
+    for answer in answers:
+        answer.update_total_score(db.session)
+
+    comments = Comment.query.all()
+    for comment in comments:
+        comment.update_total_score(db.session)
+
+    db.session.commit()
+
+
 def seed_all():
     seed_users()
     seed_tags()
@@ -69,6 +93,9 @@ def seed_all():
     seed_answers()
     seed_comments()
     seed_question_tags()
+    seed_votes()
+    seed_saves()
+    update_all_total_scores()
 
 
 def clear_all_data():
@@ -78,4 +105,5 @@ def clear_all_data():
     db.session.query(Question).delete()
     db.session.query(Tag).delete()
     db.session.query(User).delete()
+    db.session.query(Vote).delete()
     db.session.commit()

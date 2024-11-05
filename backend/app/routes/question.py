@@ -1,11 +1,14 @@
-from flask import Blueprint,jsonify,request
+from flask import Blueprint, jsonify, request
 from flask_login import current_user
 from ..models.question import Question
 from ..models.db import db
-from ..utils.decorator import (login_check,question_exist_check,question_ownership_check)
+from ..utils.decorator import (
+    login_check,
+    question_exist_check,
+    question_ownership_check,
+)
 
 bp = Blueprint("question", __name__, url_prefix="/questions")
-
 
 
 @bp.route("/", methods=["GET"])
@@ -17,23 +20,26 @@ def get_all_questions():
     for question in all_questions:
         eachQuestion = question.to_dict()
         questions_list.append(eachQuestion)
-    return jsonify({"questions": questions_list}),200
+    return jsonify({"questions": questions_list}), 200
 
 
 @bp.route("/<int:question_id>", methods=["GET"])
 def get_question_by_id(question_id):
     question = Question.query.get(question_id)
+    user = question.user
     if question:
-        return jsonify({"question": question.to_dict()})
+        return jsonify(
+            {"question": question.to_dict(), "user": question.user.to_dict()}
+        )
     else:
-        return jsonify({"error": "Question not found"}),404
+        return jsonify({"error": "Question not found"}), 404
 
 
 @bp.route("/current", methods=["GET"])
 @login_check
 def get_questions_by_current_user():
     user_questions = Question.query.filter_by(user_id=current_user.id).all()
-    questions_list = [ question.to_dict() for question in user_questions]
+    questions_list = [question.to_dict() for question in user_questions]
     return jsonify({"questions_owned": questions_list}), 200
 
 
@@ -41,17 +47,17 @@ def get_questions_by_current_user():
 @login_check
 def create_question():
     data = request.get_json()
-    #? validate check
+    # ? validate check
     # if not data:
     #     return jsonify({"error": "Content is required"})
     new_question = Question(
         user_id=current_user.id,
-        content = data['content']
-    ##?more stuff?
+        content=data["content"],
+        ##?more stuff?
     )
     db.session.add(new_question)
     db.session.commit()
-    return jsonify({"question": new_question.to_dict()}), 201   
+    return jsonify({"question": new_question.to_dict()}), 201
 
 
 @bp.route("/<int:question_id>", methods=["PUT"])
@@ -64,10 +70,11 @@ def edit_question(question_id):
     # ? validate check
     # if not data:
     #     return jsonify({"error": "Content is required"})
-    question.content = data['content']
+    question.content = data["content"]
     db.session.commit()
 
-    return jsonify({"question":question.to_dict()}), 200
+    return jsonify({"question": question.to_dict()}), 200
+
 
 @bp.route("/<int:question_id>", methods=["DELETE"])
 @login_check

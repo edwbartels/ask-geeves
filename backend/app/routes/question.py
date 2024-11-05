@@ -27,7 +27,6 @@ def get_all_questions():
 @bp.route("/<int:question_id>", methods=["GET"])
 def get_question_by_id(question_id):
     question = Question.query.get(question_id)
-    user = question.user
     if question:
         return jsonify(
             {"question": question.to_dict(), "user": question.user.to_dict()}
@@ -47,12 +46,11 @@ def get_questions_by_current_user():
 @bp.route("/", methods=["POST"])
 @login_check
 def create_question():
-<<<<<<< HEAD
-    data = request.get_json()       
+    data = request.get_json()
     content = data.get("content")
     if not content:
-        return jsonify({"error":"content is required"})
-    input_tags = data.get("tag") 
+        return jsonify({"error": "content is required"})
+    input_tags = data.get("tag")
     tags = []
     if input_tags:
         for tag_name in input_tags:
@@ -67,21 +65,7 @@ def create_question():
                 db.session.add(new_tag)
                 tags.append(new_tag)
 
-    new_question = Question(
-        user_id=current_user.id,
-        content=content,
-        tags = tags
-=======
-    data = request.get_json()
-    # ? validate check
-    # if not data:
-    #     return jsonify({"error": "Content is required"})
-    new_question = Question(
-        user_id=current_user.id,
-        content=data["content"],
-        ##?more stuff?
->>>>>>> migrations
-    )
+    new_question = Question(user_id=current_user.id, content=content, tags=tags)
     db.session.add(new_question)
     db.session.commit()
     return jsonify({"question": new_question.to_dict()}), 201
@@ -94,23 +78,13 @@ def create_question():
 def edit_question(question_id):
     question = Question.query.get(question_id)
     data = request.get_json()
-<<<<<<< HEAD
     new_content = data.get("content")
     if not new_content:
-        return jsonify({"error":"content is required"}),400
+        return jsonify({"error": "content is required"}), 400
     question.content = new_content
     db.session.commit()
-    return jsonify({"question":question.to_dict()}), 200
-=======
-    # ? validate check
-    # if not data:
-    #     return jsonify({"error": "Content is required"})
-    question.content = data["content"]
-    db.session.commit()
-
     return jsonify({"question": question.to_dict()}), 200
 
->>>>>>> migrations
 
 @bp.route("/<int:question_id>", methods=["DELETE"])
 @login_check

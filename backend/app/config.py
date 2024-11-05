@@ -1,9 +1,13 @@
 import os
+from datetime import timedelta
 
 
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY")
     FLASK_ENV = os.environ.get("FLASK_ENV")
+    REMEMBER_COOKIE_DURATION = timedelta(days=5)
+    WTF_CSRF_ENABLED = True
+    WTF_CSRF_METHODS = ["POST", "PUT", "DELETE"]
 
 
 class DevConfig(Config):

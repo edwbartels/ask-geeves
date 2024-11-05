@@ -36,7 +36,7 @@ def login():
     if not user or not user.check_password(password):
         return jsonify({"error": "Invalid username or password"}), 400
 
-    login_user(user)
+    login_user(user, remember=True)
     return jsonify({"user": user.to_dict()}), 200
 
 

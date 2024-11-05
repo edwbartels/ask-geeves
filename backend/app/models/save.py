@@ -12,7 +12,7 @@ class Save(db.Model):
 
     def __repr__(self):
         return f"<Save {self.id} - {self.content_type} {self.content_id}"
-        
+
     def to_dict(self):
         return {
             "id": self.id,
@@ -22,5 +22,11 @@ class Save(db.Model):
             "last_name": self.user.last_name, 
             "content_id": self.content_id,
             "content_type": self.content_type,
-            "parent_type": self.parent_type
+            "parent_type": self.parent_type,
         }
+
+    __table_args__ = (
+        db.UniqueConstraint(
+            "user_id", "content_type", "content_id", name="unique_save_user"
+        ),
+    )

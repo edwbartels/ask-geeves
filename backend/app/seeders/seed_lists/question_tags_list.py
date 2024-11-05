@@ -1,9 +1,14 @@
 import random
 
-question_tags = [
-    {"question_id": random.randint(1, 25), "tag_id": random.randint(1, 31)}
-    for _ in range(50)
-]
+existing = set()
+question_tags_list = []
 
-question_tags = list({(item["question_id"], item["tag_id"]) for item in question_tags})
-question_tags_list = [{"question_id": x, "tag_id": y} for x, y in question_tags]
+while len(question_tags_list) < 50:
+    question_id = random.randint(1, 25)
+    tag_id = random.randint(1, 31)
+
+    tag_key = (question_id, tag_id)
+    if tag_key not in existing:
+        tag = {"question_id": question_id, "tag_id": tag_id}
+        question_tags_list.append(tag)
+        existing.add(tag_key)

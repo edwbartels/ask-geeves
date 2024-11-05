@@ -40,7 +40,7 @@ def login():
     return jsonify({"user": user.to_dict()}), 200
 
 
-@bp.route("/logout", methods=["POST"])
+@bp.route("/", methods=["DELETE"])
 def logout():
     if not current_user.is_authenticated:
         return jsonify({"error": "No user logged in"}), 401

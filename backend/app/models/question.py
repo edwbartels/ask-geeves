@@ -1,6 +1,8 @@
 from .db import db
 from datetime import datetime, timezone
+from .vote import Vote
 from .join_tables import question_tags
+
 
 def formatted_date_with_suffix(date):
     if date is None:
@@ -19,18 +21,21 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     content = db.Column(db.Text, nullable=False)
+    title = db.Column(db.Text, nullable=False)
     created_at = db.Column(
         db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
     )
     updated_at = db.Column(
         db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
     )
+    total_score = db.Column(db.Integer, default=0)
+
     answers = db.relationship(
         "Answer", backref="question", cascade="all, delete-orphan"
     )
     comments = db.relationship(
         "Comment",
-        primaryjoin="and_(Comment.content_id==foreign(Question.id), Comment.content_type=='question')",
+        primaryjoin="and_(Comment.content_id == foreign(Question.id), Comment.content_type == 'question')",
         backref="question",
         cascade="all, delete-orphan",
         viewonly=True,
@@ -38,13 +43,18 @@ class Question(db.Model):
     )
     saves = db.relationship(
         "Save",
-        primaryjoin="and_(foreign(Save.content_id) == Question.id, Save.content_type=='question')",
+        primaryjoin="and_(foreign(Save.content_id) == Question.id, Save.content_type == 'question')",
         cascade="all, delete-orphan",
         viewonly=True,
         uselist=True,
     )
-
     tags = db.relationship("Tag", secondary=question_tags, back_populates="questions")
+    votes = db.relationship(
+        "Vote",
+        primaryjoin="and_(foreign(Vote.content_type) =='question', Vote.content_id == Question.id)",
+        cascade="all, delete-orphan",
+        viewonly=True,
+    )
 
     @property
     def formatted_created_at(self):
@@ -59,16 +69,24 @@ class Question(db.Model):
 
     def to_dict(self):
         return {
-        "id": self.id,
-        "user_id": self.user_id,
-        "username":self.user.username,
-        "first_name": self.user.first_name,
-        "last_name": self.user.last_name, 
-        "content": self.content,
-        "created_at": self.formatted_created_at,
-        "updated_at": self.formatted_updated_at,
-        "answers": [answer.to_dict() for answer in self.answers],
-        "comments": [comment.to_dict() for comment in self.comments],
-        "saves": [save.to_dict() for save in self.saves],
-        "tags":[tag.to_dict() for tag in self.tags],
-    }
+            "id": self.id,
+            "content": self.content,
+            "total_score": self.total_score,
+            "created_at": self.formatted_created_at,
+            "updated_at": self.formatted_updated_at,
+            "user": self.user.to_dict(),
+            "answers": [answer.to_dict() for answer in self.answers],
+            "comments": [comment.to_dict() for comment in self.comments],
+            "saves": [save.to_dict() for save in self.saves],
+            "tags": [tag.to_dict() for tag in self.tags],
+            "title":self.title
+        }
+
+    def update_total_score(self, session):
+        self.total_score = (
+            session.query(db.func.sum(Vote.value))
+            .filter(Vote.content_type == "question", Vote.content_id == self.id)
+            .scalar()
+            or 0
+        )
+        session.commit()

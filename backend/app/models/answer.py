@@ -1,4 +1,5 @@
 from .db import db
+from .vote import Vote
 from datetime import datetime, timezone
 
 
@@ -27,6 +28,8 @@ class Answer(db.Model):
     updated_at = db.Column(
         db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
     )
+    total_score = db.Column(db.Integer, default=0)
+
     comments = db.relationship(
         "Comment",
         primaryjoin="and_(Comment.content_id==foreign(Answer.id), Comment.content_type=='answer')",
@@ -41,6 +44,12 @@ class Answer(db.Model):
         cascade="all, delete-orphan",
         viewonly=True,
         uselist=True,
+    )
+    votes = db.relationship(
+        "Vote",
+        primaryjoin="and_(foreign(Vote.content_id)==Answer.id ,Vote.content_type=='answer')",
+        cascade="all, delete-orphan",
+        viewonly=True,
     )
 
     @property
@@ -57,15 +66,22 @@ class Answer(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "user_id": self.user_id,
-            "username":self.user.username,
-            "first_name": self.user.first_name,
-            "last_name": self.user.last_name, 
+            "total_score": self.total_score,
             "question_id": self.question_id,
             "content": self.content,
             "accepted": self.accepted,
             "created_at": self.formatted_created_at,
             "updated_at": self.formatted_updated_at,
-            "comments": [comment.to_dict() for comment in self.comments], 
-            "saves": [save.to_dict() for save in self.saves]
+            "user": self.user.to_dict(),
+            "comments": [comment.to_dict() for comment in self.comments],
+            "saves": [save.to_dict() for save in self.saves],
         }
+
+    def update_total_score(self, session):
+        self.total_score = (
+            session.query(db.func.sum(Vote.value))
+            .filter(Vote.content_type == "answer", Vote.content_id == self.id)
+            .scalar()
+            or 0
+        )
+        session.commit()

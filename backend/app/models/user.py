@@ -50,4 +50,5 @@ class User(db.Model, UserMixin):
             "last_name": self.last_name,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
+            "votes":[vote.to_dict() for vote in self.votes]
         }

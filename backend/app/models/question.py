@@ -21,6 +21,7 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     content = db.Column(db.Text, nullable=False)
+    title = db.Column(db.Text, nullable=False)
     created_at = db.Column(
         db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
     )
@@ -78,6 +79,7 @@ class Question(db.Model):
             "comments": [comment.to_dict() for comment in self.comments],
             "saves": [save.to_dict() for save in self.saves],
             "tags": [tag.to_dict() for tag in self.tags],
+            "title":self.title
         }
 
     def update_total_score(self, session):

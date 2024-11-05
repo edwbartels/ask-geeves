@@ -46,8 +46,9 @@ def get_questions_by_current_user():
 def create_question():
     data = request.get_json()
     content = data.get("content")
-    if not content:
-        return jsonify({"error": "content is required"})
+    title = data.get("title")
+    if not content or not title:
+        return jsonify({"error": "Both content and title are required"}),400
     input_tags = data.get("tag")
     tags = []
     if input_tags:
@@ -63,7 +64,7 @@ def create_question():
                 db.session.add(new_tag)
                 tags.append(new_tag)
 
-    new_question = Question(user_id=current_user.id, content=content, tags=tags)
+    new_question = Question(user_id=current_user.id, content=content, tags=tags , title=title)
     db.session.add(new_question)
     db.session.commit()
     return jsonify({"question": new_question.to_dict()}), 201
@@ -77,9 +78,11 @@ def edit_question(question_id):
     question = Question.query.get(question_id)
     data = request.get_json()
     new_content = data.get("content")
-    if not new_content:
-        return jsonify({"error": "content is required"}), 400
+    new_title = data.get("title")
+    if not new_content or not new_title:
+        return jsonify({"error": "Both content and title is required"}), 400
     question.content = new_content
+    question.title = new_title
     db.session.commit()
     return jsonify({"question": question.to_dict()}), 200
 

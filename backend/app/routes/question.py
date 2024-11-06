@@ -8,18 +8,22 @@ from ..utils.decorator import (
     question_exist_check,
     question_ownership_check,
 )
+from sqlalchemy.orm import noload,lazyload,load_only
 
 bp = Blueprint("question", __name__, url_prefix="/api/questions")
 
 
 @bp.route("/", methods=["GET"])
 def get_all_questions():
+    # all_questions = Question.query.options(noload(Question.saves),noload(Question.answers),noload(Question.comments)).all()
+    # all_questions = Question.query.options(lazyload(Question.answers)).all()
+    # all_questions = Question.query.options(load_only(Question.id, Question.title)).all()
     all_questions = Question.query.all()
     if not all_questions:
         return jsonify({"message": "No questions found"}), 404
     questions_list = []
     for question in all_questions:
-        eachQuestion = question.to_dict()
+        eachQuestion = question.to_dict(homepage=True)
         questions_list.append(eachQuestion)
     return jsonify({"questions": questions_list}), 200
 

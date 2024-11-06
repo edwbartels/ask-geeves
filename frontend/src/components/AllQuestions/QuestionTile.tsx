@@ -12,7 +12,7 @@ export const QuestionTile = ({ questionId }: Props) => {
   const writer = useAppSelector(state =>
     selectUserById(state, question.user_id),
   )
-  const createdAtDate = new Date(writer.created_at)
+  const createdAtDate = new Date(question.created_at)
   const createdDate = createdAtDate.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",

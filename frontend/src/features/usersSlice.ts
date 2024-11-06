@@ -9,10 +9,10 @@ export interface User {
   id: number
   first_name: string
   last_name: string
-  email: string
   username: string
-  created_at: string
-  updated_at: string
+  // email: string
+  // created_at: string
+  // updated_at: string
 }
 export type UsersSliceState = Record<number, User>
 

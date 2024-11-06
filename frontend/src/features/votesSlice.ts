@@ -41,7 +41,15 @@ const initialState: VotesSliceState = {
 export const votesSlice = createAppSlice({
   name: "votes",
   initialState,
-  reducers: {},
+  reducers: {
+    addManyVotes(state, action: PayloadAction<Vote[]>) {
+      const votes = action.payload
+      for (const vote of votes) {
+        const qOrA = vote.content_type
+        state[qOrA][vote.content_id] = vote
+      }
+    },
+  },
   extraReducers: builder => {
     builder.addMatcher(isLogInAction, (state, action) => {
       if (action.payload && action.payload.user) {
@@ -59,7 +67,7 @@ export const votesSlice = createAppSlice({
 })
 
 // Action creators are generated for each case reducer function.
-export const {} = votesSlice.actions
+export const { addManyVotes } = votesSlice.actions
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
 export const { selectVotes } = votesSlice.selectors

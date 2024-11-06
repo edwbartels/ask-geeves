@@ -97,12 +97,12 @@ export interface FetchAllQuestionsResponse {
       id: number
       name: string
     }[]
-
-    // pagination options
-    page: number
-    size: number
-    // db aggregate function to count num questions and divide by size?
-    num_pages: number
   }[]
+
+  // pagination options
+  page: number
+  size: number
+  // db aggregate function to count num questions and divide by size?
+  num_pages: number
 }
 export type UnifiedFetchAllQuestionsResponse = Spread<FetchAllQuestionsResponse>

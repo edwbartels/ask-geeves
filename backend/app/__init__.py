@@ -21,6 +21,7 @@ from flask_wtf.csrf import CSRFProtect
 from flask_cors import CORS
 
 app = Flask(__name__)
+app.json.sort_keys = False  # Prevent flask.jsonify from sorting keys
 env = os.getenv("FLASK_ENV", "development")
 if env == "development":
     # Only enable cors if in development

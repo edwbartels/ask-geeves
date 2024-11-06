@@ -40,28 +40,26 @@ def get_all_questions():
 
     sort_column = SORT_BY_MAP.get(sort_by, Question.created_at)
     sort_order = SORT_ORDER_MAP.get(order, desc)
+    filter_tag = request.args.get("filter_tag")
 
-    questions = Question.query.order_by(sort_order(sort_column)).paginate(
+    if filter_tag:
+        questions = Question.query.filter(Question.tags.any(name=filter_tag))
+    else:
+        questions = Question.query
+
+    questions = questions.order_by(sort_order(sort_column)).paginate(
         page=page, per_page=per_page
     )
-    # paginated_questions = questions.paginate(page=page, per_page=per_page)
     total_pages = questions.pages
-    # all_questions = Question.query.all()
-    # if not all_questions:
-    #     return jsonify({"message": "No questions found"}), 404
-    if not questions:
+
+    if not questions.items:
         return jsonify({"message": "No questions found"}), 404
-    questions_list = []
-    for question in questions:
-        eachQuestion = question.to_dict(homepage=True)
-        questions_list.append(eachQuestion)
-    # for question in all_questions:
-    #     eachQuestion = question.to_dict()
-    #     questions_list.append(eachQuestion)
+    questions_list = [question.to_dict(homepage=True) for question in questions.items]
+
     return jsonify(
         {
             "page": page,
-            "size": per_page,
+            "size": len(questions.items),
             "num_pages": total_pages,
             "questions": questions_list,
         }

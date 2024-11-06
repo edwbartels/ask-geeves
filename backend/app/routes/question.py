@@ -97,8 +97,7 @@ def get_questions_by_current_user():
     paginated_questions = questions.paginate(page=page, per_page=per_page)
     total_pages = paginated_questions.pages
 
-    user_questions = Question.query.filter_by(user_id=current_user.id).all()
-    questions_list = [question.to_dict() for question in user_questions]
+    questions_list = [question.to_dict() for question in paginated_questions]
     return jsonify(
         {
             "page": page,

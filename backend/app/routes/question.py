@@ -62,7 +62,7 @@ def get_all_questions():
         {
             "page": page,
             "size": per_page,
-            "total_pages": total_pages,
+            "num_pages": total_pages,
             "questions": questions_list,
         }
     ), 200

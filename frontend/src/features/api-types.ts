@@ -88,7 +88,7 @@ export interface FetchAllQuestionsResponse {
     num_votes: number // only votes that are not 0
     num_answers: number // db aggregate function
 
-    // user object
+    // user object that matches questioni writer
     User: {
       id: number
       first_name: string

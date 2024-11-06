@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import current_user
+from sqlalchemy import asc, desc
 from ..models.question import Question
 from ..models.tag import Tag
 from ..models.db import db
@@ -11,17 +12,53 @@ from ..utils.decorator import (
 
 bp = Blueprint("question", __name__, url_prefix="/api/questions")
 
+SORT_BY_MAP = {
+    "created_at": Question.created_at,
+    "updated_at": Question.updated_at,
+    "total_score": Question.total_score,
+}
+
+SORT_ORDER_MAP = {"asc": asc, "desc": desc}
+
 
 @bp.route("/", methods=["GET"])
 def get_all_questions():
-    all_questions = Question.query.all()
-    if not all_questions:
+    page, per_page, sort_by, order = (
+        request.args.get(key, default, type=typ)
+        for key, default, typ in [
+            ("page", 1, int),
+            ("per_page", 15, int),
+            ("sort_by", "created_at", str),
+            ("order", "desc", str),
+        ]
+    )
+
+    sort_column = SORT_BY_MAP.get(sort_by, Question.created_at)
+    sort_order = SORT_ORDER_MAP.get(order, desc)
+
+    questions = Question.query.order_by(sort_order(sort_column))
+    paginated_questions = questions.paginate(page=page, per_page=per_page)
+    total_pages = paginated_questions.pages
+    # all_questions = Question.query.all()
+    # if not all_questions:
+    #     return jsonify({"message": "No questions found"}), 404
+    if not paginated_questions:
         return jsonify({"message": "No questions found"}), 404
     questions_list = []
-    for question in all_questions:
+    for question in paginated_questions:
         eachQuestion = question.to_dict()
         questions_list.append(eachQuestion)
-    return jsonify({"questions": questions_list}), 200
+    # for question in all_questions:
+    #     eachQuestion = question.to_dict()
+    #     questions_list.append(eachQuestion)
+    return jsonify(
+        {
+            "page": page,
+            "size": per_page,
+            "total_pages": total_pages,
+            "questions": questions_list,
+        }
+    ), 200
 
 
 @bp.route("/<int:question_id>", methods=["GET"])
@@ -48,7 +85,7 @@ def create_question():
     content = data.get("content")
     title = data.get("title")
     if not content or not title:
-        return jsonify({"error": "Both content and title are required"}),400
+        return jsonify({"error": "Both content and title are required"}), 400
     input_tags = data.get("tag")
     tags = []
     if input_tags:
@@ -64,7 +101,9 @@ def create_question():
                 db.session.add(new_tag)
                 tags.append(new_tag)
 
-    new_question = Question(user_id=current_user.id, content=content, tags=tags , title=title)
+    new_question = Question(
+        user_id=current_user.id, content=content, tags=tags, title=title
+    )
     db.session.add(new_question)
     db.session.commit()
     return jsonify({"question": new_question.to_dict()}), 201

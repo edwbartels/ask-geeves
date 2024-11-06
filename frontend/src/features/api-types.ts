@@ -49,7 +49,7 @@ export type UnifiedQuestion = Spread<Question>
 export type UnifiedAnswer = Spread<Answer>
 export type UnifiedComment = Spread<Comment>
 
-export interface FetchAllQuestionsResponse {
+export interface FetchAllQuestionsResponse_old {
   questions: Spread<
     Omit<Question, "user_id"> & {
       user: User & {
@@ -68,5 +68,41 @@ export interface FetchAllQuestionsResponse {
       tags: Tag[]
     }
   >[]
+}
+export interface FetchAllQuestionsResponse {
+  questions: {
+    // base Questions table columns
+    id: number
+    // user_id is repeated in the User field, but ok to leave it in if removing is too hard
+    user_id: number
+    title: string
+    content: string
+    created_at: string // datetime string is fine
+    updated_at: string
+
+    total_score: number // db aggregate function
+    num_votes: number // only votes that are not 0
+    num_answers: number // db aggregate function
+
+    // user object
+    User: {
+      id: number
+      first_name: string
+      last_name: string
+      username: string
+    }
+
+    // arraay of tag objects
+    Tags: {
+      id: number
+      name: string
+    }[]
+
+    // pagination options
+    page: number
+    size: number
+    // db aggregate function to count num questions and divide by size?
+    num_pages: number
+  }[]
 }
 export type UnifiedFetchAllQuestionsResponse = Spread<FetchAllQuestionsResponse>

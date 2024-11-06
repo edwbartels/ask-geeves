@@ -9,7 +9,11 @@ import { createAppSlice } from "../app/createAppSlice"
 import type { AppThunk } from "../app/store"
 // import { fetchCount } from "./counterAPI"
 import { csrfFetch } from "../app/csrfFetch"
-import { Question, User, FetchAllQuestionsResponse } from "./api-types"
+import {
+  Question,
+  User,
+  FetchAllQuestionsResponse_old as FetchAllQuestionsResponse,
+} from "./api-types"
 import { addUser, addManyUsers } from "./usersSlice"
 //   import { SessionResponse, restoreSession, loginAsync } from "./sessionSlice"
 

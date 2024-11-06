@@ -41,16 +41,18 @@ def get_all_questions():
     sort_column = SORT_BY_MAP.get(sort_by, Question.created_at)
     sort_order = SORT_ORDER_MAP.get(order, desc)
 
-    questions = Question.query.order_by(sort_order(sort_column))
-    paginated_questions = questions.paginate(page=page, per_page=per_page)
-    total_pages = paginated_questions.pages
+    questions = Question.query.order_by(sort_order(sort_column)).paginate(
+        page=page, per_page=per_page
+    )
+    # paginated_questions = questions.paginate(page=page, per_page=per_page)
+    total_pages = questions.pages
     # all_questions = Question.query.all()
     # if not all_questions:
     #     return jsonify({"message": "No questions found"}), 404
-    if not paginated_questions:
+    if not questions:
         return jsonify({"message": "No questions found"}), 404
     questions_list = []
-    for question in paginated_questions:
+    for question in questions:
         eachQuestion = question.to_dict(homepage=True)
         questions_list.append(eachQuestion)
     # for question in all_questions:
@@ -92,12 +94,12 @@ def get_questions_by_current_user():
     sort_order = SORT_ORDER_MAP.get(order, desc)
 
     questions = Question.query.filter(user_id=current_user.id).order_by(
-        sort_order(sort_column)
+        sort_order(sort_column).paginate(page=page, per_page=per_page)
     )
-    paginated_questions = questions.paginate(page=page, per_page=per_page)
-    total_pages = paginated_questions.pages
+    # paginated_questions = questions.paginate(page=page, per_page=per_page)
+    total_pages = questions.pages
 
-    questions_list = [question.to_dict() for question in paginated_questions]
+    questions_list = [question.to_dict() for question in questions]
     return jsonify(
         {
             "page": page,

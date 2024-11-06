@@ -52,3 +52,10 @@ class User(db.Model, UserMixin):
             "updated_at": self.updated_at,
             "votes":[vote.to_dict() for vote in self.votes]
         }
+    def for_homepage(self):
+        return {
+            "id": self.id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "username": self.username,            
+        }

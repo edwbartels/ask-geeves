@@ -40,6 +40,7 @@ class Question(db.Model):
         cascade="all, delete-orphan",
         viewonly=True,
         uselist=True,
+        lazy=True
     )
     saves = db.relationship(
         "Save",
@@ -47,6 +48,7 @@ class Question(db.Model):
         cascade="all, delete-orphan",
         viewonly=True,
         uselist=True,
+        lazy=True
     )
     tags = db.relationship("Tag", secondary=question_tags, back_populates="questions")
     votes = db.relationship(
@@ -54,6 +56,7 @@ class Question(db.Model):
         primaryjoin="and_(foreign(Vote.content_type) =='question', Vote.content_id == Question.id)",
         cascade="all, delete-orphan",
         viewonly=True,
+        lazy=True
     )
 
     @property
@@ -67,7 +70,21 @@ class Question(db.Model):
     def __repr__(self):
         return f"Question {self.id}"
 
-    def to_dict(self):
+    def to_dict(self,homepage=False):
+        if homepage:
+            return {
+            "id":self.id,
+            "user_id":self.user.id,
+            "title":self.title,
+            "content": self.content,
+            "created_at": self.formatted_created_at,
+            "updated_at": self.formatted_updated_at,
+            "total_score": self.total_score,
+            "num_answers": len(self.answers),
+            "num_votes":len(self.votes),
+            "User":self.user.for_homepage(),
+            "tags": [tag.to_dict() for tag in self.tags],
+            }
         return {
             "id": self.id,
             "content": self.content,
@@ -90,3 +107,15 @@ class Question(db.Model):
             or 0
         )
         session.commit()
+
+    def for_homepage(self):
+        return{
+            "id":self.id,
+            "title":self.title,
+            "total_score": self.total_score,
+            "answers_count": len(self.answers),
+            "comments_count": len(self.comments),
+            "tags": [tag.to_dict() for tag in self.tags],
+            "created_at": self.formatted_created_at,
+            "updated_at": self.formatted_updated_at,
+        }

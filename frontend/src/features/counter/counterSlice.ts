@@ -2,7 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "../../app/createAppSlice"
 import type { AppThunk } from "../../app/store"
 import { fetchCount } from "./counterAPI"
-import { loginDemoUserAsync } from "../sessionSlice"
+import { loginAsync } from "../sessionSlice"
 
 export interface CounterSliceState {
   value: number
@@ -63,10 +63,13 @@ export const counterSlice = createAppSlice({
     ),
   }),
   extraReducers: builder => {
-    builder.addCase(loginDemoUserAsync.fulfilled, (state, action) => {
-      if (action.payload.user.email === "demo@user.io") {
+    builder.addCase(loginAsync.fulfilled, (state, action) => {
+      if (action.payload.user && action.payload.user.email === "demo@user.io") {
         state.value += 1
-      } else if (action.payload.user.email === "admin@admin.com") {
+      } else if (
+        action.payload.user &&
+        action.payload.user.email === "admin@admin.com"
+      ) {
         state.value += 2
       }
     })

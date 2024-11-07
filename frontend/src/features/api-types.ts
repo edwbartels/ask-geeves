@@ -132,72 +132,35 @@ export interface FetchAllQuestionsResponse {
 }
 
 export interface FetchOneQuestionResponse {
-  // base Questions table columns
-  id: number
-  // user_id is repeated in the User field, but ok to leave it in if removing is too hard
-  user_id: number
-  title: string
-  content: string
-  created_at: string // datetime string is fine
-  updated_at: string
-
-  total_score: number // db aggregate function
-  num_votes: number // only votes that are not 0
-  num_answers: number // db aggregate function
-
-  // array of tag objects
-  Tags: {
+  question: {
+    // base Questions table columns
     id: number
-    name: string
-  }[]
-
-  // array of vote objects that matches the logged in session user
-  Votes: {
-    content_type: "question" | "answer"
-    content_id: number
-    value: -1 | 0 | 1
-  }[]
-
-  // user object that matches question writer
-  QuestionUser: {
-    id: number
-    first_name: string
-    last_name: string
-    username: string
-  }
-
-  // array of comment objects
-  Comments: {
-    id: number
-    user_id: number
-    content_type: "question"
-    content_id: number
+    // user_id is repeated in the User field, but ok to leave it in if removing is too hard
+    // user_id: number
+    title: string
     content: string
-
-    // user object that matches question-comment writer
-    CommentUser: {
-      id: number
-      first_name: string
-      last_name: string
-      username: string
-    }
-  }[]
-
-  // array of answer+user+comment objects
-  // may move to a separate "get answers by questionId" endpoint
-  Answers: {
-    id: number
-    user_id: number
-    question_id: number
-    accepted: boolean
-    content: string
-    created_at: string
+    created_at: string // datetime string is fine
     updated_at: string
 
     total_score: number // db aggregate function
+    num_votes: number // only votes that are not 0
+    num_answers: number // db aggregate function
 
-    // user object that matches answer writer
-    AnswerUser: {
+    // array of tag objects
+    Tags: {
+      id: number
+      name: string
+    }[]
+
+    // array of vote objects that matches the logged in session user
+    Votes: {
+      content_type: "question" | "answer"
+      content_id: number
+      value: -1 | 0 | 1
+    }[]
+
+    // user object that matches question writer
+    QuestionUser: {
       id: number
       first_name: string
       last_name: string
@@ -208,11 +171,11 @@ export interface FetchOneQuestionResponse {
     Comments: {
       id: number
       user_id: number
-      content_type: "answer"
+      content_type: "question"
       content_id: number
       content: string
 
-      // user object that matches answer-comment writer
+      // user object that matches question-comment writer
       CommentUser: {
         id: number
         first_name: string
@@ -220,6 +183,45 @@ export interface FetchOneQuestionResponse {
         username: string
       }
     }[]
-  }[]
+
+    // array of answer+user+comment objects
+    // may move to a separate "get answers by questionId" endpoint
+    Answers: {
+      id: number
+      // user_id: number
+      question_id: number
+      accepted: boolean
+      content: string
+      created_at: string
+      updated_at: string
+
+      total_score: number // db aggregate function
+
+      // user object that matches answer writer
+      AnswerUser: {
+        id: number
+        first_name: string
+        last_name: string
+        username: string
+      }
+
+      // array of comment objects
+      Comments: {
+        id: number
+        user_id: number
+        content_type: "answer"
+        content_id: number
+        content: string
+
+        // user object that matches answer-comment writer
+        CommentUser: {
+          id: number
+          first_name: string
+          last_name: string
+          username: string
+        }
+      }[]
+    }[]
+  }
 }
 export type UnifiedFetchAllQuestionsResponse = Spread<FetchAllQuestionsResponse>

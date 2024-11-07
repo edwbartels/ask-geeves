@@ -6,7 +6,7 @@ from flask_login import current_user
 
 
 class Question(Timestamp):
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     content = db.Column(db.Text, nullable=False)
     title = db.Column(db.Text, nullable=False)
     total_score = db.Column(db.Integer, default=0)

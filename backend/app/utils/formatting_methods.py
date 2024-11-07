@@ -15,3 +15,7 @@ def format_date_long_suffix(func):
         return date.strftime(f"%B {day}{suffix}, %Y")
 
     return wrapper
+
+    ## mm/dd/yyyy
+    ## mm/yy
+    ## b/dd/yyyy

@@ -105,8 +105,14 @@ def create_question():
     data = request.get_json()
     content = data.get("content")
     title = data.get("title")
-    if not content or not title:
-        return jsonify({"error": "Both content and title are required"}), 400
+    errors = {}
+    if not content:
+        errors["content"]="content is required"
+    if not title:
+        errors["title"]="title is required"
+    if errors:
+        return jsonify({"message":"Bad request","errors":errors}) , 401
+
     input_tags = data.get("tag")
     tags = []
     if input_tags:
@@ -127,7 +133,7 @@ def create_question():
     )
     db.session.add(new_question)
     db.session.commit()
-    return jsonify({"question": new_question.to_dict()}), 201
+    return jsonify({"question": new_question.to_dict(detail_page=True)}), 201
 
 
 @bp.route("/<int:question_id>", methods=["PUT"])
@@ -139,12 +145,19 @@ def edit_question(question_id):
     data = request.get_json()
     new_content = data.get("content")
     new_title = data.get("title")
-    if not new_content or not new_title:
-        return jsonify({"error": "Both content and title is required"}), 400
+
+    errors = {}
+    if not new_content:
+        errors["content"]="content is required"
+    if not new_title:
+        errors["title"]="title is required"
+    if errors:
+        return jsonify({"message":"Bad request","errors":errors}) , 401
+
     question.content = new_content
     question.title = new_title
     db.session.commit()
-    return jsonify({"question": question.to_dict()}), 200
+    return jsonify({"question": question.to_dict(detail_page=True)}), 200
 
 
 @bp.route("/<int:question_id>", methods=["DELETE"])

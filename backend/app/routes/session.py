@@ -26,15 +26,21 @@ def login():
     credential = data.get("credential")
     password = data.get("password")
 
-    if not credential or not password:
-        return jsonify({"error": "username/email and password are required"}), 404
+    errors = {}
+    if not credential:
+        errors["credential"]="username/email is required"
+    if not password:
+        errors["credential"]='password is required'
+    if errors:
+        return jsonify({"message":"Bad request","error": errors}), 400
 
     user = User.query.filter(
         or_(User.username == credential, User.email == credential)
     ).first()
-
-    if not user or not user.check_password(password):
-        return jsonify({"error": "Invalid username or password"}), 400
+    if not user:
+        return jsonify({"error":"user not found"}),404
+    if not user.check_password(password):
+        return jsonify({"error": "Invalid password"}), 400
 
     login_user(user, remember=True)
     return jsonify({"user": user.to_dict()}), 200

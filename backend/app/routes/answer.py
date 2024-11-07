@@ -9,77 +9,50 @@ from ..utils.decorator import (
     question_ownership_check,
     answer_exist_check,
     answer_ownership_check,
+    collect_query_params,
 )
 
 bp = Blueprint("answer", __name__, url_prefix="/api/questions")
 
-SORT_BY_MAP = {
-    "created_at": Answer.created_at,
-    "updated_at": Answer.updated_at,
-    "total_score": Answer.total_score,
-}
 
-SORT_ORDER_MAP = {"asc": asc, "desc": desc}
-
-
-@bp.route("/<int:question_id>/answers", methods=["GET"])
-def get_all_answers_by_questionId(question_id):
-    page, per_page, sort_by, order = (
-        request.args.get(key, default, type=typ)
-        for key, default, typ in [
-            ("page", 1, int),
-            ("per_page", 15, int),
-            ("sort_by", "created_at", str),
-            ("order", "desc", str),
-        ]
-    )
-    sort_column = SORT_BY_MAP.get(sort_by, Answer.created_at)
-    sort_order = SORT_ORDER_MAP.get(order, desc)
-
+@bp.route(
+    "/<int:question_id>/answers", methods=["GET"], endpoint="get_answers_for_question"
+)
+@collect_query_params(Answer)
+def get_all_answers_by_questionId(question_id, page, per_page, sort_column, sort_order):
     answers = (
         Answer.query.filter_by(question_id=question_id)
         .order_by(sort_order(sort_column))
         .paginate(page=page, per_page=per_page)
     )
-    total_pages = answers.pages
-    answers_list = [answer.to_dict() for answer in answers]
+    answers_list = [answer.to_dict() for answer in answers.items]
     return jsonify(
         {
             "page": page,
-            "size": per_page,
-            "total_pages": total_pages,
+            "size": len(answers.items),
+            "total_pages": answers.pages,
             "answers": answers_list,
         }
     ), 200
 
 
-@bp.route("/all/answers/current", methods=["GET"])
+@bp.route(
+    "/all/answers/current", methods=["GET"], endpoint="get_answers_for_current_user"
+)
 @login_check
-def get_all_answers_by_current_user():
-    page, per_page, sort_by, order = (
-        request.args.get(key, default, type=typ)
-        for key, default, typ in [
-            ("page", 1, int),
-            ("per_page", 15, int),
-            ("sort_by", "created_at", str),
-            ("order", "desc", str),
-        ]
-    )
-    sort_column = SORT_BY_MAP.get(sort_by, Answer.created_at)
-    sort_order = SORT_ORDER_MAP.get(order, desc)
-
+@collect_query_params(Answer)
+def get_all_answers_by_current_user(page, per_page, sort_column, sort_order):
     answers = (
         Answer.query.filter_by(user_id=current_user.id)
         .order_by(sort_order(sort_column))
         .paginate(page=page, per_page=per_page)
     )
-    total_pages = answers.pages
     answers_list = [answer.to_dict() for answer in answers]
     return jsonify(
         {
             "page": page,
-            "size": per_page,
-            "total_pages": total_pages,
+            "size": len(answers.items),
+            "total_pages": answers.pages,
             "answers": answers_list,
         }
     ), 200

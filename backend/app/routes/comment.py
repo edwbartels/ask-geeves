@@ -12,47 +12,28 @@ from ..utils.decorator import (
     comment_for_question_ownership_check,
     comment_for_answer_exist_check,
     comment_for_answer_ownership_check,
+    collect_query_params,
 )
 
 bp = Blueprint("comment", __name__, url_prefix="/api/questions")
 
-SORT_BY_MAP = {
-    "created_at": Comment.created_at,
-    "updated_at": Comment.updated_at,
-    "total_score": Comment.total_score,
-}
-
-SORT_ORDER_MAP = {"asc": asc, "desc": desc}
-
 
 @bp.route("/<int:question_id>/comments", methods=["GET"])
 @question_exist_check
-def get_all_comments_for_question(question_id):
-    page, per_page, sort_by, order = (
-        request.args.get(key, default, type=typ)
-        for key, default, typ in [
-            ("page", 1, int),
-            ("per_page", 15, int),
-            ("sort_by", "created_at", str),
-            ("order", "desc", str),
-        ]
-    )
-    sort_column = SORT_BY_MAP.get(sort_by, Answer.created_at)
-    sort_order = SORT_ORDER_MAP.get(order, desc)
-
+@collect_query_params(Comment)
+def get_all_comments_for_question(question_id, page, per_page, sort_column, sort_order):
     comments = (
         Comment.query.filter_by(content_id=question_id, content_type="question")
         .order_by(sort_order(sort_column))
         .paginate(page=page, per_page=per_page)
     )
-    total_pages = comments.pages
 
     comments_list = [comment.to_dict() for comment in comments]
     return jsonify(
         {
             "page": page,
-            "size": per_page,
-            "total_pages": total_pages,
+            "size": len(comments.items),
+            "total_pages": comments.pages,
             "comments": comments_list,
         }
     ), 200
@@ -60,31 +41,21 @@ def get_all_comments_for_question(question_id):
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>/comments", methods=["GET"])
 @question_exist_check
-def get_all_comments_for_an_answer(question_id, answer_id):
-    page, per_page, sort_by, order = (
-        request.args.get(key, default, type=typ)
-        for key, default, typ in [
-            ("page", 1, int),
-            ("per_page", 15, int),
-            ("sort_by", "created_at", str),
-            ("order", "desc", str),
-        ]
-    )
-    sort_column = SORT_BY_MAP.get(sort_by, Answer.created_at)
-    sort_order = SORT_ORDER_MAP.get(order, desc)
-
+@collect_query_params(Comment)
+def get_all_comments_for_an_answer(
+    question_id, answer_id, page, per_page, sort_column, sort_order
+):
     comments = (
         Comment.query.filter_by(content_id=answer_id, content_type="answer")
         .order_by(sort_order(sort_column))
         .paginate(page=page, per_page=per_page)
     )
-    total_pages = comments.pages
     comments_list = [comment.to_dict() for comment in comments]
     return jsonify(
         {
             "page": page,
-            "size": per_page,
-            "total_pages": total_pages,
+            "size": len(comments.items),
+            "total_pages": comments.pages,
             "comments": comments_list,
         }
     ), 200

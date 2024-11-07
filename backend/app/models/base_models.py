@@ -2,7 +2,7 @@ from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy import event
 from .db import db
 from datetime import datetime, timezone
-from ..utils.formatting_methods import format_date_long_suffix
+from ..utils.formatting_methods import format_date, format_date_long_suffix
 
 
 class Base(db.Model):
@@ -43,6 +43,46 @@ class Timestamp(Base):
     @format_date_long_suffix
     @property
     def formatted_updated_at(self):
+        return self.updated_at
+
+    @format_date("short")
+    @property
+    def created_at_short(self):
+        return self.created_at
+
+    @format_date("my")
+    @property
+    def created_at_my(self):
+        return self.created_at
+
+    @format_date("long")
+    @property
+    def created_at_long(self):
+        return self.created_at
+
+    @format_date("long_suffix")
+    @property
+    def created_at_long_suffix(self):
+        return self.created_at
+
+    @format_date("short")
+    @property
+    def updated_at_short(self):
+        return self.updated_at
+
+    @format_date("my")
+    @property
+    def updated_at_my(self):
+        return self.updated_at
+
+    @format_date("long")
+    @property
+    def updated_at_long(self):
+        return self.updated_at
+
+    @format_date("long_suffix")
+    @property
+    def updated_at_long_suffix(self):
         return self.updated_at
 
     def set_update(self, *attr_names):

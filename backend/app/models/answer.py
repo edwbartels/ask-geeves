@@ -1,7 +1,7 @@
 from .db import db
 from .vote import Vote
 from datetime import datetime, timezone
-
+from flask_login import current_user
 
 def formatted_date_with_suffix(date):
     if date is None:
@@ -75,9 +75,9 @@ class Answer(db.Model):
             "content": self.content,
             "created_at": self.formatted_created_at,
             "updated_at": self.formatted_updated_at,
-            "User": self.user.to_dict(),
+            "AnswerUser": self.user.to_dict_basic_info(),
             "Comments": [comment.to_dict() for comment in self.comments],
-            "Saves": [save.to_dict() for save in self.saves],
+            "Saves": [save.to_dict() for save in self.saves if current_user.is_authenticated and current_user.id == save.user_id],
         }
 
     def update_total_score(self, session):

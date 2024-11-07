@@ -1,5 +1,5 @@
 from .db import db
-
+from flask_login import current_user
 
 class Save(db.Model):
     __tablename__ = "saves"
@@ -19,7 +19,7 @@ class Save(db.Model):
             "content_id": self.content_id,
             "content_type": self.content_type,
             "parent_type": self.parent_type,
-            "User": self.user.to_dict(),
+            "user_id": current_user.id,
         }
 
     __table_args__ = (

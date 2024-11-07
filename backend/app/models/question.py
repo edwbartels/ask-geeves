@@ -96,7 +96,7 @@ class Question(db.Model):
             "num_votes": len(self.votes),
             "num_answers": len(self.answers),
             "Tags": [tag.to_dict() for tag in self.tags],
-            "Votes":[vote.to_dict() for vote in self.votes if vote.user_id == current_user.id],
+            "Votes":[vote.to_dict() for vote in self.votes if current_user.is_authenticated and vote.user_id == current_user.id],
             "QuestionUser":self.user.to_dict_basic_info(),
             "Comments":[comment.for_question_detail() for comment in self.comments],
             "Answers":[answer.for_question_detail() for answer in self.answers],

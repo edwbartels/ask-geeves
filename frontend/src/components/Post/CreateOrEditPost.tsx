@@ -1,12 +1,15 @@
 import React, { useState, ReactNode } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { createOneQuestion } from "../../features/questionsSlice"
+import {
+  createOneQuestion,
+  CreateQuestionError,
+} from "../../features/questionsSlice"
 
 import { RenderPost } from "./RenderPost"
 
 import "./Post.css"
-import { error } from "console"
+import { Errors } from "../Errors/Errors"
 
 export const CreateOrEditPost = () => {
   const { questionId } = useParams()
@@ -17,7 +20,7 @@ export const CreateOrEditPost = () => {
     content: "",
     tag: [],
   }
-  const errors = useAppSelector(state => state.questions.error)
+  const storeErrors = useAppSelector(state => state.questions.error)
 
   const selectQuestionDetails = (questionId: string | undefined) => {
     // Placeholder function, will replace with store slice selector
@@ -26,6 +29,8 @@ export const CreateOrEditPost = () => {
   }
   const initialForm = selectQuestionDetails(questionId) ?? emptyForm
   const [form, setForm] = useState(initialForm)
+  const [componentErrors, setComponentErrors] =
+    useState<CreateQuestionError | null>(null)
 
   const handleChangeForm =
     (field: string) =>
@@ -38,17 +43,21 @@ export const CreateOrEditPost = () => {
 
   const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const response = await dispatch(createOneQuestion(form))
-    console.log(response)
-    console.log(errors)
-    // navigate(`/questions/${questionId}`)
+    try {
+      const response = await dispatch(createOneQuestion(form)).unwrap()
+      const { id: questionId } = response
+      navigate(`/questions/${questionId}`)
+    } catch (e) {}
   }
-  // console.log(errors)
   return (
     <div className="post">
       <h1>New Question</h1>
       <form onSubmit={handleSubmitForm}>
         <div>
+          {/* {storeErrors && <Errors errors={storeErrors.errors} />} */}
+          {storeErrors && storeErrors.errors.title && (
+            <Errors errors={storeErrors.errors.title} />
+          )}
           <label>
             <div>Title*</div>
             <input
@@ -62,6 +71,9 @@ export const CreateOrEditPost = () => {
           </label>
         </div>
         <div>
+          {storeErrors && storeErrors.errors.content && (
+            <Errors errors={storeErrors.errors.content} />
+          )}
           <label>
             <div>Question*</div>
             <textarea

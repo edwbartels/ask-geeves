@@ -1,8 +1,10 @@
 from .db import db
 from datetime import datetime, timezone
+from .base_models import Base
 from .vote import Vote
 from .join_tables import question_tags
 from flask_login import current_user
+
 
 def formatted_date_with_suffix(date):
     if date is None:
@@ -15,10 +17,10 @@ def formatted_date_with_suffix(date):
     return date.strftime(f"%B {day}{suffix}, %Y")
 
 
-class Question(db.Model):
-    __tablename__ = "questions"
+class Question(Base):
+    # __tablename__ = "questions"
 
-    id = db.Column(db.Integer, primary_key=True)
+    # id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     content = db.Column(db.Text, nullable=False)
     title = db.Column(db.Text, nullable=False)
@@ -87,19 +89,25 @@ class Question(db.Model):
             }
         elif detail_page:
             return {
-            "id":self.id,
-            "title":self.title,
-            "content": self.content,
-            "created_at": self.formatted_created_at,
-            "updated_at": self.formatted_updated_at,
-            "total_score": self.total_score,
-            "num_votes": len(self.votes),
-            "num_answers": len(self.answers),
-            "Tags": [tag.to_dict() for tag in self.tags],
-            "Votes":[vote.to_dict() for vote in self.votes if current_user.is_authenticated and vote.user_id == current_user.id],
-            "QuestionUser":self.user.to_dict_basic_info(),
-            "Comments":[comment.for_question_detail() for comment in self.comments],
-            "Answers":[answer.for_question_detail() for answer in self.answers],
+                "id": self.id,
+                "title": self.title,
+                "content": self.content,
+                "created_at": self.formatted_created_at,
+                "updated_at": self.formatted_updated_at,
+                "total_score": self.total_score,
+                "num_votes": len(self.votes),
+                "num_answers": len(self.answers),
+                "Tags": [tag.to_dict() for tag in self.tags],
+                "Votes": [
+                    vote.to_dict()
+                    for vote in self.votes
+                    if current_user.is_authenticated and vote.user_id == current_user.id
+                ],
+                "QuestionUser": self.user.to_dict_basic_info(),
+                "Comments": [
+                    comment.for_question_detail() for comment in self.comments
+                ],
+                "Answers": [answer.for_question_detail() for answer in self.answers],
             }
         return {
             "id": self.id,

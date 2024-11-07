@@ -20,12 +20,20 @@ class User(db.Model, UserMixin):
         db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
     )
     questions = db.relationship(
-        "Question", backref="user", cascade="all, delete-orphan",lazy=True
+        "Question", backref="user", cascade="all, delete-orphan", lazy=True
     )
-    answers = db.relationship("Answer", backref="user", cascade="all, delete-orphan",lazy=True)
-    comments = db.relationship("Comment", backref="user", cascade="all, delete-orphan",lazy=True)
-    saves = db.relationship("Save", backref="user", cascade="all, delete-orphan",lazy=True)
-    votes = db.relationship("Vote", backref="user", cascade="all, delete-orphan",lazy=True)
+    answers = db.relationship(
+        "Answer", backref="user", cascade="all, delete-orphan", lazy=True
+    )
+    comments = db.relationship(
+        "Comment", backref="user", cascade="all, delete-orphan", lazy=True
+    )
+    saves = db.relationship(
+        "Save", backref="user", cascade="all, delete-orphan", lazy=True
+    )
+    votes = db.relationship(
+        "Vote", backref="user", cascade="all, delete-orphan", lazy=True
+    )
 
     @property
     def password(self):
@@ -44,18 +52,19 @@ class User(db.Model, UserMixin):
     def to_dict(self):
         return {
             "id": self.id,
-            "username": self.username,
-            "email": self.email,
             "first_name": self.first_name,
             "last_name": self.last_name,
+            "username": self.username,
+            "email": self.email,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
-            "votes":[vote.to_dict_session() for vote in self.votes]
+            "votes": [vote.to_dict_session() for vote in self.votes],
         }
+
     def to_dict_basic_info(self):
         return {
             "id": self.id,
             "first_name": self.first_name,
             "last_name": self.last_name,
-            "username": self.username,            
+            "username": self.username,
         }

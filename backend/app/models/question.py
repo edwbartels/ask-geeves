@@ -103,15 +103,16 @@ class Question(db.Model):
             }
         return {
             "id": self.id,
+            "user_id": self.user.id,
             "title": self.title,
             "content": self.content,
-            "total_score": self.total_score,
             "created_at": self.formatted_created_at,
             "updated_at": self.formatted_updated_at,
-            "user": self.user.to_dict(),
-            "answers": [answer.to_dict() for answer in self.answers],
-            "comments": [comment.to_dict() for comment in self.comments],
-            "saves": [save.to_dict() for save in self.saves],
+            "total_score": self.total_score,
+            "User": self.user.to_dict(),
+            "Answers": [answer.to_dict() for answer in self.answers],
+            "Comments": [comment.to_dict() for comment in self.comments],
+            "Saves": [save.to_dict() for save in self.saves],
             "Tags": [tag.to_dict() for tag in self.tags],
         }
 

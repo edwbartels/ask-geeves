@@ -60,14 +60,15 @@ class Comment(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
+            "user_id": self.user.id,
+            "content_type": self.content_type,
+            "content_id": self.content_id,
             "content": self.content,
             "total_score": self.total_score,
             "created_at": self.formatted_created_at,
             "updated_at": self.formatted_updated_at,
-            "content_id": self.content_id,
-            "content_type": self.content_type,
-            "user": self.user.to_dict(),
-            "saves": [save.to_dict() for save in self.saves],
+            "User": self.user.to_dict(),
+            "Saves": [save.to_dict() for save in self.saves],
         }
 
     def update_total_score(self, session):

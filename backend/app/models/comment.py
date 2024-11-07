@@ -43,8 +43,8 @@ class Comment(Timestamp):
             "content_id": self.content_id,
             "content": self.content,
             "total_score": self.total_score,
-            "created_at": self.formatted_created_at,
-            "updated_at": self.formatted_updated_at,
+            "created_at": self.created_at_long_suffix,
+            "updated_at": self.updated_at_long_suffix,
             "CommentUser": self.user.to_dict_basic_info(),
             "Saves": [
                 save.to_dict()

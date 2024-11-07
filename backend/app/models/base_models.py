@@ -2,7 +2,7 @@ from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy import event
 from .db import db
 from datetime import datetime, timezone
-from ..utils.formatting_methods import format_date, format_date_long_suffix
+from ..utils.formatting_methods import format_date
 
 
 class Base(db.Model):
@@ -15,17 +15,6 @@ class Base(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
 
-def formatted_date_with_suffix(date):
-    if date is None:
-        return ""
-
-    day = int(date.strftime("%d"))
-    suffix = (
-        "th" if 11 <= day <= 13 else {1: "st", 2: "nd", 3: "rd"}.get(day % 10, "th")
-    )
-    return date.strftime(f"%B {day}{suffix}, %Y")
-
-
 class Timestamp(Base):
     __abstract__ = True
     created_at = db.Column(
@@ -34,16 +23,6 @@ class Timestamp(Base):
     updated_at = db.Column(
         db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
     )
-
-    @format_date_long_suffix
-    @property
-    def formatted_created_at(self):
-        return self.created_at
-
-    @format_date_long_suffix
-    @property
-    def formatted_updated_at(self):
-        return self.updated_at
 
     @format_date("short")
     @property

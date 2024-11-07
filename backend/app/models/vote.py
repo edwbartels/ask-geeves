@@ -16,9 +16,14 @@ class Vote(db.Model):
 
     def to_dict(self):
         return{
-            # "id":self.id,
-            # "user_id":self.user_id,
-            "value":self.value,
+            "user_id":self.user_id,
             "content_type":self.content_type,
-            "content_id":self.content_id
+            "content_id":self.content_id,
+            "value":self.value,
+        }
+    def to_dict_session(self):
+        return{
+            "content_type":self.content_type,
+            "content_id":self.content_id,
+            "value":self.value,
         }

@@ -2,7 +2,7 @@ from .db import db
 from datetime import datetime, timezone
 from .vote import Vote
 from .join_tables import question_tags
-
+from flask_login import current_user
 
 def formatted_date_with_suffix(date):
     if date is None:
@@ -70,7 +70,7 @@ class Question(db.Model):
     def __repr__(self):
         return f"Question {self.id}"
 
-    def to_dict(self, homepage=False):
+    def to_dict(self, homepage=False, detail_page=False):
         if homepage:
             return {
                 "id": self.id,
@@ -82,8 +82,24 @@ class Question(db.Model):
                 "total_score": self.total_score,
                 "num_answers": len(self.answers),
                 "num_votes": len(self.votes),
-                "User": self.user.for_homepage(),
+                "User": self.user.to_dict_basic_info(),
                 "Tags": [tag.to_dict() for tag in self.tags],
+            }
+        elif detail_page:
+            return {
+            "id":self.id,
+            "title":self.title,
+            "content": self.content,
+            "created_at": self.formatted_created_at,
+            "updated_at": self.formatted_updated_at,
+            "total_score": self.total_score,
+            "num_votes": len(self.votes),
+            "num_answers": len(self.answers),
+            "Tags": [tag.to_dict() for tag in self.tags],
+            "Votes":[vote.to_dict() for vote in self.votes if vote.user_id == current_user.id],
+            "QuestionUser":self.user.to_dict_basic_info(),
+            "Comments":[comment.for_question_detail() for comment in self.comments],
+            "Answers":[answer.for_question_detail() for answer in self.answers],
             }
         return {
             "id": self.id,

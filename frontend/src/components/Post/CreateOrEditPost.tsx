@@ -1,22 +1,28 @@
 import React, { useState, ReactNode } from "react"
 import { useParams, useNavigate } from "react-router-dom"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { createOneQuestion } from "../../features/questionsSlice"
 
 import { RenderPost } from "./RenderPost"
 
 import "./Post.css"
+import { error } from "console"
 
 export const CreateOrEditPost = () => {
   const { questionId } = useParams()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const emptyForm = {
     title: "",
-    body: "",
+    content: "",
+    tag: [],
   }
+  const errors = useAppSelector(state => state.questions.error)
 
   const selectQuestionDetails = (questionId: string | undefined) => {
     // Placeholder function, will replace with store slice selector
     if (questionId === undefined) return null
-    return { title: "question title", body: "question body" }
+    return { title: "question title", content: "question body" }
   }
   const initialForm = selectQuestionDetails(questionId) ?? emptyForm
   const [form, setForm] = useState(initialForm)
@@ -25,14 +31,19 @@ export const CreateOrEditPost = () => {
     (field: string) =>
     (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setForm({ ...form, [field]: e.currentTarget.value })
-      if (field === "body") {
+      if (field === "content") {
         // setPreview(renderMdToNode(e.currentTarget.value))
       }
     }
 
-  const handleSubmitForm = () => {
-    navigate(`/questions/${questionId}`)
+  const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const response = await dispatch(createOneQuestion(form))
+    console.log(response)
+    console.log(errors)
+    // navigate(`/questions/${questionId}`)
   }
+  // console.log(errors)
   return (
     <div className="post">
       <h1>New Question</h1>
@@ -57,10 +68,10 @@ export const CreateOrEditPost = () => {
               className="post-body-textarea"
               // cols={80}
               rows={10}
-              name="body"
-              defaultValue={form.body}
+              name="content"
+              defaultValue={form.content}
               placeholder="Question body..."
-              onChange={handleChangeForm("body")}
+              onChange={handleChangeForm("content")}
             />
           </label>
         </div>
@@ -68,7 +79,7 @@ export const CreateOrEditPost = () => {
         <button>Cancel</button>
       </form>
 
-      <RenderPost postContent={form.body} />
+      <RenderPost postContent={form.content} />
     </div>
   )
 }

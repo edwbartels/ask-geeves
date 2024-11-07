@@ -14,6 +14,7 @@ interface Props {
 // Post renders top level question or answer
 
 export const Post = ({ type, id }: Props) => {
+  // refactor to return posttype
   type qOrASelector = (state: RootState, id: number) => Question | Answer
   const getQorASelector = (): qOrASelector => {
     if (type === "question") {
@@ -42,16 +43,39 @@ export const Post = ({ type, id }: Props) => {
     // return <div>Loading post...</div>
     return <></>
   }
-  const getPermalinkTitle = (type: string, post: Question | Answer): string => {
-    const permalinkBase = `${type}-${post.id}`
+  type PostType =
+    | {
+        type: "question"
+        question: Question
+      }
+    | {
+        type: "answer"
+        answer: Answer
+      }
+  const getPostType = (type: "question" | "answer", post: any): PostType => {
     if (type === "question") {
-      const { title } = post as Question
-      return `${permalinkBase}-${title.replaceAll(" ", "-").slice(0, 20).toLowerCase()}`
+      return { type, question: post }
+    } else if (type === "answer") {
+      return { type, answer: post }
     } else {
-      return permalinkBase
+      const absurd = (input: never): never => input
+      return absurd(type)
     }
   }
-  const permalink = getPermalinkTitle(type, post)
+  const permalinkInput = getPostType(type, post)
+  const getPermalinkTitle = (post: PostType) => {
+    const permalinkBase = `${post.type}`
+    if (post.type === "question") {
+      const { question } = post
+      return `${permalinkBase}-${question.id}-${question.title.replaceAll(" ", "-").slice(0, 20).toLowerCase()}`
+    } else if (post.type === "answer") {
+      return permalinkBase
+    } else {
+      const absurd = (input: never): never => input
+      return absurd(post)
+    }
+  }
+  const permalink = getPermalinkTitle(permalinkInput)
   const postWriter = useAppSelector(state =>
     selectUserById(state, post.user_id),
   )

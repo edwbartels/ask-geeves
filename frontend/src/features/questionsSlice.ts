@@ -49,8 +49,21 @@ export interface Question {
 
   answerIds?: number[]
   tagIds: number[]
+
+  error?: string | null
 }
-export type QuestionsSliceState = Record<number, Question>
+export interface QuestionForm {
+  title: string
+  content: string
+  tag?: string[]
+}
+interface CreateQuestionError {
+  error: "Both content and title are required"
+}
+
+export type QuestionsSliceState = Record<number, Question> & {
+  error?: string | null
+}
 
 export const fetchAllQuestions = createAsyncThunk<
   // Return type of the payload creator
@@ -153,7 +166,77 @@ export const fetchOneQuestion = createAsyncThunk<
     return thunkApi.rejectWithValue({ error: "Couldn't fetch one question!" })
   }
 })
-const initialState: QuestionsSliceState = {}
+export const createOneQuestion = createAsyncThunk<
+  Question,
+  QuestionForm,
+  { rejectValue: CreateQuestionError }
+>("questions/createOneQuestion", async (post, thunkApi) => {
+  try {
+    const response = await csrfFetch("/api/questions/", {
+      method: "POST",
+      body: JSON.stringify(post),
+    })
+    if (response.ok) {
+      const newQuestion: FetchOneQuestionResponse = await response.json()
+      console.log(newQuestion)
+      const { Tags, Votes, QuestionUser, Comments, Answers, ...remaining } =
+        newQuestion.question
+
+      // Unpack API response
+      // Make payload for questions and users slices
+      const answerIds = Answers.map(answer => answer.id)
+      const tagIds = Tags.map(tag => tag.id)
+      const questionPayload = {
+        ...remaining,
+        user_id: QuestionUser.id,
+        answerIds,
+        tagIds,
+        num_votes: 100,
+        num_answers: 100,
+      }
+      const tagsPayload = Tags
+      const votesPayload = Votes
+      // answersPayload
+      const answersPayload = Answers.map(answer => {
+        const { AnswerUser, Comments, ...remaining } = answer
+        const user_id = AnswerUser.id
+        return { ...remaining, user_id }
+      })
+      thunkApi.dispatch(addManyAnswers(answersPayload))
+
+      // add user objects from QuestionUser, Comments.CommentUser, and Answers.AnswerUser
+      const uniqueUserIds = new Set()
+      const usersPayload = []
+      const allReturnedUsers = [
+        QuestionUser,
+        ...Comments.map(comment => comment.CommentUser),
+        ...Answers.map(answer => answer.AnswerUser),
+      ]
+      for (const user of allReturnedUsers) {
+        if (!uniqueUserIds.has(user.id)) {
+          uniqueUserIds.add(user.id)
+          usersPayload.push(user)
+        }
+      }
+
+      thunkApi.dispatch(addManyUsers(usersPayload))
+      thunkApi.dispatch(addManyVotes(votesPayload))
+      // dispatch addManyAnswers
+      return questionPayload
+    } else {
+      return thunkApi.rejectWithValue({
+        error: "Both content and title are required",
+      })
+    }
+  } catch (e) {
+    console.log("here we go", e)
+    return thunkApi.rejectWithValue({
+      error: "Both content and title are required",
+    })
+  }
+})
+
+const initialState: QuestionsSliceState = { error: null }
 
 // If you are not using async thunks you can use the standalone `createSlice`.
 export const questionsSlice = createAppSlice({
@@ -172,6 +255,9 @@ export const questionsSlice = createAppSlice({
       .addCase(fetchOneQuestion.fulfilled, (state, action) => {
         const { id } = action.payload
         state[id] = action.payload
+      })
+      .addCase(createOneQuestion.rejected, (state, action) => {
+        state.error = action.payload?.error
       })
   },
   selectors: {

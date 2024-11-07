@@ -36,9 +36,14 @@ class Comment(Timestamp):
         return f"<Comment {self.id}"
 
     def to_dict(self):
+        saves = [save.to_dict() for save in self.saves if current_user.is_authenticated and save.user_id == current_user.id]
+        status = False
+        if saves:
+                status = True
         return {
             "id": self.id,
             "user_id": self.user.id,
+            "commentSave":status,
             "content_type": self.content_type,
             "content_id": self.content_id,
             "content": self.content,
@@ -46,11 +51,6 @@ class Comment(Timestamp):
             "created_at": self.created_at_long_suffix,
             "updated_at": self.updated_at_long_suffix,
             "CommentUser": self.user.to_dict_basic_info(),
-            "Saves": [
-                save.to_dict()
-                for save in self.saves
-                if current_user.is_authenticated and current_user.id == save.user_id
-            ],
         }
 
     def update_total_score(self, session):
@@ -63,10 +63,15 @@ class Comment(Timestamp):
         session.commit()
 
     def for_question_detail(self):
+        saves = [save.to_dict() for save in self.saves if current_user.is_authenticated and save.user_id == current_user.id]
+        status = False
+        if saves:
+                status = True
         return {
-            "id": self.id,
+            "id":self.id,
+            "commentSave":status,
             "content_type": self.content_type,
             "content_id": self.content_id,
             "content": self.content,
-            "CommentUser": self.user.to_dict_basic_info(),
+            "CommentUser":self.user.to_dict_basic_info(),
         }

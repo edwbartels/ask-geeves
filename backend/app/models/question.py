@@ -51,9 +51,14 @@ class Question(Timestamp):
 
     def to_dict(self, homepage=False, detail_page=False):
         if homepage:
+            saves = [save.to_dict() for save in self.saves if current_user.is_authenticated and save.user_id == current_user.id]
+            status = False
+            if saves:
+                status = True
             return {
                 "id": self.id,
                 "user_id": self.user.id,
+                "questionSave":status,
                 "title": self.title,
                 "content": self.content,
                 "created_at": self.created_at_long_suffix,
@@ -65,26 +70,25 @@ class Question(Timestamp):
                 "Tags": [tag.to_dict() for tag in self.tags],
             }
         elif detail_page:
+            saves = [save.to_dict() for save in self.saves if current_user.is_authenticated and save.user_id == current_user.id]
+            status = False
+            if saves:
+                status = True
             return {
-                "id": self.id,
-                "title": self.title,
-                "content": self.content,
-                "created_at": self.created_at_long_suffix,
-                "updated_at": self.updated_at_long_suffix,
-                "total_score": self.total_score,
-                "num_votes": len(self.votes),
-                "num_answers": len(self.answers),
-                "Tags": [tag.to_dict() for tag in self.tags],
-                "Votes": [
-                    vote.to_dict()
-                    for vote in self.votes
-                    if current_user.is_authenticated and vote.user_id == current_user.id
-                ],
-                "QuestionUser": self.user.to_dict_basic_info(),
-                "Comments": [
-                    comment.for_question_detail() for comment in self.comments
-                ],
-                "Answers": [answer.for_question_detail() for answer in self.answers],
+            "id":self.id,
+            "questionSave": status,
+            "title":self.title,
+            "content": self.content,
+            "created_at": self.formatted_created_at,
+            "updated_at": self.formatted_updated_at,
+            "total_score": self.total_score,
+            "num_votes": len(self.votes),
+            "num_answers": len(self.answers),
+            "Tags": [tag.to_dict() for tag in self.tags],
+            "Votes":[vote.to_dict() for vote in self.votes if current_user.is_authenticated and vote.user_id == current_user.id],
+            "QuestionUser":self.user.to_dict_basic_info(),
+            "Comments":[comment.for_question_detail() for comment in self.comments],
+            "Answers":[answer.for_question_detail() for answer in self.answers],
             }
         return {
             "id": self.id,
@@ -109,15 +113,3 @@ class Question(Timestamp):
             or 0
         )
         session.commit()
-
-    def for_homepage(self):
-        return {
-            "id": self.id,
-            "title": self.title,
-            "total_score": self.total_score,
-            "answers_count": len(self.answers),
-            "comments_count": len(self.comments),
-            "tags": [tag.to_dict() for tag in self.tags],
-            "created_at": self.created_at_long_suffix,
-            "updated_at": self.updated_at_long_suffix,
-        }

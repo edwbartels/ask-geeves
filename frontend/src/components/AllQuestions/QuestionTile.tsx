@@ -18,11 +18,14 @@ export const QuestionTile = ({ questionId }: Props) => {
     day: "numeric",
     year: "numeric",
   })
+  const numAnswersText =
+    question.num_answers + " answer" + (question.num_answers === 1 ? "" : "s")
+
   return (
     <div className="question-tile">
       <div className="question-stats">
         <p>{question.total_score}</p>
-        <p>## answers</p>
+        <p>{numAnswersText}</p>
       </div>
       <div className="question-preview">
         <p>
@@ -32,7 +35,7 @@ export const QuestionTile = ({ questionId }: Props) => {
         <div>
           <p>Question tags</p>
           <p>
-            Written by {writer.first_name} on {createdDate}
+            Written by {writer.first_name} on {question.created_at}
           </p>
         </div>
       </div>

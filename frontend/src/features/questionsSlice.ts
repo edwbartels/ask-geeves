@@ -139,13 +139,25 @@ export const fetchOneQuestion = createAsyncThunk<
   const response = await csrfFetch(`/api/questions/${id}`)
   if (response.ok) {
     const oneQuestion: FetchOneQuestionResponse = await response.json()
-    const { Tags, Votes, QuestionUser, Comments, Answers, ...remaining } =
-      oneQuestion
+    const {
+      Tags,
+      User: QuestionUser,
+      User: { Votes },
+      Comments,
+      Answers,
+      Saves,
+      ...remaining
+    } = oneQuestion.question
 
     // Unpack API response
     // Make payload for questions and users slices
     const tagIds = Tags.map(tag => tag.id)
-    const questionPayload = { ...remaining, tagIds }
+    const questionPayload = {
+      ...remaining,
+      tagIds,
+      num_votes: 100,
+      num_answers: 100,
+    }
     const tagsPayload = Tags
     const votesPayload = Votes
 
@@ -155,13 +167,14 @@ export const fetchOneQuestion = createAsyncThunk<
     const usersPayload = []
     const allReturnedUsers = [
       QuestionUser,
-      ...Comments.map(comment => comment.CommentUser),
-      ...Answers.map(answer => answer.AnswerUser),
+      ...Comments.map(comment => comment.User),
+      ...Answers.map(answer => answer.User),
     ]
     for (const user of allReturnedUsers) {
       if (!uniqueUserIds.has(user.id)) {
-        uniqueUserIds.add(user.id)
-        usersPayload.push(user)
+        const { Vote, ...remainingUser } = user
+        uniqueUserIds.add(remainingUser.id)
+        usersPayload.push(remainingUser)
       }
     }
 

@@ -53,6 +53,30 @@ export type UnifiedQuestion = Spread<Question>
 export type UnifiedAnswer = Spread<Answer>
 export type UnifiedComment = Spread<Comment>
 
+export type APIVote = {
+  content_type: "question" | "answer"
+  content_id: number
+  value: -1 | 0 | 1
+}
+export type APISave = Save & {
+  User: APIUser
+}
+export type APITag = {
+  id: number
+  name: string
+}
+export type APIUser = User & {
+  Votes: APIVote[]
+}
+export type APIComment = Comment & {
+  User: APIUser
+  Saves: APISave[]
+}
+export type APIAnswer = Answer & {
+  User: APIUser
+  Comments: APIComment[]
+  Saves: APISave[]
+}
 export interface FetchAllQuestionsResponse_old {
   questions: Spread<
     Omit<Question, "user_id"> & {
@@ -89,11 +113,8 @@ export interface FetchAllQuestionsResponse {
     num_answers: number // db aggregate function
 
     // user object that matches questioni writer
-    User: {
-      id: number
-      first_name: string
-      last_name: string
-      username: string
+    User: User & {
+      Votes: APIVote[]
     }
 
     // array of tag objects

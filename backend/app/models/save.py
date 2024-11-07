@@ -18,8 +18,8 @@ class Save(db.Model):
             "id": self.id,
             "content_id": self.content_id,
             "content_type": self.content_type,
-            "user": self.user.to_dict(),
             "parent_type": self.parent_type,
+            "User": self.user.to_dict(),
         }
 
     __table_args__ = (

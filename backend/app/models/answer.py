@@ -66,15 +66,15 @@ class Answer(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "total_score": self.total_score,
             "question_id": self.question_id,
-            "content": self.content,
+            "total_score": self.total_score,
             "accepted": self.accepted,
+            "content": self.content,
             "created_at": self.formatted_created_at,
             "updated_at": self.formatted_updated_at,
-            "user": self.user.to_dict(),
-            "comments": [comment.to_dict() for comment in self.comments],
-            "saves": [save.to_dict() for save in self.saves],
+            "User": self.user.to_dict(),
+            "Comments": [comment.to_dict() for comment in self.comments],
+            "Saves": [save.to_dict() for save in self.saves],
         }
 
     def update_total_score(self, session):

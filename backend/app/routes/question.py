@@ -8,38 +8,20 @@ from ..utils.decorator import (
     login_check,
     question_exist_check,
     question_ownership_check,
+    collect_query_params,
 )
 from sqlalchemy.orm import noload, lazyload, load_only
 
 bp = Blueprint("question", __name__, url_prefix="/api/questions")
 
-SORT_BY_MAP = {
-    "created_at": Question.created_at,
-    "updated_at": Question.updated_at,
-    "total_score": Question.total_score,
-}
-
-SORT_ORDER_MAP = {"asc": asc, "desc": desc}
-
 
 @bp.route("/", methods=["GET"])
-def get_all_questions():
+@collect_query_params(Question)
+def get_all_questions(page, per_page, sort_column, sort_order):
     # all_questions = Question.query.options(noload(Question.saves),noload(Question.answers),noload(Question.comments)).all()
     # all_questions = Question.query.options(lazyload(Question.answers)).all()
     # all_questions = Question.query.options(load_only(Question.id, Question.title)).all()
 
-    page, per_page, sort_by, order = (
-        request.args.get(key, default, type=typ)
-        for key, default, typ in [
-            ("page", 1, int),
-            ("per_page", 15, int),
-            ("sort_by", "created_at", str),
-            ("order", "desc", str),
-        ]
-    )
-
-    sort_column = SORT_BY_MAP.get(sort_by, Question.created_at)
-    sort_order = SORT_ORDER_MAP.get(order, desc)
     filter_tag = request.args.get("filter_tag")
 
     if filter_tag:
@@ -50,7 +32,6 @@ def get_all_questions():
     questions = questions.order_by(sort_order(sort_column)).paginate(
         page=page, per_page=per_page
     )
-    total_pages = questions.pages
 
     if not questions.items:
         return jsonify({"message": "No questions found"}), 404
@@ -60,7 +41,7 @@ def get_all_questions():
         {
             "page": page,
             "size": len(questions.items),
-            "num_pages": total_pages,
+            "num_pages": questions.pages,
             "questions": questions_list,
         }
     ), 200
@@ -77,32 +58,20 @@ def get_question_by_id(question_id):
 
 @bp.route("/current", methods=["GET"])
 @login_check
-def get_questions_by_current_user():
-    page, per_page, sort_by, order = (
-        request.args.get(key, default, type=typ)
-        for key, default, typ in [
-            ("page", 1, int),
-            ("per_page", 15, int),
-            ("sort_by", "created_at", str),
-            ("order", "desc", str),
-        ]
+@collect_query_params(Question)
+def get_questions_by_current_user(page, per_page, sort_column, sort_order):
+    questions = (
+        Question.query.filter(Question.user_id == current_user.id)
+        .order_by(sort_order(sort_column))
+        .paginate(page=page, per_page=per_page)
     )
 
-    sort_column = SORT_BY_MAP.get(sort_by, Question.created_at)
-    sort_order = SORT_ORDER_MAP.get(order, desc)
-
-    questions = Question.query.filter(user_id=current_user.id).order_by(
-        sort_order(sort_column).paginate(page=page, per_page=per_page)
-    )
-    # paginated_questions = questions.paginate(page=page, per_page=per_page)
-    total_pages = questions.pages
-
-    questions_list = [question.to_dict() for question in questions]
+    questions_list = [question.to_dict() for question in questions.items]
     return jsonify(
         {
             "page": page,
-            "size": per_page,
-            "total_pages": total_pages,
+            "size": len(questions.items),
+            "total_pages": questions.pages,
             "questions_owned": questions_list,
         }
     ), 200

@@ -67,9 +67,14 @@ class Answer(db.Model):
         return f"<Answer {self.id}. Accept: {'Yes' if self.accepted else 'No'}"
 
     def to_dict(self):
+        saves = [save.to_dict() for save in self.saves if current_user.is_authenticated and save.user_id == current_user.id]
+        status = False
+        if saves:
+            status = True
         return {
             "id": self.id,
             "question_id": self.question_id,
+            "answerSave":status,
             "total_score": self.total_score,
             "accepted": self.accepted,
             "content": self.content,
@@ -77,7 +82,6 @@ class Answer(db.Model):
             "updated_at": self.formatted_updated_at,
             "AnswerUser": self.user.to_dict_basic_info(),
             "Comments": [comment.to_dict() for comment in self.comments],
-            "Saves": [save.to_dict() for save in self.saves if current_user.is_authenticated and current_user.id == save.user_id],
         }
 
     def update_total_score(self, session):
@@ -90,9 +94,14 @@ class Answer(db.Model):
         session.commit()
 
     def for_question_detail(self):
+        saves = [save.to_dict() for save in self.saves if current_user.is_authenticated and save.user_id == current_user.id]
+        status = False
+        if saves:
+            status = True
         return {
             "id": self.id,
             "question_id": self.question_id,
+            "answerSave":status,
             "accepted": self.accepted,
             "content": self.content,
             "created_at": self.formatted_created_at,

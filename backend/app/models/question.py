@@ -1,33 +1,14 @@
 from .db import db
-from datetime import datetime, timezone
+from .base_models import Timestamp
 from .vote import Vote
 from .join_tables import question_tags
 from flask_login import current_user
 
-def formatted_date_with_suffix(date):
-    if date is None:
-        return ""
 
-    day = int(date.strftime("%d"))
-    suffix = (
-        "th" if 11 <= day <= 13 else {1: "st", 2: "nd", 3: "rd"}.get(day % 10, "th")
-    )
-    return date.strftime(f"%B {day}{suffix}, %Y")
-
-
-class Question(db.Model):
-    __tablename__ = "questions"
-
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+class Question(Timestamp):
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     content = db.Column(db.Text, nullable=False)
     title = db.Column(db.Text, nullable=False)
-    created_at = db.Column(
-        db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
-    )
-    updated_at = db.Column(
-        db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
-    )
     total_score = db.Column(db.Integer, default=0)
 
     answers = db.relationship(
@@ -59,16 +40,14 @@ class Question(db.Model):
         lazy=True,
     )
 
-    @property
-    def formatted_created_at(self):
-        return formatted_date_with_suffix(self.created_at)
-
-    @property
-    def formatted_updated_at(self):
-        return formatted_date_with_suffix(self.updated_at)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.set_update("content", "title")
 
     def __repr__(self):
         return f"Question {self.id}"
+
+    # @ Reference .models/formatting.md for date-format key
 
     def to_dict(self, homepage=False, detail_page=False):
         if homepage:
@@ -82,8 +61,8 @@ class Question(db.Model):
                 "questionSave":status,
                 "title": self.title,
                 "content": self.content,
-                "created_at": self.formatted_created_at,
-                "updated_at": self.formatted_updated_at,
+                "created_at": self.created_at_long_suffix,
+                "updated_at": self.updated_at_long_suffix,
                 "total_score": self.total_score,
                 "num_answers": len(self.answers),
                 "num_votes": len(self.votes),
@@ -116,8 +95,8 @@ class Question(db.Model):
             "user_id": self.user.id,
             "title": self.title,
             "content": self.content,
-            "created_at": self.formatted_created_at,
-            "updated_at": self.formatted_updated_at,
+            "created_at": self.created_at_long_suffix,
+            "updated_at": self.updated_at_long_suffix,
             "total_score": self.total_score,
             "User": self.user.to_dict(),
             "Answers": [answer.to_dict() for answer in self.answers],

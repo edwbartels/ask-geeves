@@ -1,33 +1,15 @@
 from .db import db
+from .base_models import Timestamp
 from .vote import Vote
-from datetime import datetime, timezone
 from flask_login import current_user
 
-def formatted_date_with_suffix(date):
-    if date is None:
-        return ""
 
-    day = int(date.strftime("%d"))
-    suffix = (
-        "th" if 11 <= day <= 13 else {1: "st", 2: "nd", 3: "rd"}.get(day % 10, "th")
-    )
-    return date.strftime(f"%B {day}{suffix}, %Y")
-
-
-class Answer(db.Model):
-    __tablename__ = "answers"
-
-    id = db.Column(db.Integer, primary_key=True)
+class Answer(Timestamp):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey("questions.id"), nullable=False)
     content = db.Column(db.Text, nullable=False)
     accepted = db.Column(db.Boolean, nullable=False, default=False)
-    created_at = db.Column(
-        db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
-    )
-    updated_at = db.Column(
-        db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
-    )
+
     total_score = db.Column(db.Integer, default=0)
 
     comments = db.relationship(
@@ -37,7 +19,7 @@ class Answer(db.Model):
         cascade="all, delete-orphan",
         viewonly=True,
         uselist=True,
-        lazy=True
+        lazy=True,
     )
     saves = db.relationship(
         "Save",
@@ -45,23 +27,19 @@ class Answer(db.Model):
         cascade="all, delete-orphan",
         viewonly=True,
         uselist=True,
-        lazy=True
+        lazy=True,
     )
     votes = db.relationship(
         "Vote",
         primaryjoin="and_(foreign(Vote.content_id)==Answer.id ,Vote.content_type=='answer')",
         cascade="all, delete-orphan",
         viewonly=True,
-        lazy=True
+        lazy=True,
     )
 
-    @property
-    def formatted_created_at(self):
-        return formatted_date_with_suffix(self.created_at)
-
-    @property
-    def formatted_updated_at(self):
-        return formatted_date_with_suffix(self.updated_at)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.set_update("content")
 
     def __repr__(self):
         return f"<Answer {self.id}. Accept: {'Yes' if self.accepted else 'No'}"
@@ -78,8 +56,8 @@ class Answer(db.Model):
             "total_score": self.total_score,
             "accepted": self.accepted,
             "content": self.content,
-            "created_at": self.formatted_created_at,
-            "updated_at": self.formatted_updated_at,
+            "created_at": self.created_at_long_suffix,
+            "updated_at": self.updated_at_long_suffix,
             "AnswerUser": self.user.to_dict_basic_info(),
             "Comments": [comment.to_dict() for comment in self.comments],
         }
@@ -104,9 +82,9 @@ class Answer(db.Model):
             "answerSave":status,
             "accepted": self.accepted,
             "content": self.content,
-            "created_at": self.formatted_created_at,
-            "updated_at": self.formatted_updated_at,
+            "created_at": self.created_at_long_suffix,
+            "updated_at": self.updated_at_long_suffix,
             "total_score": self.total_score,
-            "AnswerUser":self.user.to_dict_basic_info(),
-            "Comments":[comment.for_question_detail() for comment in self.comments],
+            "AnswerUser": self.user.to_dict_basic_info(),
+            "Comments": [comment.for_question_detail() for comment in self.comments],
         }

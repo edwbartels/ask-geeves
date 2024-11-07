@@ -35,11 +35,11 @@ export const CreateOrEditPost = () => {
   }
   return (
     <div className="post">
-      <h1>New Question</h1>
+      <h1 className="new-question-title">New Question</h1>
       <form onSubmit={handleSubmitForm}>
         <div>
           <label>
-            <div>Title*</div>
+            <div className="title-required">Title*</div>
             <input
               name="title"
               className="post-title-input"
@@ -52,7 +52,7 @@ export const CreateOrEditPost = () => {
         </div>
         <div>
           <label>
-            <div>Question*</div>
+            <div className="question-required">Question*</div>
             <textarea
               className="post-body-textarea"
               // cols={80}
@@ -64,8 +64,10 @@ export const CreateOrEditPost = () => {
             />
           </label>
         </div>
-        <button>Submit question</button>
-        <button>Cancel</button>
+        <div className="buttons-div">
+          <button className="submit-question">Submit question</button>
+          <button className="cancel-question">Cancel</button>
+        </div>
       </form>
 
       <RenderPost postContent={form.body} />

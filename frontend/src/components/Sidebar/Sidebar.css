@@ -1,8 +1,29 @@
 /* NavLink active links */
 .sidebar a {
-  padding: 5px;
+  padding-top: 25px;
+  padding-left: 20px;
+  background-color: rgb(19, 16, 16);
 }
 .sidebar .active {
-  background-color: lightgray;
   border-radius: 5px;
+  background-color: rgb(19, 16, 16);
+}
+
+.sidebar {
+  background-color: rgb(19, 16, 16);
+} 
+
+.home {
+  text-decoration: none;
+  color: white;
+}
+
+.questions {
+  text-decoration: none;
+  color: white;
+}
+
+.tagged {
+  text-decoration: none;
+  color: white;
 }

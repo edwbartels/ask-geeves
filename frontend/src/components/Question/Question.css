@@ -1,9 +1,18 @@
 .question-body {
   display: grid;
   grid-template-columns: 1fr 9fr;
+  margin-bottom: 20px;
 }
 
 .question-meta {
   display: flex;
   justify-content: space-between;
+}
+
+.questions-title {
+  color: white;
+}
+
+.answers-title {
+  color: white;
 }

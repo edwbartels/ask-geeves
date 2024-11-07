@@ -1,4 +1,31 @@
 .question-tile {
   display: grid;
   grid-template-columns: 2fr 8fr;
+  box-shadow: 0 0 10px 5px #60bcf0,
+            0 0 20px 7px #1aa5f3;
+  margin: 20px;
+}
+
+.question-summary {
+  color: white;
+}
+
+.question-tags {
+  color: white;
+}
+
+.votes {
+  color: white;
+}
+
+.answers {
+  color: white;
+}
+
+.views {
+  color: white;
+}
+
+.all-questions-title {
+  color: white;
 }

@@ -50,7 +50,7 @@ class User(db.Model, UserMixin):
             "last_name": self.last_name,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
-            "Votes":[vote.to_dict_session() for vote in self.votes]
+            "votes":[vote.to_dict_session() for vote in self.votes]
         }
     def to_dict_basic_info(self):
         return {

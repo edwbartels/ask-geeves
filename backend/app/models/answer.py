@@ -37,6 +37,7 @@ class Answer(db.Model):
         cascade="all, delete-orphan",
         viewonly=True,
         uselist=True,
+        lazy=True
     )
     saves = db.relationship(
         "Save",
@@ -44,12 +45,14 @@ class Answer(db.Model):
         cascade="all, delete-orphan",
         viewonly=True,
         uselist=True,
+        lazy=True
     )
     votes = db.relationship(
         "Vote",
         primaryjoin="and_(foreign(Vote.content_id)==Answer.id ,Vote.content_type=='answer')",
         cascade="all, delete-orphan",
         viewonly=True,
+        lazy=True
     )
 
     @property
@@ -85,3 +88,16 @@ class Answer(db.Model):
             or 0
         )
         session.commit()
+
+    def for_question_detail(self):
+        return {
+            "id": self.id,
+            "question_id": self.question_id,
+            "accepted": self.accepted,
+            "content": self.content,
+            "created_at": self.formatted_created_at,
+            "updated_at": self.formatted_updated_at,
+            "total_score": self.total_score,
+            "AnswerUser":self.user.to_dict_basic_info(),
+            "Comments":[comment.for_question_detail() for comment in self.comments],
+        }

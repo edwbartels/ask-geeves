@@ -47,7 +47,7 @@ class Question(Timestamp):
     def __repr__(self):
         return f"Question {self.id}"
 
-    # @ Reference .models/formatting.md for date format key
+    # @ Reference .models/formatting.md for date-format key
 
     def to_dict(self, homepage=False, detail_page=False):
         if homepage:

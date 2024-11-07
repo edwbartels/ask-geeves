@@ -36,12 +36,14 @@ class Comment(db.Model):
         cascade="all, delete-orphan",
         viewonly=True,
         uselist=True,
+        lazy=True
     )
     votes = db.relationship(
         "Vote",
         primaryjoin="and_(foreign(Vote.content_id) == Comment.id, Vote.content_type == 'comment')",
         cascade="all, delete-orphan",
         viewonly=True,
+        lazy=True
     )
 
     @property
@@ -76,3 +78,12 @@ class Comment(db.Model):
             or 0
         )
         session.commit()
+        
+    def for_question_detail(self):
+        return {
+            "id":self.id,
+            "content_type": self.content_type,
+            "content_id": self.content_id,
+            "content": self.content,
+            "CommentUser":self.user.to_dict_basic_info()
+        }

@@ -20,12 +20,12 @@ class User(db.Model, UserMixin):
         db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
     )
     questions = db.relationship(
-        "Question", backref="user", cascade="all, delete-orphan"
+        "Question", backref="user", cascade="all, delete-orphan",lazy=True
     )
-    answers = db.relationship("Answer", backref="user", cascade="all, delete-orphan")
-    comments = db.relationship("Comment", backref="user", cascade="all, delete-orphan")
-    saves = db.relationship("Save", backref="user", cascade="all, delete-orphan")
-    votes = db.relationship("Vote", backref="user", cascade="all, delete-orphan")
+    answers = db.relationship("Answer", backref="user", cascade="all, delete-orphan",lazy=True)
+    comments = db.relationship("Comment", backref="user", cascade="all, delete-orphan",lazy=True)
+    saves = db.relationship("Save", backref="user", cascade="all, delete-orphan",lazy=True)
+    votes = db.relationship("Vote", backref="user", cascade="all, delete-orphan",lazy=True)
 
     @property
     def password(self):
@@ -50,9 +50,9 @@ class User(db.Model, UserMixin):
             "last_name": self.last_name,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
-            "votes":[vote.to_dict() for vote in self.votes]
+            "Votes":[vote.to_dict_session() for vote in self.votes]
         }
-    def for_homepage(self):
+    def to_dict_basic_info(self):
         return {
             "id": self.id,
             "first_name": self.first_name,

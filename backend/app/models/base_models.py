@@ -24,43 +24,43 @@ class Timestamp(Base):
         db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
     )
 
-    @format_date("short")
     @property
+    @format_date("short")
     def created_at_short(self):
         return self.created_at
 
-    @format_date("my")
     @property
+    @format_date("my")
     def created_at_my(self):
         return self.created_at
 
-    @format_date("long")
     @property
+    @format_date("long")
     def created_at_long(self):
         return self.created_at
 
-    @format_date("long_suffix")
     @property
+    @format_date("long_suffix")
     def created_at_long_suffix(self):
         return self.created_at
 
-    @format_date("short")
     @property
+    @format_date("short")
     def updated_at_short(self):
         return self.updated_at
 
-    @format_date("my")
     @property
+    @format_date("my")
     def updated_at_my(self):
         return self.updated_at
 
-    @format_date("long")
     @property
+    @format_date("long")
     def updated_at_long(self):
         return self.updated_at
 
-    @format_date("long_suffix")
     @property
+    @format_date("long_suffix")
     def updated_at_long_suffix(self):
         return self.updated_at
 

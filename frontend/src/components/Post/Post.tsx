@@ -76,29 +76,29 @@ export const Post = ({ type, id }: Props) => {
   }
   return (
     <div>
-      <div className="question-body">
+      <div className="post-body">
         <div>
-          <div>Up</div>
-          <div>{post.post.total_score}</div>
-          <div>Down</div>
-          <div>Save</div>
+          <div className="up-vote">Up</div>
+          <div className="vote-counter">{post.post.total_score}</div>
+          <div className="down-vote">Down</div>
+          <div className="save">Save</div>
         </div>
         <div id={permalink}>
           <RenderPost postContent={post.post.content} />
-          <div className="question-meta">
+          <div className="post-meta">
             <div>
-              <a href={`#${permalink}`}>Share</a> |<button>Like post</button>
-              {isUserPostWriter && <Link to={`edit`}>Edit {type}</Link>}
+              <a href={`#${permalink}`} className="share">Share</a> |<button className="like-post-button">Like post</button>
+              {isUserPostWriter && <Link to={`edit`} className="edit">Edit {type}</Link>}
               {isUserPostWriter && (
                 <button onClick={handleDeletePost}>Delete {type}</button>
               )}
             </div>
-            <div>
+            <div className="post-user">
               Posted by{" "}
-              <a href={`/users/userId/username`}>{postWriter.username}</a>
+              <a className="posted-by-user" href={`/users/userId/username`}>{postWriter.username}</a>
             </div>
           </div>
-          <div>Comments here</div>
+          <div className="comments-here">Comments here</div>
         </div>
       </div>
     </div>

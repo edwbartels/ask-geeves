@@ -28,17 +28,17 @@ export const QuestionMain = () => {
   const answerIds = question.answerIds
   return (
     <div>
-      <h1>{question.title}</h1>
+      <h1 className="question-title">{question.title}</h1>
       <Post type="question" id={questionIdNum} />
       <hr />
-      <h1>## Answers</h1>
-      {answerIds && answerIds.length > 0
+      <h1 className="answers-title">## Answers</h1>
+      {answerIds.length > 0
         ? answerIds.map(answerId => {
             return (
-              <>
-                <Post key={answerId} type="answer" id={answerId} />
+              <div className="post-key">
+                <Post key={answerId} type="Answer" id={answerId} />
                 <hr />
-              </>
+              </div>
             )
           })
         : "No one answered yet"}

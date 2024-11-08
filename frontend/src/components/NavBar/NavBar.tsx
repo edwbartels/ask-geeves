@@ -27,28 +27,30 @@ export const NavBar = () => {
   return (
     <nav className="nav-bar">
       <Logo />
-      <ul>
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/questions">Questions</NavLink>
-      </ul>
-      <p>Search bar</p>
+      <>
+        <NavLink to="/" className="home-links">Home</NavLink>
+        <NavLink to="/questions" className="question-links">Questions</NavLink>
+      </>
+      <form>
+        <input className="search-links" placeholder="Search..."/>
+      </form>
       {user ? `Welcome ${user?.first_name}` : ""}
-      <p>
-        <a href="/questions/ask">Post a question</a>
-      </p>
+        <a href="/questions/ask" className="post-links">Post a question</a>
       {!user ? (
-        <>
-          <OpenModalButton
+        <div className="nav-buttons">
+          <OpenModalButton 
+            additionalClassNames={["login-button"]}
             linkText="Log in"
             modalComponent={<LoginFormModal />}
-          />
+            />
           <OpenModalButton
+            additionalClassNames={["signup-button"]}
             linkText="Sign up"
             modalComponent={<SignupFormModal />}
           />
-        </>
+        </div>
       ) : (
-        <button onClick={() => dispatch(logoutAsync())}>Log out</button>
+        <button className="logout-button" onClick={() => dispatch(logoutAsync())}>Log out</button>
       )}
     </nav>
   )

@@ -18,7 +18,7 @@ class Vote(BelongsToUser):
     def parent_type(self):
         if self.content_type == "comment":
             comment = Comment.query.get(self.content_id)
-            return comment.parent_type if comment else None
+            return comment.content_type if comment else None
         return None
 
     @property
@@ -31,10 +31,10 @@ class Vote(BelongsToUser):
         elif self.content_type == "comment":
             comment = Comment.query.get(self.content_id)
             if comment:
-                if comment.parent_type == "question":
-                    return comment.parent_id
-                elif comment.parent_type == "answer":
-                    parent_answer = Answer.query.get(comment.parent_id)
+                if comment.content_type == "question":
+                    return comment.content_id
+                elif comment.content_type == "answer":
+                    parent_answer = Answer.query.get(comment.content_id)
                     return parent_answer.question_id if parent_answer else None
         return None
 

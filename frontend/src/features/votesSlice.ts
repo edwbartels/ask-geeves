@@ -5,9 +5,6 @@ import type {
   ActionCreatorWithPayload,
 } from "@reduxjs/toolkit"
 import { createAppSlice } from "../app/createAppSlice"
-import type { AppThunk } from "../app/store"
-// import { fetchCount } from "./counterAPI"
-import { csrfFetch } from "../app/csrfFetch"
 import { SessionResponse, restoreSession, loginAsync } from "./sessionSlice"
 
 export interface Vote {
@@ -36,7 +33,7 @@ const isLogInAction = (
 const initialState: VotesSliceState = {
   question: {},
   answer: {},
-  comment: {}
+  comment: {},
 }
 
 // If you are not using async thunks you can use the standalone `createSlice`.

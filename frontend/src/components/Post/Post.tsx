@@ -1,76 +1,97 @@
-import { useState } from "react"
-import { useAppSelector } from "../../app/hooks"
-import { Question, selectQuestionById } from "../../features/questionsSlice"
+import { Link, useNavigate } from "react-router-dom"
+import { useAppSelector, useAppDispatch } from "../../app/hooks"
+import { selectSession } from "../../features/sessionSlice"
 import { selectUserById } from "../../features/usersSlice"
-import { RenderPost } from "./RenderPost"
-import {} from "../../features/api-types"
+import {
+  Question,
+  selectQuestionById,
+  deleteOneQuestion,
+} from "../../features/questionsSlice"
 import { selectAnswerById, Answer } from "../../features/answersSlice"
-import { RootState } from "../../app/store"
+import { RenderPost } from "./RenderPost"
+
+const absurd = (input: never): never => input
+type PostType =
+  | {
+      type: "question"
+      post: Question
+    }
+  | {
+      type: "answer"
+      post: Answer
+    }
 
 interface Props {
   type: "question" | "answer"
   id: number
 }
 // Post renders top level question or answer
-
 export const Post = ({ type, id }: Props) => {
-  type qOrASelector = (state: RootState, id: number) => Question | Answer
-  const getQorASelector = (): qOrASelector => {
+  const returnQuestionOrAnswerPost = (
+    type: "question" | "answer",
+    id: number,
+  ): PostType => {
     if (type === "question") {
-      return selectQuestionById
+      const post = useAppSelector(state => selectQuestionById(state, id))
+      return { type: "question", post: post }
     } else if (type === "answer") {
-      return selectAnswerById
+      const post = useAppSelector(state => selectAnswerById(state, id))
+      return { type: "answer", post: post }
     } else {
-      return selectQuestionById
+      return absurd(type)
     }
   }
-  const postSelector = getQorASelector()
-  const post = useAppSelector(state => postSelector(state, id))
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const post = returnQuestionOrAnswerPost(type, id)
+  const { user } = useAppSelector(selectSession)
+  const isUserPostWriter = user && user.id === post.post.user_id
 
-  // Placeholder content to show Markdown transformation
-  const content = `# Heading level 1
-  
-  Some text here
-  
-  \`\`\` js
-  const App = () => {
-    return <h1>Hello world</h1>
-  }
-  \`\`\`
-  `
   if (!post) {
     // return <div>Loading post...</div>
     return <></>
   }
-  const getPermalinkTitle = (type: string, post: Question | Answer): string => {
-    const permalinkBase = `${type}-${post.id}`
-    if (type === "question") {
-      const { title } = post as Question
-      return `${permalinkBase}-${title.replaceAll(" ", "-").slice(0, 20).toLowerCase()}`
-    } else {
+
+  const getPermalinkTitle = (post: PostType) => {
+    const permalinkBase = `${post.type}`
+    if (post.type === "question") {
+      const { post: question } = post
+      return `${permalinkBase}-${question.id}-${question.title.replaceAll(" ", "-").slice(0, 20).toLowerCase()}`
+    } else if (post.type === "answer") {
       return permalinkBase
+    } else {
+      const absurd = (input: never): never => input
+      return absurd(post)
     }
   }
-  const permalink = getPermalinkTitle(type, post)
+
+  const permalink = getPermalinkTitle(post)
   const postWriter = useAppSelector(state =>
-    selectUserById(state, post.user_id),
+    selectUserById(state, post.post.user_id),
   )
+
+  const handleDeletePost = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    dispatch(deleteOneQuestion(id))
+    navigate("/questions")
+  }
   return (
     <div>
       <div className="question-body">
         <div>
           <div>Up</div>
-          <div>{post.total_score}</div>
+          <div>{post.post.total_score}</div>
           <div>Down</div>
           <div>Save</div>
         </div>
         <div id={permalink}>
-          <RenderPost postContent={post.content} />
+          <RenderPost postContent={post.post.content} />
           <div className="question-meta">
             <div>
-              <a href={`#${permalink}`}>Share</a> |
-              <a href={`/${type}s/${id}/edit`}>Edit {type}</a> |
-              <button>Like post</button>
+              <a href={`#${permalink}`}>Share</a> |<button>Like post</button>
+              {isUserPostWriter && <Link to={`edit`}>Edit {type}</Link>}
+              {isUserPostWriter && (
+                <button onClick={handleDeletePost}>Delete {type}</button>
+              )}
             </div>
             <div>
               Posted by{" "}

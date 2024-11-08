@@ -83,9 +83,6 @@ class Question(BelongsToUser, HasTimestamps, HasVotes):
                 status = True
             return {
                 "id": self.id,
-
-
-
                 "questionSave": status,
                 "title": self.title,
                 "content": self.content,

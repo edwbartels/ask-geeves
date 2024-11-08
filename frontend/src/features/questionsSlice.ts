@@ -7,10 +7,7 @@ import {
 } from "@reduxjs/toolkit"
 import { createAppSlice } from "../app/createAppSlice"
 import type { AppThunk } from "../app/store"
-// import { fetchCount } from "./counterAPI"
-import { csrfFetch } from "../app/csrfFetch"
 import {
-  //   User,
   FetchAllQuestionsResponse,
   FetchOneQuestionResponse,
   Tag,
@@ -79,7 +76,7 @@ export const fetchAllQuestions = createAsyncThunk<
   const { page } = pageSettings || 1
   const { size } = pageSettings || 15
   const fetchUrl = `/api/questions/?page=${page}&per_page=${size}&sort_by=id`
-  const response = await csrfFetch(fetchUrl)
+  const response = await fetch(fetchUrl)
   if (response.ok) {
     const allQuestions: FetchAllQuestionsResponse = await response.json()
     const { page, size, num_pages, questions } = allQuestions
@@ -128,7 +125,7 @@ export const fetchOneQuestion = createAsyncThunk<
   number,
   { rejectValue: FetchAllQuestionsError }
 >("questions/fetchOne", async (id, thunkApi) => {
-  const response = await csrfFetch(`/api/questions/${id}`)
+  const response = await fetch(`/api/questions/${id}`)
   if (response.ok) {
     const oneQuestion: FetchOneQuestionResponse = await response.json()
     const { Tags, Votes, QuestionUser, Comments, Answers, ...remaining } =

@@ -29,31 +29,37 @@ def get_all_saves():
     for saved_question in question_list:
         question = Question.query.get(saved_question["content_id"])
         questions.append(question.to_dict())
-    final =[]
+    final = []
     for question in questions:
         newQ = {
-            "question_id":question["id"],
-            "title":question["title"],
+            "question_id": question["id"],
+            "title": question["title"],
             # "content_type":"question",
-            "question_content":question["content"]
+            "question_content": question["content"],
         }
         final.append(newQ)
-    answer_list = [save for save in saves_list if save["parent_type"] is None and save["content_type"] == "answer"]
+    answer_list = [
+        save
+        for save in saves_list
+        if save["parent_type"] is None and save["content_type"] == "answer"
+    ]
     for saved_answer in answer_list:
         answer = Answer.query.get(saved_answer["content_id"])
         question = Question.query.get(answer.question_id)
         newA = {
-                "question_id": question.id,
-                "title": question.title,
-                "question_content": question.content,
-                "answer_id":answer.id,
-                # "content_type":"answer",
-                "answer_content": answer.content,
-            }
+            "question_id": question.id,
+            "title": question.title,
+            "question_content": question.content,
+            "answer_id": answer.id,
+            # "content_type":"answer",
+            "answer_content": answer.content,
+        }
         final.append(newA)
     comment_list = [
-        save for save in saves_list
-        if save["parent_type"] in ["question", "answer"] and save["content_type"] == "comment"
+        save
+        for save in saves_list
+        if save["parent_type"] in ["question", "answer"]
+        and save["content_type"] == "comment"
     ]
 
     for saved_comment in comment_list:
@@ -65,8 +71,8 @@ def get_all_saves():
                 "title": question.title,
                 # "content_type": "comment",
                 "question_content": question.content,
-                "parent_type":"question",
-                "comment_id":saved_comment["content_id"],
+                "parent_type": "question",
+                "comment_id": saved_comment["content_id"],
                 "comment_content": comment.content,
             }
             final.append(new_comment)
@@ -79,9 +85,9 @@ def get_all_saves():
                 "title": question.title,
                 # "content_type": "comment",
                 "question_content": question.content,
-                "parent_type":"answer",
+                "parent_type": "answer",
                 # "answer_content": answer.content,
-                "comment_id":saved_comment["content_id"],
+                "comment_id": saved_comment["content_id"],
                 "comment_content": comment.content,
             }
             final.append(new_comment)
@@ -90,6 +96,7 @@ def get_all_saves():
 
 
 @bp.route("/<int:question_id>/saves", methods=["POST"])
+# @csrf_protect
 @login_check
 @question_exist_check
 def add_question_to_saves(question_id):
@@ -107,6 +114,7 @@ def add_question_to_saves(question_id):
 
 
 @bp.route("/<int:question_id>/saves", methods=["DELETE"])
+# @csrf_protect
 @login_check
 @question_exist_check
 def delete_question_from_saves(question_id):
@@ -121,6 +129,7 @@ def delete_question_from_saves(question_id):
 
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>/saves", methods=["POST"])
+# @csrf_protect
 @login_check
 @answer_exist_check
 def add_answer_to_saves(question_id, answer_id):
@@ -138,6 +147,7 @@ def add_answer_to_saves(question_id, answer_id):
 
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>/saves", methods=["DELETE"])
+# @csrf_protect
 @login_check
 @answer_exist_check
 def delete_answer_from_saves(question_id, answer_id):
@@ -152,6 +162,7 @@ def delete_answer_from_saves(question_id, answer_id):
 
 
 @bp.route("/<int:question_id>/comments/<int:comment_id>/saves", methods=["POST"])
+# @csrf_protect
 @login_check
 @comment_for_question_exist_check
 def add_question_comment_to_saves(question_id, comment_id):
@@ -173,6 +184,7 @@ def add_question_comment_to_saves(question_id, comment_id):
 
 
 @bp.route("/<int:question_id>/comments/<int:comment_id>/saves", methods=["DELETE"])
+# @csrf_protect
 @login_check
 @comment_for_question_exist_check
 def delete_question_comment_from_saves(question_id, comment_id):
@@ -214,6 +226,7 @@ def add_answer_comment_to_saves(question_id, answer_id, comment_id):
     "/<int:question_id>/answers/<int:answer_id>/comments/<int:comment_id>/saves",
     methods=["DELETE"],
 )
+# @csrf_protect
 @login_check
 @comment_for_answer_exist_check
 def delete_answer_comment_from_saves(question_id, answer_id, comment_id):

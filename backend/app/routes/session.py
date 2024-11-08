@@ -14,6 +14,7 @@ def get_current_user():
 
 
 @bp.route("/", methods=["POST"])
+# @csrf_protect
 def login():
     if current_user.is_authenticated:
         return jsonify({"message": "already logged in bro"})
@@ -28,17 +29,17 @@ def login():
 
     errors = {}
     if not credential:
-        errors["credential"]="username/email is required"
+        errors["credential"] = "username/email is required"
     if not password:
-        errors["credential"]='password is required'
+        errors["credential"] = "password is required"
     if errors:
-        return jsonify({"message":"Bad request","error": errors}), 400
+        return jsonify({"message": "Bad request", "error": errors}), 400
 
     user = User.query.filter(
         or_(User.username == credential, User.email == credential)
     ).first()
     if not user:
-        return jsonify({"error":"user not found"}),404
+        return jsonify({"error": "user not found"}), 404
     if not user.check_password(password):
         return jsonify({"error": "Invalid password"}), 400
 
@@ -47,7 +48,9 @@ def login():
 
 
 @bp.route("/", methods=["DELETE"])
+# @csrf_protect
 def logout():
+    """this is a docustring"""
     if not current_user.is_authenticated:
         return jsonify({"error": "No user logged in"}), 401
 

@@ -1,9 +1,10 @@
 from flask import Blueprint, jsonify, request
 from flask_login import current_user
-from sqlalchemy import asc, desc
+from sqlalchemy import asc, desc  # noqa
 from ..models.answer import Answer
 from ..models.db import db
 from ..utils.decorator import (
+    csrf_protect,
     login_check,
     question_exist_check,
     question_ownership_check,
@@ -71,6 +72,7 @@ def get_all_answers_by_questionId_and_currentUser(question_id):
 @bp.route("/<int:question_id>/answers", methods=["POST"])
 @login_check
 @question_exist_check
+@csrf_protect
 def create_answer_by_questionId(question_id):
     data = request.get_json()
     new_content = data.get("content")
@@ -87,6 +89,7 @@ def create_answer_by_questionId(question_id):
 
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>", methods=["PUT"])
+@csrf_protect
 @login_check
 @answer_exist_check
 @answer_ownership_check
@@ -102,6 +105,7 @@ def edit_answer_by_questionId_and_answerId(question_id, answer_id):
 
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>", methods=["DELETE"])
+@csrf_protect
 @login_check
 @answer_exist_check
 @answer_ownership_check
@@ -113,6 +117,7 @@ def delete_answer_by_questionId_and_answerId(question_id, answer_id):
 
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>/accept", methods=["PUT"])
+@csrf_protect
 @login_check
 @question_exist_check
 @question_ownership_check

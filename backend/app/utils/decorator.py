@@ -1,10 +1,24 @@
 from flask import jsonify, request
 from flask_login import current_user
+from flask_wtf.csrf import validate_csrf
 from functools import wraps
 from sqlalchemy import asc, desc
 from ..models.question import Question
 from ..models.answer import Answer
 from ..models.comment import Comment
+
+
+def csrf_protect(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            csrf_token = request.headers.get("X-CSRF-Token")
+            validate_csrf(csrf_token)  # Validate against the token in the header
+        except Exception as e:
+            return jsonify({"error": f"CSRF token validation failed: {str(e)}"}), 400
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
 def login_check(func):

@@ -1,10 +1,11 @@
 from flask import Blueprint, jsonify, request
 from flask_login import current_user
-from sqlalchemy import asc, desc
+from sqlalchemy import asc, desc  # noqa
 from ..models.question import Question
 from ..models.tag import Tag
 from ..models.db import db
 from ..utils.decorator import (
+    csrf_protect,
     login_check,
     question_exist_check,
     question_ownership_check,
@@ -100,6 +101,7 @@ def get_questions_by_userId(user_id, page, per_page, sort_column, sort_order):
 
 
 @bp.route("/", methods=["POST"])
+@csrf_protect
 @login_check
 def create_question():
     data = request.get_json()
@@ -137,6 +139,7 @@ def create_question():
 
 
 @bp.route("/<int:question_id>", methods=["PUT"])
+@csrf_protect
 @login_check
 @question_exist_check
 @question_ownership_check
@@ -161,6 +164,7 @@ def edit_question(question_id):
 
 
 @bp.route("/<int:question_id>", methods=["DELETE"])
+@csrf_protect
 @login_check
 @question_exist_check
 @question_ownership_check

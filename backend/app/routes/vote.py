@@ -69,3 +69,11 @@ def add_vote():
         content.update_total_score(db.session)
 
     return jsonify({"message": "⭐I VOTED!⭐🦅🦅"}), 200
+
+@bp.route("/vote/current")
+@login_check
+def get_all_votes_for_current_user():
+    user_id = current_user.id
+    votes = Vote.query.filter_by(user_id=user_id)
+    vote_list = [vote.to_dict() for vote in votes]
+    return jsonify({"votes":vote_list})

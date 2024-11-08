@@ -36,7 +36,7 @@ export const QuestionMain = () => {
         ? answerIds.map(answerId => {
             return (
               <div className="post-key">
-                <Post key={answerId} type="Answer" id={answerId} />
+                <Post key={answerId} type="answer" id={answerId} />
                 <hr />
               </div>
             )

@@ -16,6 +16,7 @@ import { HomePage } from "./components/HomePage/HomePage"
 import { AllQuestions } from "./components/AllQuestions/AllQuestions"
 import { QuestionMain } from "./components/Question/QuestionMain"
 import { CreateOrEditPost } from "./components/Post/CreateOrEditPost"
+import { Footer } from "./components/Footer/Footer"
 
 import { restoreSession } from "./features/sessionSlice"
 
@@ -27,6 +28,7 @@ const Layout = () => {
         <Sidebar />
         <Outlet />
       </div>
+      <Footer />
     </>
   )
 }

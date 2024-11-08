@@ -1,0 +1,48 @@
+
+
+.list-title {
+    color: white;
+}
+
+.questions-link {
+    color: white;
+    text-decoration: none;
+}
+
+.signup-link {
+    color: white;
+    text-decoration: none;
+}
+
+.about-us-link {
+    color: white;
+}
+
+.contact-us-link {
+    color: white;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.middle-container-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 40px;
+}
+
+.right-container-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.computer-image {
+    max-height: 300px;
+}
+

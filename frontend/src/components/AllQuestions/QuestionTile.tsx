@@ -24,18 +24,18 @@ export const QuestionTile = ({ questionId }: Props) => {
   return (
     <div className="question-tile">
       <div className="question-stats">
-        <p>{question.total_score}</p>
-        <p>{numAnswersText}</p>
+        <p className="votes">{question.total_score}</p>
+        <p className="answers">{numAnswersText}</p>
       </div>
-      <div className="question-preview">
+      <div className="question-block">
         <p>
-          <a href={`questions/${questionId}`}>
+          <a className="sub-title" href={`questions/${questionId}`}>
             {question.id} - {question.title}
           </a>
         </p>
-        <p>{question.content}</p>
+        <p  className="question-summary">{question.content}</p>
         <div>
-          <p>Question tags</p>
+          <p className="question-tags">Question tags</p>
           <p>
             Written by {writer.first_name} on {question.created_at}
           </p>

@@ -1,6 +1,7 @@
 .question-body {
   display: grid;
   grid-template-columns: 1fr 9fr;
+  margin-bottom: 20px;
 }
 
 .question-meta {
@@ -34,4 +35,86 @@
   width: 100%;
   text-wrap: nowrap;
   padding: 10px;
+}
+
+.question-title {
+  color: white;
+}
+
+.answers-title {
+  color: white;
+}
+
+.post-key {
+  color: white;
+}
+
+.like-post-button {
+  margin-left: 10px;
+  border-radius: 6px;
+  font-family: "Clip";
+  text-transform: uppercase;
+  font-size: 1em;
+  background-color: black;
+}
+
+.like-post-button {
+  font-size: 1rem;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  color: hsl(317 100% 54%);
+  border: hsl(317 100% 54%) 0.125em solid;
+  padding: 0.25em 1em;
+  border-radius: 0.25em;
+
+  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
+
+  box-shadow: inset 0 0 0.5em 0 hsl(317 100% 54%), 0 0 0.5em 0 hsl(317 100% 54%);
+
+  position: relative;
+}
+
+.like-post-button::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  background: hsl(317 100% 54%);
+  top: 120%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  transform: perspective(1em) rotateX(40deg) scale(1, 0.35);
+  filter: blur(1em);
+  opacity: 0.7;
+}
+
+.like-post-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 0 2em 0.5em hsl(317 100% 54%);
+  opacity: 0;
+  background-color: hsl(317 100% 54%);
+  z-index: -1;
+  transition: opacity 100ms linear;
+}
+
+.like-post-button:hover,
+.like-post-button:focus {
+  color: white;
+  text-shadow: none;
+}
+
+.like-post-button:hover::before,
+.like-post-button:focus::before {
+  opacity: 1;
+}
+.like-post-button:hover::after,
+.like-post-button:focus::after {
+  opacity: 1;
 }

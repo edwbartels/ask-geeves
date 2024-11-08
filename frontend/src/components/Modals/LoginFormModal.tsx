@@ -3,7 +3,7 @@ import { useModal } from "../../context/Modal"
 import { Errors } from "../Errors/Errors"
 import { useAppDispatch } from "../../app/hooks"
 import { restoreSession } from "../../features/sessionSlice"
-import { loginAsync, loginDemoUserAsync } from "../../features/sessionSlice"
+import { loginAsync } from "../../features/sessionSlice"
 import { log } from "console"
 import "./LoginFormModal.css"
 
@@ -41,7 +41,12 @@ export const LoginFormModal = () => {
     e.preventDefault()
     setErrors({})
     try {
-      const response = await dispatch(loginDemoUserAsync()).unwrap()
+      const response = await dispatch(
+        loginAsync({
+          credential: "admin@admin.com",
+          password: "adminadmin",
+        }),
+      ).unwrap()
       closeModal()
     } catch (e) {
       console.log("error", e)

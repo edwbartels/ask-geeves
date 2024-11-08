@@ -12,7 +12,7 @@ import { csrfFetch } from "./app/csrfFetch"
 const container = document.getElementById("root")
 
 if (import.meta.env.MODE !== "production") {
-  restoreCSRF()
+  // restoreCSRF()
   // @ts-expect-error aA crap
   window.csrfFetch = csrfFetch
 }

@@ -1,5 +1,4 @@
 from flask import Blueprint,jsonify,request
-from flask_login import current_user
 from ..models.tag import Tag
 from ..models.question import Question
 from ..models.db import db
@@ -59,10 +58,7 @@ def add_tag_to_question(question_id):
 @question_ownership_check
 def delete_tag_from_question(question_id, tag_id):
     question = Question.query.get(question_id)
-    if not question:
-        return jsonify({"error": "question not found"}), 404
-    if not current_user.id == question.user_id:
-        return jsonify({"error": "not authenticated, not the owner of this question"}), 403
+
     tag = Tag.query.get(tag_id)
     if not tag:
         return jsonify({"error": "tag not found"}), 404

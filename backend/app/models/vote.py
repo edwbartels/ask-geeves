@@ -1,10 +1,8 @@
 from .db import db
+from .base_models import BelongsToUser
 
 
-class Vote(db.Model):
-    __tablename__ = "votes"
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+class Vote(BelongsToUser):
     value = db.Column(db.Integer, nullable=False)
     content_type = db.Column(db.String, nullable=False)
     content_id = db.Column(db.Integer, nullable=False)
@@ -15,10 +13,16 @@ class Vote(db.Model):
     )
 
     def to_dict(self):
-        return{
-            # "id":self.id,
-            # "user_id":self.user_id,
-            "value":self.value,
-            "content_type":self.content_type,
-            "content_id":self.content_id
+        return {
+            "user_id": self.user_id,
+            "content_type": self.content_type,
+            "content_id": self.content_id,
+            "value": self.value,
+        }
+
+    def to_dict_session(self):
+        return {
+            "content_type": self.content_type,
+            "content_id": self.content_id,
+            "value": self.value,
         }

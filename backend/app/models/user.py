@@ -1,13 +1,11 @@
 from .db import db
+from .base_models import Base
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
 
 
-class User(db.Model, UserMixin):
-    __tablename__ = "users"
-
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
+class User(Base, UserMixin):
     username = db.Column(db.String(24), unique=True, nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     _hashed_password = db.Column(db.String(255), nullable=False)
@@ -20,12 +18,20 @@ class User(db.Model, UserMixin):
         db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
     )
     questions = db.relationship(
-        "Question", backref="user", cascade="all, delete-orphan"
+        "Question", backref="user", cascade="all, delete-orphan", lazy=True
     )
-    answers = db.relationship("Answer", backref="user", cascade="all, delete-orphan")
-    comments = db.relationship("Comment", backref="user", cascade="all, delete-orphan")
-    saves = db.relationship("Save", backref="user", cascade="all, delete-orphan")
-    votes = db.relationship("Vote", backref="user", cascade="all, delete-orphan")
+    answers = db.relationship(
+        "Answer", backref="user", cascade="all, delete-orphan", lazy=True
+    )
+    comments = db.relationship(
+        "Comment", backref="user", cascade="all, delete-orphan", lazy=True
+    )
+    saves = db.relationship(
+        "Save", backref="user", cascade="all, delete-orphan", lazy=True
+    )
+    votes = db.relationship(
+        "Vote", backref="user", cascade="all, delete-orphan", lazy=True
+    )
 
     @property
     def password(self):
@@ -44,11 +50,19 @@ class User(db.Model, UserMixin):
     def to_dict(self):
         return {
             "id": self.id,
-            "username": self.username,
-            "email": self.email,
             "first_name": self.first_name,
             "last_name": self.last_name,
+            "username": self.username,
+            "email": self.email,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
-            "votes":[vote.to_dict() for vote in self.votes]
+            "votes": [vote.to_dict_session() for vote in self.votes],
+        }
+
+    def to_dict_basic_info(self):
+        return {
+            "id": self.id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "username": self.username,
         }

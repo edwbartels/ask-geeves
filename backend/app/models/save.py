@@ -1,11 +1,9 @@
 from .db import db
+from .base_models import BelongsToUser
+from flask_login import current_user
 
 
-class Save(db.Model):
-    __tablename__ = "saves"
-
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+class Save(BelongsToUser):
     content_id = db.Column(db.Integer, nullable=False)
     content_type = db.Column(db.String(20), nullable=False)
     parent_type = db.Column(db.String(20), nullable=True)
@@ -18,8 +16,8 @@ class Save(db.Model):
             "id": self.id,
             "content_id": self.content_id,
             "content_type": self.content_type,
-            "user": self.user.to_dict(),
             "parent_type": self.parent_type,
+            "user_id": current_user.id,
         }
 
     __table_args__ = (

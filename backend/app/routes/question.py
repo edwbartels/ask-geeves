@@ -107,11 +107,11 @@ def create_question():
     title = data.get("title")
     errors = {}
     if not content:
-        errors["content"]="content is required"
+        errors["content"] = "content is required"
     if not title:
-        errors["title"]="title is required"
+        errors["title"] = "title is required"
     if errors:
-        return jsonify({"message":"Bad request","errors":errors}) , 401
+        return jsonify({"message": "Bad request", "errors": errors}), 401
 
     input_tags = data.get("tag")
     tags = []
@@ -148,11 +148,11 @@ def edit_question(question_id):
 
     errors = {}
     if not new_content:
-        errors["content"]="content is required"
+        errors["content"] = "content is required"
     if not new_title:
-        errors["title"]="title is required"
+        errors["title"] = "title is required"
     if errors:
-        return jsonify({"message":"Bad request","errors":errors}) , 401
+        return jsonify({"message": "Bad request", "errors": errors}), 401
 
     question.content = new_content
     question.title = new_title

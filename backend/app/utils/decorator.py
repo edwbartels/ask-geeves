@@ -139,7 +139,6 @@ def collect_query_params(model):
 
             sort_column = getattr(model, sort_by, model.created_at)
             sort_order = desc if order == "desc" else asc
-
             return func(
                 *args,
                 **kwargs,

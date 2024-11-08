@@ -2,6 +2,9 @@ from flask import Blueprint, jsonify
 from flask_login import current_user
 from ..models.save import Save
 from ..models.db import db
+from ..models.question import Question
+from ..models.answer import Answer
+from ..models.comment import Comment
 from ..utils.decorator import (
     login_check,
     question_exist_check,
@@ -18,7 +21,72 @@ bp = Blueprint("save", __name__, url_prefix="/api/questions")
 def get_all_saves():
     saves = Save.query.filter_by(user_id=current_user.id).all()
     saves_list = [save.to_dict() for save in saves]
-    return jsonify({"all_saves": saves_list}), 200
+    question_list = []
+    for save in saves_list:
+        if save["parent_type"] is None and save["content_type"] == "question":
+            question_list.append(save)
+    questions = []
+    for saved_question in question_list:
+        question = Question.query.get(saved_question["content_id"])
+        questions.append(question.to_dict())
+    final =[]
+    for question in questions:
+        newQ = {
+            "question_id":question["id"],
+            "title":question["title"],
+            # "content_type":"question",
+            "question_content":question["content"]
+        }
+        final.append(newQ)
+    answer_list = [save for save in saves_list if save["parent_type"] is None and save["content_type"] == "answer"]
+    for saved_answer in answer_list:
+        answer = Answer.query.get(saved_answer["content_id"])
+        question = Question.query.get(answer.question_id)
+        newA = {
+                "question_id": question.id,
+                "title": question.title,
+                "question_content": question.content,
+                "answer_id":answer.id,
+                # "content_type":"answer",
+                "answer_content": answer.content,
+            }
+        final.append(newA)
+    comment_list = [
+        save for save in saves_list
+        if save["parent_type"] in ["question", "answer"] and save["content_type"] == "comment"
+    ]
+
+    for saved_comment in comment_list:
+        comment = Comment.query.get(saved_comment["content_id"])
+        if saved_comment["parent_type"] == "question":
+            question = Question.query.get(comment.content_id)
+            new_comment = {
+                "question_id": question.id,
+                "title": question.title,
+                # "content_type": "comment",
+                "question_content": question.content,
+                "parent_type":"question",
+                "comment_id":saved_comment["content_id"],
+                "comment_content": comment.content,
+            }
+            final.append(new_comment)
+        elif saved_comment["parent_type"] == "answer":
+            answer = Answer.query.get(comment.content_id)
+            question = Question.query.get(answer.question_id)
+            new_comment = {
+                # "id": answer.id,
+                "question_id": question.id,
+                "title": question.title,
+                # "content_type": "comment",
+                "question_content": question.content,
+                "parent_type":"answer",
+                # "answer_content": answer.content,
+                "comment_id":saved_comment["content_id"],
+                "comment_content": comment.content,
+            }
+            final.append(new_comment)
+    # print(final)
+    return jsonify({"all_saves": final}), 200
 
 
 @bp.route("/<int:question_id>/saves", methods=["POST"])

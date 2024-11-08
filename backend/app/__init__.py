@@ -5,7 +5,6 @@ from flask_login import LoginManager
 from .models.db import db
 from .models.user import User
 from .routes import (
-    csrf_token,
     session,
     user,
     question,
@@ -31,11 +30,11 @@ config_class = config_dict.get(env, "development")
 app.config.from_object(config_class)
 
 db.init_app(app)
-csrf = CSRFProtect(app)
+# csrf = CSRFProtect(app)
 
 migrate = Migrate(app, db)
 
-app.register_blueprint(csrf_token.bp)
+# app.register_blueprint(csrf_token.bp)
 app.register_blueprint(session.bp)
 app.register_blueprint(user.bp)
 app.register_blueprint(question.bp)
@@ -47,13 +46,13 @@ app.register_blueprint(vote.bp)
 
 
 #! Starter Repo Template Start
-# @app.before_request
-# def https_redirect():
-#     if os.environ.get("FLASK_ENV") == "production":
-#         if request.headers.get("X-Forwarded-Proto") == "http":
-#             url = request.url.replace("http://", "https://", 1)
-#             code = 301
-#             return redirect(url, code=code)
+@app.before_request
+def https_redirect():
+    if os.environ.get("FLASK_ENV") == "production":
+        if request.headers.get("X-Forwarded-Proto") == "http":
+            url = request.url.replace("http://", "https://", 1)
+            code = 301
+            return redirect(url, code=code)
 
 
 @app.after_request
@@ -68,21 +67,22 @@ def inject_csrf_token(response):
     return response
 
 
-# @app.route("/api/docs")
-# def api_help():
-#     """
-#     Returns all API routes and their doc strings
-#     """
-#     acceptable_methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
-#     route_list = {
-#         rule.rule: [
-#             [method for method in rule.methods if method in acceptable_methods],
-#             app.view_functions[rule.endpoint].__doc__,
-#         ]
-#         for rule in app.url_map.iter_rules()
-#         if rule.endpoint != "static"
-#     }
-#     return route_list
+@app.route("/api/docs")
+def api_help():
+    """
+    Returns all API routes and their doc strings
+    """
+    acceptable_methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    route_list = {
+        rule.rule: [
+            [method for method in rule.methods if method in acceptable_methods],
+            app.view_functions[rule.endpoint].__doc__,
+        ]
+        for rule in app.url_map.iter_rules()
+        if rule.endpoint != "static"
+    }
+    # print(route_list)
+    return route_list
 
 
 # @app.route("/", defaults={"path": ""})
@@ -98,9 +98,10 @@ def inject_csrf_token(response):
 #     return app.send_static_file("index.html")
 
 
-# @app.errorhandler(404)
-# def not_found(e):
-#     return app.send_static_file("index.html")
+@app.errorhandler(404)
+def not_found(e):
+    return app.send_static_file("index.html")
+
 
 #! Starter Repo Template End
 

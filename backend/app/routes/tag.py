@@ -6,7 +6,6 @@ from ..utils.decorator import (
     question_exist_check,
     question_ownership_check,
     login_check,
-    csrf_protect,
 )
 
 bp = Blueprint("tags", __name__, url_prefix="/api/questions")
@@ -22,7 +21,7 @@ def get_all_tags():
 
 
 @bp.route("/<int:question_id>/tags", methods=["GET"])
-@csrf_protect
+# @csrf_protect
 @question_exist_check
 def get_all_tags_by_questionId(question_id):
     question = Question.query.get(question_id)
@@ -32,7 +31,7 @@ def get_all_tags_by_questionId(question_id):
 
 
 @bp.route("/<int:question_id>/tags", methods=["POST"])
-@csrf_protect
+# @csrf_protect
 @login_check
 @question_exist_check
 @question_ownership_check
@@ -62,7 +61,7 @@ def add_tag_to_question(question_id):
 
 
 @bp.route("/<int:question_id>/tags/<int:tag_id>", methods=["DELETE"])
-@csrf_protect
+# @csrf_protect
 @login_check
 @question_exist_check
 @question_ownership_check

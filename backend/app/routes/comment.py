@@ -5,7 +5,6 @@ from ..models.answer import Answer
 from ..models.comment import Comment
 from ..models.db import db
 from ..utils.decorator import (
-    csrf_protect,
     login_check,
     question_exist_check,
     answer_exist_check,
@@ -88,7 +87,7 @@ def get_all_comments(question_id):
 
 
 @bp.route("/<int:question_id>/comments", methods=["POST"])
-@csrf_protect
+# @csrf_protect
 @login_check
 @question_exist_check
 def create_comment_for_question(question_id):
@@ -108,7 +107,7 @@ def create_comment_for_question(question_id):
 
 
 @bp.route("/<int:question_id>/comments/<int:comment_id>", methods=["PUT"])
-@csrf_protect
+# @csrf_protect
 @login_check
 @comment_for_question_exist_check
 @comment_for_question_ownership_check
@@ -124,7 +123,7 @@ def edit_comment_for_question(question_id, comment_id):
 
 
 @bp.route("/<int:question_id>/comments/<int:comment_id>", methods=["DELETE"])
-@csrf_protect
+# @csrf_protect
 @login_check
 @comment_for_question_exist_check
 @comment_for_question_ownership_check
@@ -136,7 +135,7 @@ def delete_comment_for_question(question_id, comment_id):
 
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>/comments", methods=["POST"])
-@csrf_protect
+# @csrf_protect
 @login_check
 @question_exist_check
 @answer_exist_check
@@ -160,7 +159,7 @@ def create_comment_for_answer(question_id, answer_id):
     "/<int:question_id>/answers/<int:answer_id>/comments/<int:comment_id>",
     methods=["PUT"],
 )
-@csrf_protect
+# @csrf_protect
 @login_check
 @comment_for_answer_exist_check
 @comment_for_answer_ownership_check
@@ -179,7 +178,7 @@ def edit_comment_for_answer(question_id, answer_id, comment_id):
     "/<int:question_id>/answers/<int:answer_id>/comments/<int:comment_id>",
     methods=["DELETE"],
 )
-@csrf_protect
+# @csrf_protect
 @login_check
 @comment_for_answer_exist_check
 @comment_for_answer_ownership_check

@@ -12,12 +12,13 @@ import { SessionResponse, restoreSession, loginAsync } from "./sessionSlice"
 
 export interface Vote {
   content_id: number
-  content_type: "question" | "answer"
+  content_type: "question" | "answer" | "comment"
   value: 1 | 0 | -1
 }
 export type VotesSliceState = {
   question: Record<number, Vote>
   answer: Record<number, Vote>
+  comment: Record<number, Vote>
 }
 
 interface LoggedInAction extends PayloadAction<SessionResponse> {}
@@ -35,6 +36,7 @@ const isLogInAction = (
 const initialState: VotesSliceState = {
   question: {},
   answer: {},
+  comment: {}
 }
 
 // If you are not using async thunks you can use the standalone `createSlice`.
@@ -46,7 +48,7 @@ export const votesSlice = createAppSlice({
       const votes = action.payload
       for (const vote of votes) {
         const qOrA = vote.content_type
-        state[qOrA][vote.content_id] = vote
+        // state[qOrA][vote.content_id] = vote
       }
     },
   },

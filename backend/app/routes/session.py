@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify, request
 from flask_login import current_user, login_user, logout_user
 from ..models.user import User
 from sqlalchemy import or_
-from ..utils.decorator import csrf_protect
 
 bp = Blueprint("session", __name__, url_prefix="/api/session")
 
@@ -15,7 +14,7 @@ def get_current_user():
 
 
 @bp.route("/", methods=["POST"])
-@csrf_protect
+# @csrf_protect
 def login():
     if current_user.is_authenticated:
         return jsonify({"message": "already logged in bro"})
@@ -49,8 +48,9 @@ def login():
 
 
 @bp.route("/", methods=["DELETE"])
-@csrf_protect
+# @csrf_protect
 def logout():
+    """this is a docustring"""
     if not current_user.is_authenticated:
         return jsonify({"error": "No user logged in"}), 401
 

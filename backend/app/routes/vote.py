@@ -5,13 +5,13 @@ from ..models.vote import Vote
 from ..models.comment import Comment
 from ..models.answer import Answer
 from ..models.db import db
-from ..utils.decorator import login_check, csrf_protect
+from ..utils.decorator import login_check
 
 bp = Blueprint("vote", __name__, url_prefix="/api")
 
 
 @bp.route("/vote", methods=["POST"])
-@csrf_protect
+# @csrf_protect
 @login_check
 def add_vote():
     data = request.get_json()

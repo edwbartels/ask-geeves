@@ -6,7 +6,6 @@ from ..models.question import Question
 from ..models.answer import Answer
 from ..models.comment import Comment
 from ..utils.decorator import (
-    csrf_protect,
     login_check,
     question_exist_check,
     answer_exist_check,
@@ -97,7 +96,7 @@ def get_all_saves():
 
 
 @bp.route("/<int:question_id>/saves", methods=["POST"])
-@csrf_protect
+# @csrf_protect
 @login_check
 @question_exist_check
 def add_question_to_saves(question_id):
@@ -115,7 +114,7 @@ def add_question_to_saves(question_id):
 
 
 @bp.route("/<int:question_id>/saves", methods=["DELETE"])
-@csrf_protect
+# @csrf_protect
 @login_check
 @question_exist_check
 def delete_question_from_saves(question_id):
@@ -130,7 +129,7 @@ def delete_question_from_saves(question_id):
 
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>/saves", methods=["POST"])
-@csrf_protect
+# @csrf_protect
 @login_check
 @answer_exist_check
 def add_answer_to_saves(question_id, answer_id):
@@ -148,7 +147,7 @@ def add_answer_to_saves(question_id, answer_id):
 
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>/saves", methods=["DELETE"])
-@csrf_protect
+# @csrf_protect
 @login_check
 @answer_exist_check
 def delete_answer_from_saves(question_id, answer_id):
@@ -163,7 +162,7 @@ def delete_answer_from_saves(question_id, answer_id):
 
 
 @bp.route("/<int:question_id>/comments/<int:comment_id>/saves", methods=["POST"])
-@csrf_protect
+# @csrf_protect
 @login_check
 @comment_for_question_exist_check
 def add_question_comment_to_saves(question_id, comment_id):
@@ -185,7 +184,7 @@ def add_question_comment_to_saves(question_id, comment_id):
 
 
 @bp.route("/<int:question_id>/comments/<int:comment_id>/saves", methods=["DELETE"])
-@csrf_protect
+# @csrf_protect
 @login_check
 @comment_for_question_exist_check
 def delete_question_comment_from_saves(question_id, comment_id):
@@ -227,7 +226,7 @@ def add_answer_comment_to_saves(question_id, answer_id, comment_id):
     "/<int:question_id>/answers/<int:answer_id>/comments/<int:comment_id>/saves",
     methods=["DELETE"],
 )
-@csrf_protect
+# @csrf_protect
 @login_check
 @comment_for_answer_exist_check
 def delete_answer_comment_from_saves(question_id, answer_id, comment_id):

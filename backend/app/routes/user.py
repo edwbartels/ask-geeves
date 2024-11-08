@@ -2,13 +2,12 @@ from flask import Blueprint, jsonify, request
 from flask_login import current_user
 from ..models.user import User
 from ..models.db import db
-from ..utils.decorator import csrf_protect
 
 bp = Blueprint("user", __name__, url_prefix="/api/user")
 
 
 @bp.route("/register", methods=["POST"])
-@csrf_protect
+# @csrf_protect
 def sign_up():
     if current_user.is_authenticated:
         return jsonify({"message": "already logged in bro"}), 200

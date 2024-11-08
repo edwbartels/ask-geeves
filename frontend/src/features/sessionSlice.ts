@@ -1,8 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "../app/createAppSlice"
-import type { AppThunk } from "../app/store"
-// import { fetchCount } from "./counterAPI"
-import { csrfFetch } from "../app/csrfFetch"
 import { Vote } from "./votesSlice"
 
 export type AllQuestionsSettings_old = Record<
@@ -98,8 +95,9 @@ export const sessionSlice = createAppSlice({
       >(
         async (loginInfo, thunkApi) => {
           try {
-            const response = await csrfFetch(`/api/session/`, {
+            const response = await fetch(`/api/session/`, {
               method: "POST",
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify(loginInfo),
             })
             const sessionInfo = await response.json()
@@ -136,7 +134,7 @@ export const sessionSlice = createAppSlice({
       ),
       logoutAsync: create.asyncThunk(
         async () => {
-          const response = await csrfFetch("/api/session/", {
+          const response = await fetch("/api/session/", {
             method: "DELETE",
           })
           const sessionInfo = await response.json()

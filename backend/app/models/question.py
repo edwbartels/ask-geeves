@@ -1,15 +1,12 @@
 from .db import db
-from .base_models import Timestamp
-from .vote import Vote
+from .base_models import HasTimestamps, HasVotes, BelongsToUser
 from .join_tables import question_tags
 from flask_login import current_user
 
 
-class Question(Timestamp):
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+class Question(BelongsToUser, HasTimestamps, HasVotes):
     content = db.Column(db.Text, nullable=False)
     title = db.Column(db.Text, nullable=False)
-    total_score = db.Column(db.Integer, default=0)
 
     answers = db.relationship(
         "Answer", backref="question", cascade="all, delete-orphan"
@@ -51,14 +48,18 @@ class Question(Timestamp):
 
     def to_dict(self, homepage=False, detail_page=False):
         if homepage:
-            saves = [save.to_dict() for save in self.saves if current_user.is_authenticated and save.user_id == current_user.id]
+            saves = [
+                save.to_dict()
+                for save in self.saves
+                if current_user.is_authenticated and save.user_id == current_user.id
+            ]
             status = False
             if saves:
                 status = True
             return {
                 "id": self.id,
                 "user_id": self.user.id,
-                "questionSave":status,
+                "questionSave": status,
                 "title": self.title,
                 "content": self.content,
                 "created_at": self.created_at_long_suffix,
@@ -70,25 +71,35 @@ class Question(Timestamp):
                 "Tags": [tag.to_dict() for tag in self.tags],
             }
         elif detail_page:
-            saves = [save.to_dict() for save in self.saves if current_user.is_authenticated and save.user_id == current_user.id]
+            saves = [
+                save.to_dict()
+                for save in self.saves
+                if current_user.is_authenticated and save.user_id == current_user.id
+            ]
             status = False
             if saves:
                 status = True
             return {
-            "id":self.id,
-            "questionSave": status,
-            "title":self.title,
-            "content": self.content,
-            "created_at": self.created_at_long_suffix,
-            "updated_at": self.created_at_long_suffix,
-            "total_score": self.total_score,
-            "num_votes": len(self.votes),
-            "num_answers": len(self.answers),
-            "Tags": [tag.to_dict() for tag in self.tags],
-            "Votes":[vote.to_dict() for vote in self.votes if current_user.is_authenticated and vote.user_id == current_user.id],
-            "QuestionUser":self.user.to_dict_basic_info(),
-            "Comments":[comment.for_question_detail() for comment in self.comments],
-            "Answers":[answer.for_question_detail() for answer in self.answers],
+                "id": self.id,
+                "questionSave": status,
+                "title": self.title,
+                "content": self.content,
+                "created_at": self.created_at_long_suffix,
+                "updated_at": self.created_at_long_suffix,
+                "total_score": self.total_score,
+                "num_votes": len(self.votes),
+                "num_answers": len(self.answers),
+                "Tags": [tag.to_dict() for tag in self.tags],
+                "Votes": [
+                    vote.to_dict()
+                    for vote in self.votes
+                    if current_user.is_authenticated and vote.user_id == current_user.id
+                ],
+                "QuestionUser": self.user.to_dict_basic_info(),
+                "Comments": [
+                    comment.for_question_detail() for comment in self.comments
+                ],
+                "Answers": [answer.for_question_detail() for answer in self.answers],
             }
         return {
             "id": self.id,
@@ -104,12 +115,3 @@ class Question(Timestamp):
             "Saves": [save.to_dict() for save in self.saves],
             "Tags": [tag.to_dict() for tag in self.tags],
         }
-
-    def update_total_score(self, session):
-        self.total_score = (
-            session.query(db.func.sum(Vote.value))
-            .filter(Vote.content_type == "question", Vote.content_id == self.id)
-            .scalar()
-            or 0
-        )
-        session.commit()

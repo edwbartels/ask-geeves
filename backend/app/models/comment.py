@@ -1,16 +1,12 @@
 from .db import db
-from .base_models import Timestamp
-from .vote import Vote
+from .base_models import HasTimestamps, BelongsToUser, HasVotes
 from flask_login import current_user
 
 
-class Comment(Timestamp):
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+class Comment(BelongsToUser, HasTimestamps, HasVotes):
     content = db.Column(db.Text, nullable=False)
-
     content_id = db.Column(db.Integer, nullable=False)
     content_type = db.Column(db.String(20), nullable=False)
-    total_score = db.Column(db.Integer, default=0)
 
     saves = db.relationship(
         "Save",
@@ -36,14 +32,18 @@ class Comment(Timestamp):
         return f"<Comment {self.id}"
 
     def to_dict(self):
-        saves = [save.to_dict() for save in self.saves if current_user.is_authenticated and save.user_id == current_user.id]
+        saves = [
+            save.to_dict()
+            for save in self.saves
+            if current_user.is_authenticated and save.user_id == current_user.id
+        ]
         status = False
         if saves:
-                status = True
+            status = True
         return {
             "id": self.id,
             "user_id": self.user.id,
-            "commentSave":status,
+            "commentSave": status,
             "content_type": self.content_type,
             "content_id": self.content_id,
             "content": self.content,
@@ -53,25 +53,20 @@ class Comment(Timestamp):
             "CommentUser": self.user.to_dict_basic_info(),
         }
 
-    def update_total_score(self, session):
-        self.total_score = (
-            session.query(db.func.sum(Vote.value))
-            .filter(Vote.content_type == "comment", Vote.content_id == self.id)
-            .scalar()
-            or 0
-        )
-        session.commit()
-
     def for_question_detail(self):
-        saves = [save.to_dict() for save in self.saves if current_user.is_authenticated and save.user_id == current_user.id]
+        saves = [
+            save.to_dict()
+            for save in self.saves
+            if current_user.is_authenticated and save.user_id == current_user.id
+        ]
         status = False
         if saves:
-                status = True
+            status = True
         return {
-            "id":self.id,
-            "commentSave":status,
+            "id": self.id,
+            "commentSave": status,
             "content_type": self.content_type,
             "content_id": self.content_id,
             "content": self.content,
-            "CommentUser":self.user.to_dict_basic_info(),
+            "CommentUser": self.user.to_dict_basic_info(),
         }

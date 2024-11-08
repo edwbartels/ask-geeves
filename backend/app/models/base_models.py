@@ -15,7 +15,13 @@ class Base(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
 
-class Timestamp(Base):
+class BelongsToUser(Base):
+    __abstract__ = True
+
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+
+class HasTimestamps(Base):
     __abstract__ = True
     created_at = db.Column(
         db.DateTime(timezone=True), nullable=False, default=datetime.now(timezone.utc)
@@ -74,3 +80,20 @@ class Timestamp(Base):
         if value != oldvalue:
             target.updated_at = datetime.now(timezone.utc)
         return value
+
+
+class HasVotes(Base):
+    __abstract__ = True
+
+    total_score = db.Column(db.Integer, default=0)
+
+    def update_total_score(self, session):
+        from .vote import Vote
+
+        self.total_score = (
+            session.query(db.func.sum(Vote.value))
+            .filter(Vote.content_type == "question", Vote.content_id == self.id)
+            .scalar()
+            or 0
+        )
+        session.commit()

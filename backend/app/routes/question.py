@@ -37,7 +37,6 @@ def get_all_questions(page, per_page, sort_column, sort_order):
         return jsonify({"message": "No questions found"}), 404
     questions_list = [question.to_dict(homepage=True) for question in questions.items]
 
-    print(page, len(questions.items), questions.pages, questions_list)
     return jsonify(
         {
             "page": page,

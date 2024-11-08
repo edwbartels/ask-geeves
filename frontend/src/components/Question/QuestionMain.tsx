@@ -14,16 +14,16 @@ export const QuestionMain = () => {
   return (
     <div>
       <h1 className="question-title">Question {questionId} title</h1>
-      <Post type="question" id={questionIdNum} />
+      <Post type="Question" id={questionIdNum} />
       <hr />
       <h1 className="answers-title">## Answers</h1>
       {answerIds.length > 0
         ? answerIds.map(answerId => {
             return (
-              <>
-                <Post key={answerId} type="answer" id={answerId} />
+              <div className="post-key">
+                <Post key={answerId} type="Answer" id={answerId} />
                 <hr />
-              </>
+              </div>
             )
           })
         : "No one answered yet"}

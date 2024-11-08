@@ -1,4 +1,4 @@
-import "./AllQuestions.css"
+
 interface Props {
   questionId: number
 }
@@ -10,9 +10,9 @@ export const QuestionTile = ({ questionId }: Props) => {
         <p className="answers">## answers</p>
         <p className="views">## views</p>
       </div>
-      <div className="question-preview">
+      <div className="question-block">
         <p>
-          <a href={`questions/${questionId}`}>Question {questionId} title</a>
+          <a className="sub-title" href={`questions/${questionId}`}>Question {questionId} title</a>
         </p>
         <p className="question-summary">Question summary</p>
         <p className="question-tags">Question tags</p>

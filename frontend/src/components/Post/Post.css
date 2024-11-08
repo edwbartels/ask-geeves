@@ -32,15 +32,19 @@
 }
 
 .post-body pre {
-  background-color: #eeeeee;
   padding: 10px 5px;
   border-radius: 5px;
+  background-color: black;
+  box-shadow: 0 0 10px 5px #feaee3,
+              0 0 20px 7px #f087d3;
+
 }
 
 .post-body code {
   background-color: #eeeeee;
   padding: 5px;
   border-radius: 5px;
+  color: black
 }
 
 .title-required {
@@ -206,4 +210,46 @@
 .cancel-question:hover::after,
 .cancel-question:focus::after {
   opacity: 1;
+}
+
+.up-vote {
+  color: white;
+}
+
+.vote-counter {
+  color: white;
+}
+
+.down-vote {
+  color: white;
+}
+
+.save {
+  color: white;
+}
+
+.share {
+  color: white;
+}
+
+.edit {
+  color: white;
+}
+
+.posted-by-user {
+  color: white;
+}
+
+.comments-here {
+  color: white;
+}
+
+.post-body {
+  color: white;
+}
+
+.post-user {
+  display: flex;
+  flex-direction: row;
+  justify-self: flex-end;
 }

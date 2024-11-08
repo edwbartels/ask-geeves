@@ -31,7 +31,9 @@ export const NavBar = () => {
         <NavLink to="/" className="home-links">Home</NavLink>
         <NavLink to="/questions" className="question-links">Questions</NavLink>
       </>
-      <p className="search-links">Search bar</p>
+      <form>
+        <input className="search-links" placeholder="Search..."/>
+      </form>
       {user ? `Welcome ${user?.first_name}` : ""}
         <a href="/questions/ask" className="post-links">Post a question</a>
       {!user ? (
@@ -48,7 +50,7 @@ export const NavBar = () => {
           />
         </div>
       ) : (
-        <button onClick={() => dispatch(logoutAsync())}>Log out</button>
+        <button className="logout-button" onClick={() => dispatch(logoutAsync())}>Log out</button>
       )}
     </nav>
   )

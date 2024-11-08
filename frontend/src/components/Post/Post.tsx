@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useParams, useNavigate } from "react-router-dom"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { selectSession } from "../../features/sessionSlice"
 import { selectUserById } from "../../features/usersSlice"
@@ -7,7 +7,11 @@ import {
   selectQuestionById,
   deleteOneQuestion,
 } from "../../features/questionsSlice"
-import { selectAnswerById, Answer } from "../../features/answersSlice"
+import {
+  selectAnswerById,
+  Answer,
+  deleteOneAnswer,
+} from "../../features/answersSlice"
 import { RenderPost } from "./RenderPost"
 
 const absurd = (input: never): never => input
@@ -43,6 +47,7 @@ export const Post = ({ type, id }: Props) => {
   }
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  // const { questionId } = useParams() // Post will always get rendered at /questions/:questionId
   const post = returnQuestionOrAnswerPost(type, id)
   const { user } = useAppSelector(selectSession)
   const isUserPostWriter = user && user.id === post.post.user_id
@@ -71,8 +76,13 @@ export const Post = ({ type, id }: Props) => {
   )
 
   const handleDeletePost = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(deleteOneQuestion(id))
-    navigate("/questions")
+    if (post.type === "question") {
+      dispatch(deleteOneQuestion(id))
+      navigate("/questions")
+    } else if (post.type === "answer") {
+      const { question_id, id } = post.post
+      dispatch(deleteOneAnswer({ questionId: question_id, answerId: id }))
+    }
   }
   return (
     <div>

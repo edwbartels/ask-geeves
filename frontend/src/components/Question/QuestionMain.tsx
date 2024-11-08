@@ -1,10 +1,12 @@
-import { useState } from "react"
+import { useState, Fragment } from "react"
 import { useParams } from "react-router-dom"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { fetchOneQuestion } from "../../features/questionsSlice"
 import { selectQuestionById } from "../../features/questionsSlice"
 
 import { Post } from "../Post/Post"
+import { OpenModalButton } from "../Modals/OpenModalButton"
+import { AnswerForm } from "../Modals/AnswerForm"
 
 import "./Question.css"
 
@@ -35,13 +37,17 @@ export const QuestionMain = () => {
       {answerIds && answerIds.length > 0
         ? answerIds.map(answerId => {
             return (
-              <>
-                <Post key={answerId} type="answer" id={answerId} />
+              <Fragment key={answerId}>
+                <Post type="answer" id={answerId} />
                 <hr />
-              </>
+              </Fragment>
             )
           })
         : "No one answered yet"}
+      <OpenModalButton
+        buttonText="Add an answer"
+        modalComponent={<AnswerForm question={question} />}
+      />
     </div>
   )
 }

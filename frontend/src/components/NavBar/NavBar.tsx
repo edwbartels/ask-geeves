@@ -39,11 +39,11 @@ export const NavBar = () => {
       {!user ? (
         <>
           <OpenModalButton
-            linkText="Log in"
+            buttonText="Log in"
             modalComponent={<LoginFormModal />}
           />
           <OpenModalButton
-            linkText="Sign up"
+            buttonText="Sign up"
             modalComponent={<SignupFormModal />}
           />
         </>

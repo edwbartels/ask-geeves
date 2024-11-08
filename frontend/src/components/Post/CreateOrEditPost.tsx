@@ -2,9 +2,11 @@ import React, { useState, ReactNode } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import {
+  selectQuestionById,
   createOneQuestion,
   CreateQuestionError,
 } from "../../features/questionsSlice"
+import { selectSession } from "../../features/sessionSlice"
 
 import { RenderPost } from "./RenderPost"
 
@@ -13,6 +15,7 @@ import { Errors } from "../Errors/Errors"
 
 export const CreateOrEditPost = () => {
   const { questionId } = useParams()
+  const questionIdNum = Number(questionId)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const emptyForm = {
@@ -20,14 +23,14 @@ export const CreateOrEditPost = () => {
     content: "",
     tag: [],
   }
+
   const storeErrors = useAppSelector(state => state.questions.error)
 
-  const selectQuestionDetails = (questionId: string | undefined) => {
-    // Placeholder function, will replace with store slice selector
-    if (questionId === undefined) return null
-    return { title: "question title", content: "question body" }
-  }
-  const initialForm = selectQuestionDetails(questionId) ?? emptyForm
+  const selectQuestionDetails = useAppSelector(state =>
+    selectQuestionById(state, questionIdNum),
+  )
+  console.log({ selectQuestionDetails, questionId })
+  const initialForm = selectQuestionDetails ?? emptyForm
   const [form, setForm] = useState(initialForm)
   const [componentErrors, setComponentErrors] =
     useState<CreateQuestionError | null>(null)

@@ -29,7 +29,9 @@ export const QuestionTile = ({ questionId }: Props) => {
       </div>
       <div className="question-preview">
         <p>
-          <a href={`questions/${questionId}`}>{question.title}</a>
+          <a href={`questions/${questionId}`}>
+            {question.id} - {question.title}
+          </a>
         </p>
         <p>{question.content}</p>
         <div>

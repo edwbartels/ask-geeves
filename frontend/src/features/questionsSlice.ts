@@ -16,6 +16,7 @@ import {
   Tag,
   Vote,
 } from "./api-types"
+import { setAllQuestionsSettings, AllQuestionsSettings } from "./sessionSlice"
 import { User, addUser, addManyUsers } from "./usersSlice"
 import { addManyVotes } from "./votesSlice"
 import { addManyAnswers } from "./answersSlice"
@@ -30,7 +31,6 @@ interface Answer {
   updated_at: string
   total_score: number
 }
-
 interface FetchAllQuestionsError {
   error: string
 }
@@ -72,14 +72,17 @@ export const fetchAllQuestions = createAsyncThunk<
   // Return type of the payload creator
   Question[],
   // First argument to payload creator
-  void,
+  { page: string; size: string },
   // Optional fields for thunkApi types
   { rejectValue: FetchAllQuestionsError }
->("questions/fetchAll", async (_, thunkApi) => {
-  const response = await csrfFetch("/api/questions")
+>("questions/fetchAll", async (pageSettings, thunkApi) => {
+  const { page } = pageSettings || 1
+  const { size } = pageSettings || 15
+  const fetchUrl = `/api/questions/?page=${page}&per_page=${size}&sort_by=id`
+  const response = await csrfFetch(fetchUrl)
   if (response.ok) {
     const allQuestions: FetchAllQuestionsResponse = await response.json()
-    const questions = allQuestions.questions
+    const { page, size, num_pages, questions } = allQuestions
 
     // Unpack API response
     // Make payload for questions and users slices
@@ -106,6 +109,13 @@ export const fetchAllQuestions = createAsyncThunk<
       }
     }
 
+    thunkApi.dispatch(
+      setAllQuestionsSettings({
+        page: page,
+        size: size,
+        num_pages: num_pages,
+      }),
+    )
     thunkApi.dispatch(addManyUsers(payload.users))
     return payload.questions
   } else {
@@ -232,6 +242,21 @@ export const createOneQuestion = createAsyncThunk<
   return questionPayload
   // }
 })
+interface DeleteOneQuestionResponse {
+  message: string
+  deletedId: number
+}
+export const deleteOneQuestion = createAsyncThunk<
+  DeleteOneQuestionResponse,
+  number,
+  { rejectValue: { message: string } }
+>("questions/deleteOneQuestion", async id => {
+  const response = await fetch(`/api/questions/${id}`, {
+    method: "DELETE",
+  })
+  const message: { message: string } = await response.json()
+  return { deletedId: Number(id), ...message }
+})
 
 const initialState: QuestionsSliceState = { questions: {}, error: null }
 
@@ -243,6 +268,7 @@ export const questionsSlice = createAppSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchAllQuestions.fulfilled, (state, action) => {
+        state.questions = {}
         const questions = action.payload
         for (const question of questions) {
           const { id } = question
@@ -258,6 +284,10 @@ export const questionsSlice = createAppSlice({
         if (action.payload) {
           state.error = action.payload
         }
+      })
+      .addCase(deleteOneQuestion.fulfilled, (state, action) => {
+        const { deletedId } = action.payload
+        delete state.questions[deletedId]
       })
   },
   selectors: {

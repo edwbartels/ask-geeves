@@ -47,7 +47,7 @@ target_db = current_app.extensions["migrate"].db
 
 def get_metadata():
     schema = (
-        os.getenv("DATABASE_SCHEMA", "public")
+        os.getenv("SCHEMA", "public")
         if os.getenv("FLASK_ENV") == "production"
         else None
     )

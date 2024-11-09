@@ -22,6 +22,7 @@ from flask_cors import CORS
 app = Flask(__name__, static_folder="../../frontend/dist", static_url_path="/")
 app.json.sort_keys = False  # Prevent flask.jsonify from sorting keys
 env = os.getenv("FLASK_ENV", "development")
+print("ENV -----> ", env)
 if env == "development":
     # Only enable cors if in development
     CORS(app)

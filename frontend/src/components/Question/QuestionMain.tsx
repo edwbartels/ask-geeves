@@ -37,8 +37,10 @@ export const QuestionMain = () => {
       {answerIds.length > 0
         ? answerIds.map(answerId => {
             return (
+
               <div key={answerId} className="post-key">
                 <Post type="answer" id={answerId} />
+
                 <hr />
               </div>
             )

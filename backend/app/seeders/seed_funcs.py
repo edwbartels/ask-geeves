@@ -26,7 +26,9 @@ def seed_users():
 
 def undo_users():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            text(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
+        )
     else:
         db.session.execute(text("DELETE FROM users"))
 
@@ -43,7 +45,7 @@ def seed_questions():
 def undo_questions():
     if environment == "production":
         db.session.execute(
-            f"TRUNCATE table {SCHEMA}.questions RESTART IDENTITY CASCADE;"
+            text(f"TRUNCATE table {SCHEMA}.questions RESTART IDENTITY CASCADE;")
         )
     else:
         db.session.execute(text("DELETE FROM questions"))
@@ -60,7 +62,9 @@ def seed_answers():
 
 def undo_answers():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.answers RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            text(f"TRUNCATE table {SCHEMA}.answers RESTART IDENTITY CASCADE;")
+        )
     else:
         db.session.execute(text("DELETE FROM answers"))
 
@@ -76,7 +80,9 @@ def seed_comments():
 
 def undo_comments():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.comment RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            text(f"TRUNCATE table {SCHEMA}.comment RESTART IDENTITY CASCADE;")
+        )
     else:
         db.session.execute(text("DELETE FROM comment"))
 
@@ -92,7 +98,9 @@ def seed_tags():
 
 def undo_tags():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.tags RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            text(f"TRUNCATE table {SCHEMA}.tags RESTART IDENTITY CASCADE;")
+        )
     else:
         db.session.execute(text("DELETE FROM tags"))
 
@@ -112,7 +120,7 @@ def seed_question_tags():
 def undo_question_tags():
     if environment == "production":
         db.session.execute(
-            f"TRUNCATE table {SCHEMA}.question_tags RESTART IDENTITY CASCADE;"
+            text(f"TRUNCATE table {SCHEMA}.question_tags RESTART IDENTITY CASCADE;")
         )
     else:
         db.session.execute(text("DELETE FROM question_tags"))
@@ -129,7 +137,9 @@ def seed_votes():
 
 def undo_votes():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.votes RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            text(f"TRUNCATE table {SCHEMA}.votes RESTART IDENTITY CASCADE;")
+        )
     else:
         db.session.execute(text("DELETE FROM votes"))
 
@@ -145,7 +155,9 @@ def seed_saves():
 
 def undo_saves():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.saves RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            text(f"TRUNCATE table {SCHEMA}.saves RESTART IDENTITY CASCADE;")
+        )
     else:
         db.session.execute(text("DELETE FROM saves"))
 

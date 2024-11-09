@@ -53,8 +53,8 @@ def get_metadata():
         else None
     )
     if schema:
-        for tabl in Base.metadata.tables.values():
-            tabl.schema = schema
+        for table in Base.metadata.tables.values():
+            table.schema = schema
 
     return Base.metadata
 

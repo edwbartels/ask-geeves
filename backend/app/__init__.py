@@ -118,6 +118,7 @@ def load_user(id):
 
 @app.cli.command("seed")
 def seed_all_command():
+    clear_all_data()
     seed_all()
     print("Database seeded")
 

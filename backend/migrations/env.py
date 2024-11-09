@@ -1,6 +1,7 @@
 import logging
 from logging.config import fileConfig
 import os
+from app.models.base_models import Base
 
 from flask import current_app
 
@@ -52,11 +53,10 @@ def get_metadata():
         else None
     )
     if schema:
-        target_db.metadata.schema = schema
+        for tabl in Base.metadata.tables.values():
+            tabl.schema = schema
 
-    if hasattr(target_db, "metadatas"):
-        return target_db.metadatas[None]
-    return target_db.metadata
+    return Base.metadata
 
 
 def run_migrations_offline():

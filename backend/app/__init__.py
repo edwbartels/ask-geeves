@@ -29,7 +29,7 @@ if env == "development":
 
 config_class = config_dict.get(env, "development")
 app.config.from_object(config_class)
-print("SQLALCHEMY_DATABASE_URI ------> ", os.getenv("SQLALCHEMY_DATABASE_URL", "UH OH"))
+print("SQLALCHEMY_DATABASE_URI ------> ", os.getenv("SQLALCHEMY_DATABASE_URI", "UH OH"))
 
 db.init_app(app)
 # csrf = CSRFProtect(app)

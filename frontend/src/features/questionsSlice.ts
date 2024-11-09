@@ -16,7 +16,11 @@ import {
 import { setAllQuestionsSettings, AllQuestionsSettings } from "./sessionSlice"
 import { User, addUser, addManyUsers } from "./usersSlice"
 import { addManyVotes } from "./votesSlice"
-import { addManyAnswers } from "./answersSlice"
+import {
+  addManyAnswers,
+  createOneAnswer,
+  deleteOneAnswer,
+} from "./answersSlice"
 //   import { SessionResponse, restoreSession, loginAsync } from "./sessionSlice"
 
 interface Answer {
@@ -44,7 +48,7 @@ export interface Question {
   num_votes: number // only votes that are not 0
   num_answers: number // db aggregate function
 
-  answerIds?: number[]
+  answerIds: number[]
   tagIds: number[]
 }
 export interface QuestionForm {
@@ -96,7 +100,7 @@ export const fetchAllQuestions = createAsyncThunk<
     for (const question of questions) {
       const { User, Tags, ...remaining } = question
       const tagIds = Tags.map(tag => tag.id)
-      const newQuestion = { ...remaining, tagIds }
+      const newQuestion: Question = { ...remaining, answerIds: [], tagIds }
       payload.questions.push(newQuestion)
 
       // only add unique user objects from the API response
@@ -285,6 +289,17 @@ export const questionsSlice = createAppSlice({
       .addCase(deleteOneQuestion.fulfilled, (state, action) => {
         const { deletedId } = action.payload
         delete state.questions[deletedId]
+      })
+      .addCase(createOneAnswer.fulfilled, (state, action) => {
+        const { question_id, id } = action.payload.answer
+        state.questions[question_id].answerIds?.push(id)
+      })
+      .addCase(deleteOneAnswer.fulfilled, (state, action) => {
+        const { questionId, answerId } = action.payload
+        const oldAnswerIds = state.questions[questionId].answerIds
+        state.questions[questionId].answerIds = oldAnswerIds?.filter(
+          id => id !== answerId,
+        )
       })
   },
   selectors: {

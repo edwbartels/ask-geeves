@@ -18,7 +18,6 @@ RUN pip install -r requirements.txt
 RUN pip install psycopg2
 
 COPY backend/ .
-COPY frontend/dist /var/www/frontend/dist
 
 RUN flask db upgrade
 RUN flask seed

@@ -27,16 +27,16 @@ export const QuestionMain = () => {
   }
   const answerIds = question.answerIds
   return (
-    <div>
+    <div className="main-body">
       <h1 className="question-title">{question.title}</h1>
       <Post type="question" id={questionIdNum} />
       <hr />
       <h1 className="answers-title">## Answers</h1>
-      {answerIds.length > 0
+      {answerIds && answerIds.length > 0
         ? answerIds.map(answerId => {
             return (
               <div className="post-key">
-                <Post key={answerId} type="Answer" id={answerId} />
+                <Post key={answerId} type="answer" id={answerId} />
                 <hr />
               </div>
             )

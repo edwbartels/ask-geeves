@@ -75,6 +75,7 @@ body {
     align-items: center;
     margin-top: 50px;
 
+
   }
   .container__icon-wrapper {
     display: flex;
@@ -118,3 +119,100 @@ body {
       filter: hue-rotate(360deg);
     }
   }
+
+
+
+
+.wrapper {
+  max-width: 650px;
+  margin: 0 auto;
+
+}
+
+h1 {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.5em;
+}
+
+.speechbubble {
+  background-color: #26272b;
+  color: #9fa2a7;
+  font-size: .8em;
+  line-height: 1.75;
+  padding: 15px 25px;
+  margin-bottom: 75px;
+  cursor: default;
+}
+
+.speechbubble:nth-child(2n) {
+  border-left: 5px solid;
+}
+
+.speechbubble:nth-child(2n):after {
+  content: '';
+  margin-top: -30px;
+  position: relative;
+  bottom: -45px;
+  left: 20px;
+  border-width: 30px 0 0 30px;
+  border-style: solid;
+  border-color: #26272b transparent;
+  display: block;
+  width: 0;
+}
+
+.speechbubble:nth-child(2n+1) {
+  border-right: 5px solid;
+}
+
+.speechbubble:nth-child(2n+1):after {
+  content: '';
+  margin-top: -30px;
+  position: relative;
+  bottom: -45px;
+  left: 350px;
+  border-width: 30px 30px 0 0;
+  border-style: solid;
+  border-color: #26272b transparent;
+  display: block;
+  width: 0;
+}
+
+/* Randomize every 4th bubble's border color */
+.speechbubble:nth-child(4n+1) {
+  border-color: #56b273;
+}
+
+.speechbubble:nth-child(4n+2) {
+  border-color: #01AD9B;
+}
+
+.speechbubble:nth-child(4n+3) {
+  border-color: #b388dd;
+}
+
+.speechbubble:nth-child(4n+4) {
+  border-color: #ff8750;
+}
+
+/* Quotation symbols */
+.speechbubble p:before {
+  content: "“";
+  font-family: Georgia;
+  font-size: 40px;
+  line-height: 0;
+  display: inline-block;
+}
+
+.username {
+  display: inline;
+  font-style: italic;
+  
+}
+
+.username:before {
+  content: '- ';
+}

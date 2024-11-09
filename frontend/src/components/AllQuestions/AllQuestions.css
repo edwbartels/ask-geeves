@@ -3,9 +3,17 @@
   grid-template-columns: 2fr 8fr;
   border: 5px solid rgba(255, 255, 255, 1);
   box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;    
-  margin: 20px;
+  margin-left: 20px;
+  margin-right: 2dvb;
+  margin-top: 70px;
+  margin-bottom: 70px;
   font-family: "Clip";
   font-size: 18px;
+}
+
+.question-title {
+  display: flex;
+  justify-self: center;
 }
 
 .question-summary {
@@ -64,4 +72,38 @@
 
 .question-block {
   margin-left: 40px;
+}
+
+.prev-next-container {
+  color: white;
+  justify-self: center;
+  font-family: "Clip";
+  text-transform: uppercase;
+}
+
+.page-count-container {
+  color: white;
+  justify-self: center;
+}
+
+.previous-button {
+  margin-right: 10px;
+  font-family: "Clip";
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.next-button {
+  margin-left: 10px;
+  font-family: "Clip";
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.page-number {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-family: "Clip";
+  text-transform: uppercase;
+  font-weight: bold;
 }

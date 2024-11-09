@@ -1,10 +1,15 @@
-.question-body {
+.post-body {
   display: grid;
   grid-template-columns: 1fr 9fr;
   margin-bottom: 20px;
 }
 
-.question-meta {
+.main-body {
+  margin-right: 40px;
+  margin-left: 40px;
+}
+
+.post-meta {
   display: flex;
   justify-content: space-between;
 }
@@ -22,7 +27,8 @@
 }
 
 .like-post-button {
-  margin-left: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
   border-radius: 6px;
   font-family: "Clip";
   text-transform: uppercase;
@@ -40,9 +46,13 @@
   padding: 0.25em 1em;
   border-radius: 0.25em;
 
-  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
+  text-shadow:
+    0 0 0.125em hsl(0 0% 100% / 0.3),
+    0 0 0.45em currentColor;
 
-  box-shadow: inset 0 0 0.5em 0 hsl(317 100% 54%), 0 0 0.5em 0 hsl(317 100% 54%);
+  box-shadow:
+    inset 0 0 0.5em 0 hsl(317 100% 54%),
+    0 0 0.5em 0 hsl(317 100% 54%);
 
   position: relative;
 }

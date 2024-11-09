@@ -87,10 +87,10 @@ export const Post = ({ type, id }: Props) => {
           <RenderPost postContent={post.post.content} />
           <div className="post-meta">
             <div>
-              <a href={`#${permalink}`} className="share">Share</a> |<button className="like-post-button">Like post</button>
+              <a href={`#${permalink}`} className="share">Share</a><button className="like-post-button">Like post</button>
               {isUserPostWriter && <Link to={`edit`} className="edit">Edit {type}</Link>}
               {isUserPostWriter && (
-                <button onClick={handleDeletePost}>Delete {type}</button>
+                <button className="delete-button" onClick={handleDeletePost}>Delete {type}</button>
               )}
             </div>
             <div className="post-user">

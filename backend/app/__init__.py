@@ -19,7 +19,7 @@ from .seeders.seed_funcs import seed_all, clear_all_data
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_cors import CORS
 
-app = Flask(__name__, static_folder="../../frontend/dist", static_url_path="/")
+app = Flask(__name__, static_folder="./static", static_url_path="/")
 app.json.sort_keys = False  # Prevent flask.jsonify from sorting keys
 env = os.getenv("FLASK_ENV", "development")
 print("ENV -----> ", env)

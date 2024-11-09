@@ -17,6 +17,7 @@ import { AllQuestions } from "./components/AllQuestions/AllQuestions"
 import { QuestionMain } from "./components/Question/QuestionMain"
 import { CreateOrEditPost } from "./components/Post/CreateOrEditPost"
 import { Footer } from "./components/Footer/Footer"
+import { UserDetailPage } from "./components/User/UserDetailPage";
 
 import { restoreSession } from "./features/sessionSlice"
 
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: "tagged",
         element: <h1>All tags</h1>,
+      },
+      {
+        path: "user/:userId",
+        element: <UserDetailPage />,
       },
     ],
   },

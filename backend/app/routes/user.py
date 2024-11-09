@@ -6,6 +6,7 @@ from ..models.answer import Answer
 from ..models.comment import Comment
 from ..models.db import db
 from ..utils.decorator import login_check
+from ..models.user import User
 
 bp = Blueprint("user", __name__, url_prefix="/api/user")
 
@@ -56,6 +57,12 @@ def sign_up():
 
 @bp.route("/<int:user_id>" , methods=["GET"])
 def get_user_detail_by_id(user_id):
+    user = User.query.get(user_id)
+    userInfo = {
+        "first_name":user.first_name,
+        "last_name":user.last_name,
+        "username":user.username
+    }
     question_list = []
     questions = Question.query.filter_by(user_id=user_id).all()
     for question in questions:
@@ -108,11 +115,16 @@ def get_user_detail_by_id(user_id):
             }
             comment_list.append(newC)
 
-    return jsonify({"questions": question_list, "answers": answer_list ,"comments":comment_list})
+    return jsonify({"User":userInfo,"questions": question_list, "answers": answer_list ,"comments":comment_list})
 
 @bp.route("/current" , methods=["GET"])
 @login_check
 def get_detail_for_current_user():
+    user = User.query.get(current_user.id)
+    userInfo = {
+        "first_name":user.first_name,
+        "last_name":user.last_name
+    }
     user_id = current_user.id
     question_list = []
     questions = Question.query.filter_by(user_id=user_id).all()
@@ -166,4 +178,4 @@ def get_detail_for_current_user():
             }
             comment_list.append(newC)
 
-    return jsonify({"questions": question_list, "answers": answer_list ,"comments":comment_list})
+    return jsonify({"User":userInfo,"questions": question_list, "answers": answer_list ,"comments":comment_list})

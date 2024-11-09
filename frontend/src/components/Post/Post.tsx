@@ -95,7 +95,7 @@ export const Post = ({ type, id }: Props) => {
             </div>
             <div className="post-user">
               Posted by{" "}
-              <a className="posted-by-user" href={`/users/userId/username`}>{postWriter.username}</a>
+              <Link className="posted-by-user" to={`/users/${postWriter.id}`}>{postWriter.username}</Link>
             </div>
           </div>
           <div className="comments-here">Comments here</div>

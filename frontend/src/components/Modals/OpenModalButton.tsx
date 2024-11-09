@@ -28,7 +28,7 @@ export function OpenModalButton({
 
   return (
     <button onClick={onClick} className={buttonClasses}>
-      {linkText}
+      {buttonText}
     </button>
   )
 }

@@ -7,6 +7,7 @@ from flask import current_app
 
 from alembic import context
 
+SCHEMA = os.environ.get("SCHEMA")
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -48,9 +49,9 @@ target_db = current_app.extensions["migrate"].db
 
 def get_metadata():
     schema = (
-        os.getenv("SCHEMA", "public")
-        if os.getenv("FLASK_ENV") == "production"
-        else None
+        os.environ.get("SCHEMA", "public")
+        # if os.getenv("FLASK_ENV") == "production"
+        # else None
     )
     if schema:
         for table in Base.metadata.tables.values():
@@ -72,7 +73,13 @@ def run_migrations_offline():
 
     """
     url = config.get_main_option("sqlalchemy.url")
-    context.configure(url=url, target_metadata=get_metadata(), literal_binds=True)
+    context.configure(
+        url=url,
+        target_metadata=get_metadata(),
+        literal_binds=True,
+        include_schemas=True,
+        version_table_schema=SCHEMA,
+    )
 
     with context.begin_transaction():
         context.run_migrations()

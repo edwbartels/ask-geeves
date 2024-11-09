@@ -4,8 +4,6 @@ from .join_tables import question_tags
 from flask_login import current_user
 
 
-
-
 class Question(BelongsToUser, HasTimestamps, HasVotes):
     content = db.Column(db.Text, nullable=False)
     title = db.Column(db.Text, nullable=False)
@@ -83,9 +81,6 @@ class Question(BelongsToUser, HasTimestamps, HasVotes):
                 status = True
             return {
                 "id": self.id,
-
-
-
                 "questionSave": status,
                 "title": self.title,
                 "content": self.content,

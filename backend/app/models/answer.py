@@ -1,10 +1,12 @@
-from .db import db
+from .db import db, add_prefix_for_prod
 from .base_models import HasTimestamps, BelongsToUser, HasVotes
 from flask_login import current_user
 
 
 class Answer(BelongsToUser, HasTimestamps, HasVotes):
-    question_id = db.Column(db.Integer, db.ForeignKey("questions.id"), nullable=False)
+    question_id = db.Column(
+        db.Integer, db.ForeignKey(add_prefix_for_prod("questions.id")), nullable=False
+    )
     content = db.Column(db.Text, nullable=False)
     accepted = db.Column(db.Boolean, nullable=False, default=False)
 

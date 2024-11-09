@@ -1,6 +1,6 @@
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy import event
-from .db import db
+from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime, timezone
 from ..utils.formatting_methods import format_date
 
@@ -12,13 +12,21 @@ class Base(db.Model):
     def __tablename__(cls):
         return cls.__name__.lower() + "s"
 
+    @declared_attr
+    def __table_args__(cls):
+        if environment == "production":
+            return {"schema": SCHEMA}
+        return {}
+
     id = db.Column(db.Integer, primary_key=True)
 
 
 class BelongsToUser(Base):
     __abstract__ = True
 
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    user_id = db.Column(
+        db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False
+    )
 
 
 class HasTimestamps(Base):

@@ -43,19 +43,24 @@ body {
 }
 
 .image img {
-    width: 600px;
-    height: 400px;
+  margin: 25px;
+  width: 150%; /* Makes the image take up 100% of its container's width */
+  max-width: 600px; /* Ensures the image doesn't exceed 600px in width */
+  height: auto; /* Maintains the aspect ratio of the image */
     border-radius: 14px;
     border: 5px solid rgba(255, 255, 255, 1);
-    box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset,0 0 40px rgba(0, 255, 251, 1),0 0 40px rgba(0, 255, 251, 1) inset;       
+    box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset,0 0 40px rgba(0, 255, 251, 1),0 0 40px rgba(0, 255, 251, 1) inset;    
 }
+
 
 .language-title {
     color: white;
     padding-left: 15px;
     font-family: "Clip";
+    text-transform: uppercase;
     padding-bottom: 15px;
-    font-size: 50px;
+    font-size: 35px;
+    margin-top: 50px;
 }
 
 .gallery {
@@ -73,7 +78,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 150px;
 
 
   }
@@ -120,13 +125,19 @@ body {
     }
   }
 
-
+.text-center {
+  color: white;
+  font-family: "Clip";
+  text-transform: uppercase;
+  justify-self: center;
+  font-size: 35px;
+  margin-top: 100px;
+}
 
 
 .wrapper {
   max-width: 650px;
-  margin: 0 auto;
-
+  justify-self: center
 }
 
 h1 {

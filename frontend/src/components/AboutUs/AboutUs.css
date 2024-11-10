@@ -1,0 +1,25 @@
+
+
+.about-us-div {
+    background-color: black;
+    font-family: 'Short Stack', cursive;
+    color: white;
+}
+
+.about-us-button {
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    padding:1em;
+    line-height:1.5em;
+    border-color: hotpink;
+    background-color: black;
+    color: hotpink;
+}
+
+.about-us-button-div {
+    display: flex;
+    justify-self: center;
+    margin-bottom: 40px;
+    color: white;
+    
+}
+

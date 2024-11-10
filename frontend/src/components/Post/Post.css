@@ -54,6 +54,10 @@
   color: black
 }
 
+.post-body {
+  height: 200px;
+}
+
 .title-required {
   color: white;
   margin-bottom: 20px;
@@ -487,4 +491,111 @@ delete-button::after {
 .edit:hover::after,
 .edit:focus::after {
   opacity: 1;
+}
+
+.vote-counter-div {
+  width: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+button.up {
+  margin-bottom: 6px;
+  color: black;
+  background-color: black;
+  border-radius: 60px;
+  box-shadow: none;
+  border: 5px solid rgba(255, 255, 255, 1);
+  box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
+}
+
+button.down {
+  margin-top: 6px;
+  color: black;
+  background-color: black;
+  border-radius: 60px;
+  box-shadow: none;
+  margin-bottom: 5px;
+  border: 5px solid rgba(255, 255, 255, 1);
+  box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
+}
+
+.save-button {
+  margin-left: 20px;
+  margin-right: 20px;
+  font-family: "Clip";
+  border-radius: 8px;
+  display: flex;
+  justify-self: center;
+}
+
+.save-button {
+  font-family: "Clip";
+  text-transform: uppercase;
+  margin-top: 15px;
+  background-color: black;
+  font-size: 1rem;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  color: hsl(317 100% 54%);
+  border: hsl(317 100% 54%) 0.125em solid;
+  padding: 0.25em 1em;
+  border-radius: 0.25em;
+
+  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
+
+  box-shadow: inset 0 0 0.5em 0 hsl(317 100% 54%), 0 0 0.5em 0 hsl(317 100% 54%);
+
+  position: relative;
+}
+
+.save-button::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  background: hsl(317 100% 54%);
+  top: 120%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  transform: perspective(1em) rotateX(40deg) scale(1, 0.35);
+  filter: blur(1em);
+  opacity: 0.7;
+}
+save-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 0 2em 0.5em hsl(317 100% 54%);
+  opacity: 0;
+  background-color: hsl(317 100% 54%);
+  z-index: -1;
+  transition: opacity 100ms linear;
+}
+
+.save-button:hover,
+.save-button:focus {
+  color: white;
+  text-shadow: none;
+}
+
+.save-button:hover::before,
+.save-button:focus::before {
+  opacity: 1;
+}
+.save-button:hover::after,
+.save-button:focus::after {
+  opacity: 1;
+}
+
+*::before,
+*::after {
+  box-sizing: border-box;
 }

@@ -89,7 +89,7 @@ export const AllQuestions = () => {
         </p>
       </div>
       <div className="page-count-container">
-        <p>
+        <p className="per-page">
           Per page:  
           <button className='page-number' onClick={handleSetResultsSize(5)}>5</button>
           <button className='page-number' onClick={handleSetResultsSize(15)}>15</button>

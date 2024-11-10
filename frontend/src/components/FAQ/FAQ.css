@@ -1,0 +1,26 @@
+.faq-title {
+    color: white;
+    font-family: "Clip";
+    text-transform: uppercase;
+    justify-self: center;
+    font-size: 30px;
+}
+
+.faq-question-title {
+    color: white;
+    font-family: "Clip";
+    text-transform: uppercase;
+}
+
+.answer {
+    color: white;
+    font-family: "Clip";
+    text-transform: uppercase;
+    font-size: 20px;
+}
+
+.faq-answer-div {
+    color: white;
+    font-family: "Clip";
+    font-size: 18px;
+}

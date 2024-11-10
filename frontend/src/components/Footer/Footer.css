@@ -4,22 +4,24 @@
     color: white;
 }
 
-.questions-link {
+.questions {
     color: white;
     text-decoration: none;
 }
 
-.signup-link {
+.faq {
     color: white;
     text-decoration: none;
 }
 
-.about-us-link {
+.about-us {
     color: white;
+    text-decoration: none;
 }
 
-.contact-us-link {
+.contact-us {
     color: white;
+    text-decoration: none;
 }
 
 .footer-container {

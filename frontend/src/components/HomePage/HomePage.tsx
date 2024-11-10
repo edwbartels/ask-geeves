@@ -35,20 +35,9 @@ export const HomePage = () => {
           <div><img src="" alt="" />React</div>
           <div><img src="" alt="" />Node</div>
           <div><img src="" alt="" /></div>
-          <div><img src="" alt="" /></div>
-          <div><img src="" alt="" /></div>
-          <div><img src="" alt="" /></div>
-          <div><img src="" alt="" /></div>
-          <div><img src="" alt="" /></div>
-          <div><img src="" alt="" /></div>
-          <div><img src="" alt="" /></div>
-          <div><img src="" alt="" /></div>
-          <div><img src="" alt="" /></div>
-          <div><img src="" alt="" /></div>
-          <div><img src="" alt="" /></div>
       </div>
       <div className="wrapper">
-      <h1 className="text-center">Alternating Speech Bubbles</h1>
+      <h1 className="text-center">Testimonials</h1>
         <div className="speechbubble">
             <p>"I have been using this site for a few weeks now, and I have to say, its become my go-to platform for coding help. The community is knowledgeable, and I love how quickly I can get answers to my questions. The layout is easy to navigate, and I appreciate the thorough explanations that come with each answer!"</p>
             <span className="username">John M., Software Engineer</span>

@@ -10,6 +10,7 @@ from ..utils.decorator import (
     question_ownership_check,
     collect_query_params,
 )
+from ..utils.errors import ValidationError
 # from sqlalchemy.orm import noload, lazyload, load_only
 
 bp = Blueprint("question", __name__, url_prefix="/api/questions")
@@ -100,19 +101,26 @@ def get_questions_by_userId(user_id, page, per_page, sort_column, sort_order):
 
 
 @bp.route("/", methods=["POST"])
-# @csrf_protect
 @login_check
 def create_question():
     data = request.get_json()
     content = data.get("content")
     title = data.get("title")
-    errors = {}
+    """
+    errors changed from dict to list. Can go back to your original method with
+    Error Dict with props for fields rather than field being a prop of
+    Individual error dicts within the list. Just wanted to show multiple methods
+    """
+    errors = []
     if not content:
-        errors["content"] = "content is required"
+        errors.append(("content", "Data is required"))
+        # errors["content"] = "content is required"
     if not title:
-        errors["title"] = "title is required"
+        errors.append(("title", "Data is required"))
+        # errors["title"] = "title is required"
     if errors:
-        return jsonify({"message": "Bad request", "errors": errors}), 401
+        raise ValidationError(errors=errors)
+        # return jsonify({"message": "Bad request", "errors": errors}), 401
 
     input_tags = data.get("tag")
     tags = []
@@ -138,7 +146,6 @@ def create_question():
 
 
 @bp.route("/<int:question_id>", methods=["PUT"])
-# @csrf_protect
 @login_check
 @question_exist_check
 @question_ownership_check
@@ -163,7 +170,6 @@ def edit_question(question_id):
 
 
 @bp.route("/<int:question_id>", methods=["DELETE"])
-# @csrf_protect
 @login_check
 @question_exist_check
 @question_ownership_check

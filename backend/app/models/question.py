@@ -4,8 +4,6 @@ from .join_tables import question_tags
 from flask_login import current_user
 
 
-
-
 class Question(BelongsToUser, HasTimestamps, HasVotes):
     content = db.Column(db.Text, nullable=False)
     title = db.Column(db.Text, nullable=False)
@@ -48,7 +46,7 @@ class Question(BelongsToUser, HasTimestamps, HasVotes):
 
     # @ Reference .models/formatting.md for date-format key
 
-    def to_dict(self, homepage=False, detail_page=False):
+    def to_dict(self, homepage=False, detail_page=False, search=False):
         if homepage:
             saves = [
                 save.to_dict()
@@ -102,6 +100,15 @@ class Question(BelongsToUser, HasTimestamps, HasVotes):
                     comment.for_question_detail() for comment in self.comments
                 ],
                 "Answers": [answer.for_question_detail() for answer in self.answers],
+            }
+        elif search:
+            return {
+                "id": self.id,
+                "title": self.title,
+                "content": self.content,
+                "total_score": self.total_score,
+                "Tags": [tag.to_dict() for tag in self.tags],
+                "updated_at": self.created_at_long_suffix,
             }
         return {
             "id": self.id,

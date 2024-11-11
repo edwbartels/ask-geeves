@@ -34,7 +34,9 @@ export const NavBar = () => {
       <form>
         <input className="search-links" placeholder="Search..."/>
       </form>
+      <div className="user-greeting">
       {user ? `Welcome ${user?.first_name}` : ""}
+      </div>
         <a href="/questions/ask" className="post-links">Post a question</a>
       {!user ? (
         <div className="nav-buttons">

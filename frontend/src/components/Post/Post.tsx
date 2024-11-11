@@ -14,6 +14,9 @@ import {
 } from "../../features/answersSlice"
 import { RenderPost } from "./RenderPost"
 
+
+
+
 const absurd = (input: never): never => input
 type PostType =
   | {
@@ -87,20 +90,26 @@ export const Post = ({ type, id }: Props) => {
   return (
     <div>
       <div className="post-body">
-        <div>
-          <div className="up-vote">Up</div>
+        <div className="vote-counter-div">
+          <div className="up-vote">
+            <button className="up"><i className="fa-solid fa-2x fa-arrow-up"></i></button>
+          </div>
           <div className="vote-counter">{post.post.total_score}</div>
-          <div className="down-vote">Down</div>
-          <div className="save">Save</div>
+          <div className="down-vote">
+            <button className="down"><i className="fa-solid fa-2x fa-arrow-down"></i></button>
+          </div>
+          <div className="save">
+            <button className="save-button">Save</button>
+          </div>
         </div>
         <div id={permalink}>
           <RenderPost postContent={post.post.content} />
           <div className="post-meta">
             <div>
-              <a href={`#${permalink}`} className="share">Share</a> |<button className="like-post-button">Like post</button>
+              <a href={`#${permalink}`} className="share">Share</a><button className="like-post-button">Like post</button>
               {isUserPostWriter && <Link to={`edit`} className="edit">Edit {type}</Link>}
               {isUserPostWriter && (
-                <button onClick={handleDeletePost}>Delete {type}</button>
+                <button className="delete-button" onClick={handleDeletePost}>Delete {type}</button>
               )}
             </div>
             <div className="post-user">

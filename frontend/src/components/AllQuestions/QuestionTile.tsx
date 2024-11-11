@@ -24,7 +24,7 @@ export const QuestionTile = ({ questionId }: Props) => {
   return (
     <div className="question-tile">
       <div className="question-stats">
-        <p className="votes">{question.total_score}</p>
+        <p className="votes">{question.total_score} Votes</p>
         <p className="answers">{numAnswersText}</p>
       </div>
       <div className="question-block">

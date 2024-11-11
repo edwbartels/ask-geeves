@@ -3,9 +3,17 @@
   grid-template-columns: 2fr 8fr;
   border: 5px solid rgba(255, 255, 255, 1);
   box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;    
-  margin: 20px;
+  margin-left: 20px;
+  margin-right: 2dvb;
+  margin-top: 70px;
+  margin-bottom: 70px;
   font-family: "Clip";
   font-size: 18px;
+}
+
+.question-title {
+  display: flex;
+  justify-self: center;
 }
 
 .question-summary {
@@ -18,14 +26,17 @@
 
 .votes {
   color: white;
+  font-size: 16px;
 }
 
 .answers {
   color: white;
+  font-size: 16px;
 }
 
 .views {
   color: white;
+  font-size: 16px;
 }
 
 .question-heading {
@@ -35,6 +46,8 @@
 .sub-title {
   color: white;
   text-decoration: none;
+  font-size: 22px;
+  font-family: "Clip";
 } 
 
 .all-questions-title {
@@ -59,9 +72,67 @@
 }
 
 .question-stats {
-  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 40px;
+  justify-content: center;
+  align-items: center;
+  font-family: "Clip";
+  text-transform: uppercase;
 }
 
 .question-block {
   margin-left: 40px;
 }
+
+.prev-next-container {
+  color: white;
+  justify-self: center;
+  font-family: "Clip";
+  text-transform: uppercase;
+}
+
+.page-count-container {
+  color: white;
+  justify-self: center;
+}
+
+.previous-button {
+  margin-right: 10px;
+  font-family: "Clip";
+  font-weight: bold;
+  text-transform: uppercase;
+  border: 2px solid rgba(255, 255, 255, 1);
+  box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
+  size: 6px;
+}
+
+.next-button {
+  margin-left: 10px;
+  font-weight: bold;
+  font-family: "Clip";
+  text-transform: uppercase;
+  border: 2px solid rgba(255, 255, 255, 1);
+  box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
+
+}
+
+.page-number {
+  margin-left: 20px;
+  margin-right: 20px;
+  font-family: "Clip";
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color: black;
+  color: #f087d3;
+  border-color: white;
+  box-shadow: 0 0 8px 3px #feaee3,
+              0 0 18px 5px #f087d3;
+}
+
+.per-page {
+  text-transform: uppercase;
+  font-family: "Clip";
+}
+
+

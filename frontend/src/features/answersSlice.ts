@@ -37,6 +37,12 @@ export interface DeleteAnswerResponse {
 export interface DeleteAnswerError {
   error: string
 }
+export interface EditAnswerForm extends AnswerForm {
+  answerId: number
+}
+export interface EditAnswerError {
+  error: string
+}
 
 export interface Answer {
   id: number
@@ -100,6 +106,41 @@ export const deleteOneAnswer = createAsyncThunk<
 
   const deletedAnswer = await response.json()
   return { message: deletedAnswer.message, answerId, questionId }
+})
+
+export const editOneAnswer = createAsyncThunk<
+  CreateAnswerResponse,
+  EditAnswerForm,
+  { rejectValue: EditAnswerError }
+>("answers/editOneAnswer", async (editAnswerInput, thunkApi) => {
+  const { questionId, answerId } = editAnswerInput
+  const response = await fetch(
+    `/api/questions/${questionId}/answers/${answerId}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        content: editAnswerInput.content,
+      }),
+    },
+  )
+  if (!response.ok) {
+    const error = await response.json()
+    thunkApi.rejectWithValue(error)
+  }
+  const answer: CreateAnswerResponse = await response.json()
+  const { Comments, AnswerUser, answerSave, ...remaining } = answer.answer
+
+  const answerPayload: Answer = { ...remaining, user_id: AnswerUser.id }
+  const commentPayload = {}
+  const userPayload = {}
+  const savedPayload = {}
+
+  thunkApi.dispatch(addManyAnswers([answerPayload]))
+  // dispatch comments
+  // dispatch saves
+  // dispatch user
+  return answer
 })
 
 const initialState: AnswersSliceState = {}

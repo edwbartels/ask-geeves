@@ -18,7 +18,8 @@ export function OpenModalButton({
   additionalClassNames,
 }: OpenModalButtonProps) {
   const { setModalContent, setOnModalClose } = useModal()
-  const buttonClasses = "openModalMenuItem " + (additionalClassNames?.join(" ") ?? "")
+  const buttonClasses =
+    "openModalMenuItem " + (additionalClassNames?.join(" ") ?? "")
 
   const onClick = () => {
     if (onModalClose) setOnModalClose(onModalClose)

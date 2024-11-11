@@ -64,9 +64,10 @@ export const AllQuestions = () => {
       {questionIds.map(id => (
         <QuestionTile key={id} questionId={id} />
       ))}
-      <div>
+      <div className="prev-next-container">
         <p>
           <button
+            className="previous-button"
             disabled={!(Number(searchParams.get("page")) > 1)}
             onClick={decrementSearchParam}
           >
@@ -74,6 +75,7 @@ export const AllQuestions = () => {
           </button>
           Page: {pageSettings.page} of {pageSettings.num_pages}
           <button
+            className="next-button"
             disabled={
               !(
                 Number(searchParams.get("page")) <
@@ -85,12 +87,14 @@ export const AllQuestions = () => {
             Next
           </button>
         </p>
-        <p>
-          Per page:
-          <button onClick={handleSetResultsSize(5)}>5</button>
-          <button onClick={handleSetResultsSize(15)}>15</button>
-          <button onClick={handleSetResultsSize(30)}>30</button>
-          <button onClick={handleSetResultsSize(50)}>50</button>
+      </div>
+      <div className="page-count-container">
+        <p className="per-page">
+          Per page:  
+          <button className='page-number' onClick={handleSetResultsSize(5)}>5</button>
+          <button className='page-number' onClick={handleSetResultsSize(15)}>15</button>
+          <button className='page-number' onClick={handleSetResultsSize(30)}>30</button>
+          <button className='page-number' onClick={handleSetResultsSize(50)}>50</button>
         </p>
       </div>
     </div>

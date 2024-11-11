@@ -13,6 +13,8 @@ import {
   deleteOneAnswer,
 } from "../../features/answersSlice"
 import { RenderPost } from "./RenderPost"
+import { AnswerForm } from "../Modals/AnswerForm"
+import { OpenModalButton } from "../Modals/OpenModalButton"
 
 const absurd = (input: never): never => input
 type PostType =
@@ -98,7 +100,21 @@ export const Post = ({ type, id }: Props) => {
           <div className="question-meta">
             <div>
               <a href={`#${permalink}`}>Share</a> |<button>Like post</button>
-              {isUserPostWriter && <Link to={`edit`}>Edit {type}</Link>}
+              {isUserPostWriter && post.type === "question" ? (
+                <Link to={`edit`}>Edit {post.type}</Link>
+              ) : post.type === "answer" ? (
+                <OpenModalButton
+                  buttonText="Edit answer"
+                  modalComponent={
+                    <AnswerForm
+                      questionId={post.post.question_id}
+                      answerId={post.post.id}
+                    />
+                  }
+                />
+              ) : (
+                ""
+              )}
               {isUserPostWriter && (
                 <button onClick={handleDeletePost}>Delete {type}</button>
               )}

@@ -45,7 +45,7 @@ export const votesSlice = createAppSlice({
       const votes = action.payload
       for (const vote of votes) {
         const qOrA = vote.content_type
-        // state[qOrA][vote.content_id] = vote
+        state[qOrA][vote.content_id] = vote
       }
     },
   },

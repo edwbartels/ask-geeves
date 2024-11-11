@@ -6,6 +6,7 @@ from ..models.comment import Comment
 from ..models.answer import Answer
 from ..models.db import db
 from ..utils.decorator import login_check
+from sqlalchemy import case
 
 bp = Blueprint("vote", __name__, url_prefix="/api")
 
@@ -69,3 +70,17 @@ def add_vote():
         content.update_total_score(db.session)
 
     return jsonify({"message": "⭐I VOTED!⭐🦅🦅"}), 200
+
+@bp.route("/vote/current")
+@login_check
+def get_all_votes_for_current_user():
+    user_id = current_user.id
+    votes = Vote.query.filter_by(user_id=user_id).order_by(
+        case(
+            (Vote.content_type == "question", 1),
+            (Vote.content_type == "answer", 2),
+            (Vote.content_type == "comment", 3),
+        )
+    )
+    vote_list = [vote.to_dict_current_user() for vote in votes]
+    return jsonify({"votes": vote_list})

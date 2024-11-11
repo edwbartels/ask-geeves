@@ -42,12 +42,12 @@ export const NavBar = () => {
         <div className="nav-buttons">
           <OpenModalButton 
             additionalClassNames={["login-button"]}
-            linkText="Log in"
+            buttonText="Log in"
             modalComponent={<LoginFormModal />}
             />
           <OpenModalButton
             additionalClassNames={["signup-button"]}
-            linkText="Sign up"
+            buttonText="Sign up"
             modalComponent={<SignupFormModal />}
           />
         </div>

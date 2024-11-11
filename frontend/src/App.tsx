@@ -20,6 +20,7 @@ import { Footer } from "./components/Footer/Footer"
 import { Contact } from "./components/Contact/Contact"
 import { FAQ } from "./components/FAQ/FAQ"
 import { AboutUs } from "./components/AboutUs/AboutUs"
+import { UserDetailPage } from "./components/User/UserDetailPage";
 
 import { restoreSession } from "./features/sessionSlice"
 
@@ -74,7 +75,11 @@ const router = createBrowserRouter([
       {
         path: "about-us",
         element: <AboutUs />
-      }
+      },
+      {
+        path: "user/:userId",
+        element: <UserDetailPage />,
+      },
     ],
   },
 ])

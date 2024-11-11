@@ -5,14 +5,14 @@ import { useModal } from "../../context/Modal"
 
 interface OpenModalButtonProps {
   modalComponent: ReactNode
-  linkText: string
+  buttonText: string
   onItemClick?: () => void
   onModalClose?: () => void
   additionalClassNames?: string[]
 }
 export function OpenModalButton({
   modalComponent, // component to render inside the modal
-  linkText, // text of the menu item that opens the modal
+  buttonText, // text of the menu item that opens the modal
   onItemClick, // optional: callback function that will be called once the menu item that opens the modal is clicked
   onModalClose, // optional: callback function that will be called once the modal is closed
   additionalClassNames,
@@ -28,7 +28,7 @@ export function OpenModalButton({
 
   return (
     <button onClick={onClick} className={buttonClasses}>
-      {linkText}
+      {buttonText}
     </button>
   )
 }

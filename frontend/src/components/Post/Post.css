@@ -1,24 +1,265 @@
 .post {
   width: 90%;
+  margin-left: 45px;
+  font-family: "Clip";
+  text-transform: uppercase;
+}
+
+.new-question-title {
+  color: white;
 }
 .post-title-input,
 .post-body-textarea {
+  color: white;
+  margin-top: 5px;
+  margin-bottom: 25px;
   box-sizing: border-box;
   /* font-size: 1rem; */
   width: 100%;
   text-wrap: nowrap;
   padding: 10px;
   resize: vertical;
+  background-color: black;
+  box-shadow:
+    0 0 10px 5px #feaee3,
+    0 0 20px 7px #f087d3;
+}
+
+.post-body-textarea {
+  color: white;
+}
+
+.post-title-input {
+  color: white;
 }
 
 .post-body pre {
-  background-color: #eeeeee;
   padding: 10px 5px;
   border-radius: 5px;
+  background-color: black;
+  box-shadow:
+    0 0 10px 5px #feaee3,
+    0 0 20px 7px #f087d3;
 }
 
 .post-body code {
   background-color: #eeeeee;
   padding: 5px;
   border-radius: 5px;
+  color: black;
+}
+
+.title-required {
+  color: white;
+  margin-bottom: 20px;
+}
+
+.question-required {
+  color: white;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.buttons-div {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.submit-question {
+  margin-right: 15px;
+  font-family: "Clip";
+  border-radius: 8px;
+  display: flex;
+  justify-self: center;
+  font-size: 20px;
+}
+
+.submit-question {
+  font-family: "Clip";
+  margin-top: 15px;
+  background-color: black;
+  font-size: 1rem;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  color: hsl(317 100% 54%);
+  border: hsl(317 100% 54%) 0.125em solid;
+  padding: 0.25em 1em;
+  border-radius: 0.25em;
+
+  text-shadow:
+    0 0 0.125em hsl(0 0% 100% / 0.3),
+    0 0 0.45em currentColor;
+
+  box-shadow:
+    inset 0 0 0.5em 0 hsl(317 100% 54%),
+    0 0 0.5em 0 hsl(317 100% 54%);
+
+  position: relative;
+}
+
+.submit-question::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  background: hsl(317 100% 54%);
+  top: 120%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  transform: perspective(1em) rotateX(40deg) scale(1, 0.35);
+  filter: blur(1em);
+  opacity: 0.7;
+}
+
+.submit-question::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 0 2em 0.5em hsl(317 100% 54%);
+  opacity: 0;
+  background-color: hsl(317 100% 54%);
+  z-index: -1;
+  transition: opacity 100ms linear;
+}
+
+.submit-question:hover,
+.submit-question:focus {
+  color: white;
+  text-shadow: none;
+}
+
+.submit-question:hover::before,
+.submit-question:focus::before {
+  opacity: 1;
+}
+.submit-question:hover::after,
+.submit-question:focus::after {
+  opacity: 1;
+}
+
+.cancel-question {
+  margin-left: 15px;
+  margin-right: 15px;
+  font-family: "Clip";
+  border-radius: 8px;
+  display: flex;
+  justify-self: center;
+  font-size: 20px;
+}
+
+.cancel-question {
+  font-family: "Clip";
+  margin-top: 15px;
+  background-color: black;
+  font-size: 1rem;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  color: hsl(317 100% 54%);
+  border: hsl(317 100% 54%) 0.125em solid;
+  padding: 0.25em 1em;
+  border-radius: 0.25em;
+
+  text-shadow:
+    0 0 0.125em hsl(0 0% 100% / 0.3),
+    0 0 0.45em currentColor;
+
+  box-shadow:
+    inset 0 0 0.5em 0 hsl(317 100% 54%),
+    0 0 0.5em 0 hsl(317 100% 54%);
+
+  position: relative;
+}
+
+.cancel-question::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  background: hsl(317 100% 54%);
+  top: 120%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  transform: perspective(1em) rotateX(40deg) scale(1, 0.35);
+  filter: blur(1em);
+  opacity: 0.7;
+}
+
+.cancel-question::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 0 2em 0.5em hsl(317 100% 54%);
+  opacity: 0;
+  background-color: hsl(317 100% 54%);
+  z-index: -1;
+  transition: opacity 100ms linear;
+}
+
+.cancel-question:hover,
+.cancel-question:focus {
+  color: white;
+  text-shadow: none;
+}
+
+.cancel-question:hover::before,
+.cancel-question:focus::before {
+  opacity: 1;
+}
+.cancel-question:hover::after,
+.cancel-question:focus::after {
+  opacity: 1;
+}
+
+.up-vote {
+  color: white;
+}
+
+.vote-counter {
+  color: white;
+}
+
+.down-vote {
+  color: white;
+}
+
+.save {
+  color: white;
+}
+
+.share {
+  color: white;
+}
+
+.edit {
+  color: white;
+}
+
+.posted-by-user {
+  color: white;
+}
+
+.comments-here {
+  color: white;
+}
+
+.post-body {
+  color: white;
+}
+
+.post-user {
+  display: flex;
+  flex-direction: row;
+  justify-self: flex-end;
 }

@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useModal } from "../../context/Modal"
 import { Errors } from "../Errors/Errors"
 
-// import "../css/SignupFormModal.css"
+import "./SignUpFormModal.css"
 
 export const SignupFormModal = () => {
   const [user, setUser] = useState({
@@ -50,7 +50,8 @@ export const SignupFormModal = () => {
       <form onSubmit={handleSubmitSignUp}>
         <div>
           <label className="login-form-item">
-            <div>First Name</div>
+            <h3 className="signup-title">Sign Up</h3>
+            <div className="first-name">First Name</div>
             <input
               onChange={handleChangeForm("firstName")}
               defaultValue={user.firstName}
@@ -62,7 +63,7 @@ export const SignupFormModal = () => {
         </div>
         <div>
           <label className="login-form-item">
-            <div>Last Name</div>
+            <div className="last-name">Last Name</div>
             <input
               onChange={handleChangeForm("lastName")}
               defaultValue={user.lastName}
@@ -74,7 +75,7 @@ export const SignupFormModal = () => {
         </div>
         <div>
           <label className="login-form-item">
-            <div>Email</div>
+            <div className="email">Email</div>
             <input
               onChange={handleChangeForm("email")}
               defaultValue={user.email}
@@ -86,7 +87,7 @@ export const SignupFormModal = () => {
         </div>
         <div>
           <label className="login-form-item">
-            <div>Username</div>
+            <div className="username">Username</div>
             <input
               onChange={handleChangeForm("username")}
               defaultValue={user.username}
@@ -98,7 +99,7 @@ export const SignupFormModal = () => {
         </div>
         <div>
           <label className="login-form-item">
-            <div>Password</div>
+            <div className="password">Password</div>
             <input
               onChange={handleChangeForm("password")}
               defaultValue={user.password}
@@ -110,7 +111,7 @@ export const SignupFormModal = () => {
         </div>
         <div>
           <label className="login-form-item">
-            <div>Confirm Password</div>
+            <div className="confirm-password">Confirm Password</div>
             <input
               onChange={handleChangeForm("confirmPassword")}
               defaultValue={user.confirmPassword}
@@ -120,8 +121,8 @@ export const SignupFormModal = () => {
             />
           </label>
         </div>
-        <div className="sign-up-button">
-          <button disabled={isDisabledSubmit}>Sign up</button>
+        <div className="sign-up-button-div">
+          <button className="sign-up-button" disabled={isDisabledSubmit}>Sign up</button>
         </div>
       </form>
     </div>

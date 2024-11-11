@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, redirect
+from flask_migrate import Migrate
 from .config import config_dict
 from flask_login import LoginManager
 from .models.db import db

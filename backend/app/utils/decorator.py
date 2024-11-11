@@ -7,7 +7,7 @@ from sqlalchemy import asc, desc
 from ..models.question import Question
 from ..models.answer import Answer
 from ..models.comment import Comment
-
+from .errors import ExistenceError , AuthorizationError
 
 # def csrf_protect(func):
 #     @wraps(func)
@@ -20,6 +20,67 @@ from ..models.comment import Comment
 #         return func(*args, **kwargs)
 
 #     return wrapper
+
+
+def existence_check(*QAC_id_pairs):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            errors = []
+            for QAC, QAC_id in QAC_id_pairs:
+                id = kwargs.get(QAC_id)
+                model = globals().get(QAC)
+                resource = model.query.get(id)
+                if not resource:
+                    errors.append((QAC, f"{QAC} not found"))
+                else:
+                    kwargs[QAC.lower()] = resource
+            if errors:
+                raise ExistenceError(errors=errors)
+            
+            return func(*args, **kwargs)
+        
+        return wrapper
+    return decorator
+
+
+def authorization_check(check,QAC_type):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            resource = kwargs.get(QAC_type)
+            if not check(resource):
+                raise AuthorizationError(resource=QAC_type)
+            return func(*args, **kwargs)
+        
+        return wrapper
+    return decorator
+
+def comment_owner_check(comment):
+    return comment.user_id == current_user.id
+
+def question_owner_check(question):
+    return question.user_id == current_user.id
+
+def answer_owner_check(answer):
+    return answer.user_id == current_user.id
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def login_check(func):

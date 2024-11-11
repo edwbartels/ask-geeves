@@ -4,6 +4,7 @@ from sqlalchemy import asc, desc  # noqa
 from ..models.answer import Answer
 from ..models.comment import Comment
 from ..models.db import db
+from ..utils.errors import ValidationError
 from ..utils.decorator import (
     login_check,
     question_exist_check,
@@ -13,6 +14,7 @@ from ..utils.decorator import (
     comment_for_answer_exist_check,
     comment_for_answer_ownership_check,
     collect_query_params,
+    existence_check,authorization_check,comment_owner_check
 )
 
 bp = Blueprint("comment", __name__, url_prefix="/api/questions")
@@ -89,8 +91,9 @@ def get_all_comments(question_id):
 @bp.route("/<int:question_id>/comments", methods=["POST"])
 # @csrf_protect
 @login_check
-@question_exist_check
-def create_comment_for_question(question_id):
+# @question_exist_check
+@existence_check(("Question", "question_id"))
+def create_comment_for_question(question_id,question):
     data = request.get_json()
     content = data.get("content")
     if not content:
@@ -109,14 +112,16 @@ def create_comment_for_question(question_id):
 @bp.route("/<int:question_id>/comments/<int:comment_id>", methods=["PUT"])
 # @csrf_protect
 @login_check
-@comment_for_question_exist_check
-@comment_for_question_ownership_check
-def edit_comment_for_question(question_id, comment_id):
+# @comment_for_question_exist_check
+@existence_check(("Question","question_id"),("Comment","comment_id"))
+# @comment_for_question_ownership_check
+@authorization_check(comment_owner_check,"comment")
+def edit_comment_for_question(question_id,question,comment_id,comment):
     data = request.get_json()
     new_content = data.get("content")
     if not new_content:
         return jsonify({"error": "content is required"}), 400
-    comment = Comment.query.get(comment_id)
+    # comment = Comment.query.get(comment_id)
     comment.content = new_content
     db.session.commit()
     return jsonify({"comment": comment.to_dict()}), 200

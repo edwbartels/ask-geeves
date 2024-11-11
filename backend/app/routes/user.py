@@ -6,7 +6,7 @@ from ..models.answer import Answer
 from ..models.comment import Comment
 from ..models.db import db
 from ..utils.decorator import login_check
-from ..models.user import User
+from ..utils.errors import ValidationError
 
 bp = Blueprint("user", __name__, url_prefix="/api/user")
 
@@ -19,29 +19,53 @@ def sign_up():
     # should hide signup button
     data = request.get_json()
 
-    errors = {}
+    # errors = {}
+    # if not data.get("username"):
+    #     errors["username"] = "Username is required"
+    # if not data.get("email"):
+    #     errors["email"] = "Email is required"
+    # if not data.get("first_name"):
+    #     errors["firstName"] = "First Name is required"
+    # if not data.get("last_name"):
+    #     errors["lastName"] = "Last Name is required"
+    # if not data.get("password"):
+    #     errors["password"] = "Password is required"
+    # if not data.get("confirm_password"):
+    #     errors["confirm_Password"] = "Confirm Password is required"
+    # if data.get("password") and data.get("confirm_password"):
+    #     if data["password"] != data["confirm_password"]:
+    #         errors["password"] = "Passwords must match"
+    # if User.query.filter_by(username=data.get("username")).first():
+    #     errors["username"] = "Username is already registered"
+    # if User.query.filter_by(email=data.get("email")).first():
+    #     errors["email"] = "Email is already registered"
+    # if errors:
+    #     return jsonify({"message": "Bad Request", "errors": errors}), 400
+    
+    errors = []
     if not data.get("username"):
-        errors["username"] = "Username is required"
+        errors.append(("username", "Username is required"))
     if not data.get("email"):
-        errors["email"] = "Email is required"
+        errors.append(("email", "Email is required"))
     if not data.get("first_name"):
-        errors["firstName"] = "First Name is required"
+        errors.append(("first_name", "First Name is required"))
     if not data.get("last_name"):
-        errors["lastName"] = "Last Name is required"
+        errors.append(("last_name", "Last Name is required"))
     if not data.get("password"):
-        errors["password"] = "Password is required"
+        errors.append(("password", "Password is required"))
     if not data.get("confirm_password"):
-        errors["confirm_Password"] = "Confirm Password is required"
+        errors.append(("confirm_password", "Confirm Password is required"))
     if data.get("password") and data.get("confirm_password"):
         if data["password"] != data["confirm_password"]:
-            errors["password"] = "Passwords must match"
-
+            errors.append(("password", "Passwords must match"))
     if User.query.filter_by(username=data.get("username")).first():
-        errors["username"] = "Username is already registered"
+        errors.append(("username", "Username is already registered"))
     if User.query.filter_by(email=data.get("email")).first():
-        errors["email"] = "Email is already registered"
+        errors.append(("email", "Email is already registered"))
+        
     if errors:
-        return jsonify({"message": "Bad Request", "errors": errors}), 400
+        raise ValidationError(errors=errors)
+
 
     new_user = User(
         username=data["username"],

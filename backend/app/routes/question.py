@@ -155,13 +155,22 @@ def edit_question(question_id):
     new_content = data.get("content")
     new_title = data.get("title")
 
-    errors = {}
+    # errors = {}
+    # if not new_content:
+    #     errors["content"] = "content is required"
+    # if not new_title:
+    #     errors["title"] = "title is required"
+    # if errors:
+    #     return jsonify({"message": "Bad request", "errors": errors}), 401
+    errors = []
     if not new_content:
-        errors["content"] = "content is required"
+        errors.append(("content", "Data is required"))
+        # errors["content"] = "content is required"
     if not new_title:
-        errors["title"] = "title is required"
+        errors.append(("title", "Data is required"))
+        # errors["title"] = "title is required"
     if errors:
-        return jsonify({"message": "Bad request", "errors": errors}), 401
+        raise ValidationError(errors=errors)
 
     question.content = new_content
     question.title = new_title

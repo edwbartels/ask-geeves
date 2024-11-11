@@ -7,15 +7,31 @@ from .seed_lists import (
     question_tags_list,
     votes,
     saves,
+    follow_data_list,
 )
-from ..models import db, User, Question, Answer, Comment, Tag, question_tags, Vote, Save
+from ..models import (
+    db,
+    User,
+    Question,
+    Answer,
+    Comment,
+    Tag,
+    question_tags,
+    Vote,
+    Save,
+    follow_data,
+)
 
 
 def seed_users():
-    for entry in users:
-        user = User(**entry)
-        db.session.add(user)
-    db.session.commit()
+    try:
+        for entry in users:
+            user = User(**entry)
+            db.session.add(user)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error seeding users: {e}")
 
 
 def seed_questions():
@@ -51,6 +67,17 @@ def seed_question_tags():
         db.session.execute(
             question_tags.insert().values(
                 question_id=entry["question_id"], tag_id=entry["tag_id"]
+            )
+        )
+    db.session.commit()
+
+
+def seed_follow_data():
+    for entry in follow_data_list:
+        db.session.execute(
+            follow_data.insert().values(
+                followed_by_id=entry["followed_by_id"],
+                following_id=entry["following_id"],
             )
         )
     db.session.commit()
@@ -93,12 +120,14 @@ def seed_all():
     seed_answers()
     seed_comments()
     seed_question_tags()
+    seed_follow_data()
     seed_votes()
     seed_saves()
     update_all_total_scores()
 
 
 def clear_all_data():
+    db.session.execute(follow_data.delete())
     db.session.execute(question_tags.delete())  # Clear join table entries first
     db.session.query(Comment).delete()
     db.session.query(Answer).delete()

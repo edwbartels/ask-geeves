@@ -40,6 +40,7 @@
   width: 100%;
   text-wrap: nowrap;
   padding: 10px;
+  resize: vertical;
 }
 
 .question-title {

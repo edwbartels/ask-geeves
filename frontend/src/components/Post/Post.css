@@ -36,10 +36,18 @@
 .post-body pre {
   padding: 10px 5px;
   border-radius: 5px;
-  background-color: black;
-  box-shadow:
-    0 0 10px 5px #feaee3,
-    0 0 20px 7px #f087d3;
+  background-color: rgb(99, 98, 98);
+  box-shadow: 0 0 10px 5px #feaee3,
+              0 0 20px 7px #f087d3;
+}
+
+pre {
+  margin-right: 10px;
+  width: auto;
+}
+
+p {
+  color: white;
 }
 
 .post-meta {
@@ -57,7 +65,7 @@
 }
 
 .post-body {
-  height: 200px;
+  height: auto;
 }
 
 .title-required {
@@ -272,11 +280,10 @@
   box-sizing: border-box;
   /* font-size: 1rem; */
   width: 100%;
-  text-wrap: nowrap;
   padding: 10px;
   background-color: black;
   box-shadow: 0 0 10px 5px #feaee3,
-            0 0 20px 7px #f087d3;
+              0 0 20px 7px #f087d3;
 }
 
 .post-user {

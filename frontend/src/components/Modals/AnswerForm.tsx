@@ -10,6 +10,8 @@ import {
   selectAnswerById,
 } from "../../features/answersSlice"
 import { selectSession } from "../../features/sessionSlice"
+import './AnswerForm.css'
+import '../Post/Post.css'
 import { selectQuestionById } from "../../features/questionsSlice"
 interface Props {
   questionId: number
@@ -58,22 +60,25 @@ export const AnswerForm = ({ questionId, answerId }: Props) => {
         Close form X
       </button>
       <div className="answer-modal-form">
-        <h1>Add your answer</h1>
+        <h1 className="add-your-answer-title">Add your answer</h1>
         <form onSubmit={handleSubmitAnswer}>
-          <button>Submit answer</button>
           <div>
             <textarea
+              className="answer-box"
               onChange={handleChangeForm}
               placeholder="Answer..."
               rows={10}
               value={form}
             />
           </div>
+          <div className="submit-answer-button-div">
+          <button className="submit-new-answer-button">Submit answer</button>
+          </div>
         </form>
         <RenderPost postContent={form} />
       </div>
       <div className="answer-modal-question-content">
-        <h1>{question.title}</h1>
+        <h1 className="question-title-preview">{question.title}</h1>
         <RenderPost postContent={question.content} />
       </div>
     </div>

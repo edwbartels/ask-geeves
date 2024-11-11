@@ -1,6 +1,24 @@
 comments = [
     {
-        "user_id": 1,
+        "user_id": 11,
+        "content": "This is a great question! I'm also torn between Flask and Django.",
+        "content_id": 1,  # This comment is on Question 1
+        "content_type": "question",  # Indicates this comment is on the question itself
+    },
+    {
+        "user_id": 12,
+        "content": "Flask's simplicity is nice, but Django saves a lot of time with built-in features. It really depends on the use case.",
+        "content_id": 1,
+        "content_type": "question",
+    },
+    {
+        "user_id": 13,
+        "content": "Could you expand on how Django handles scalability for large applications?",
+        "content_id": 1,
+        "content_type": "question",
+    },
+    {
+        "user_id": 22,
         "content": "This is a great answer!",
         "content_id": 1,
         "content_type": "answer",
@@ -8,12 +26,60 @@ comments = [
     {
         "user_id": 2,
         "content": "I completely agree with this explanation.",
-        "content_id": 2,
+        "content_id": 1,
         "content_type": "answer",
     },
     {
         "user_id": 3,
         "content": "Can you clarify this part?",
+        "content_id": 1,
+        "content_type": "answer",
+    },
+    {
+        "user_id": 15,
+        "content": "I completely agree with this explanation.",
+        "content_id": 2,
+        "content_type": "answer",
+    },
+    {
+        "user_id": 5,
+        "content": "I think Flask might be better for smaller projects, but Django is definitely the go-to for larger ones.",
+        "content_id": 2,  # This comment is on Answer 2
+        "content_type": "answer",
+    },
+    {
+        "user_id": 6,
+        "content": "I agree, Flask is great for APIs but Django handles more complex features like authentication out of the box.",
+        "content_id": 2,
+        "content_type": "answer",
+    },
+    {
+        "user_id": 7,
+        "content": "Do you think Flask is more scalable than Django for microservices?",
+        "content_id": 2,
+        "content_type": "answer",
+    },
+    {
+        "user_id": 22,
+        "content": "Can you clarify this part?",
+        "content_id": 3,
+        "content_type": "answer",
+    },
+    {
+        "user_id": 8,
+        "content": "I would love to see more examples of Flask for larger applications. Any pointers?",
+        "content_id": 3,  # This comment is on Answer 3
+        "content_type": "answer",
+    },
+    {
+        "user_id": 9,
+        "content": "Definitely a good point! Flask is definitely better for simple applications, but Django saves a lot of time in larger ones.",
+        "content_id": 3,
+        "content_type": "answer",
+    },
+    {
+        "user_id": 10,
+        "content": "I think the choice between Flask and Django really depends on the project size and team preferences.",
         "content_id": 3,
         "content_type": "answer",
     },

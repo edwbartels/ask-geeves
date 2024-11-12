@@ -71,6 +71,7 @@ def add_vote():
 
     return jsonify({"message": "⭐I VOTED!⭐🦅🦅"}), 200
 
+
 @bp.route("/vote/current")
 @login_check
 def get_all_votes_for_current_user():

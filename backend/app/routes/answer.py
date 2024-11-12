@@ -3,13 +3,13 @@ from flask_login import current_user
 from sqlalchemy import asc, desc  # noqa
 from ..models.answer import Answer
 from ..models.db import db
+from ..utils.errors import ValidationError
 from ..utils.decorator import (
     login_check,
-    # question_exist_check,
-    # question_ownership_check,
-    # answer_exist_check,
-    # answer_ownership_check,
-    collect_query_params,existence_check,authorization_check,owner_check
+    collect_query_params,
+    existence_check,
+    authorization_check,
+    owner_check,
 )
 
 bp = Blueprint("answer", __name__, url_prefix="/api/questions")
@@ -59,9 +59,8 @@ def get_all_answers_by_current_user(page, per_page, sort_column, sort_order):
 
 
 @bp.route("/<int:question_id>/answers/current", methods=["GET"])
-# @question_exist_check
-@existence_check(("Question","question_id"))
-def get_all_answers_by_questionId_and_currentUser(question_id,question):
+@existence_check(("Question", "question_id"))
+def get_all_answers_by_questionId_and_currentUser(question_id, question):
     answers = Answer.query.filter_by(
         question_id=question_id, user_id=current_user.id
     ).all()
@@ -71,10 +70,9 @@ def get_all_answers_by_questionId_and_currentUser(question_id,question):
 
 @bp.route("/<int:question_id>/answers", methods=["POST"])
 @login_check
-# @question_exist_check
-@existence_check(("Question","question_id"))
+@existence_check(("Question", "question_id"))
 # @csrf_protect
-def create_answer_by_questionId(question_id,question):
+def create_answer_by_questionId(question_id, question):
     data = request.get_json()
     new_content = data.get("content")
     if not new_content:
@@ -92,12 +90,9 @@ def create_answer_by_questionId(question_id,question):
 @bp.route("/<int:question_id>/answers/<int:answer_id>", methods=["PUT"])
 # @csrf_protect
 @login_check
-# @answer_exist_check
-# @answer_ownership_check
-@existence_check(("Question","question_id"),("Answer","answer_id"))
-@authorization_check(owner_check,"answer")
+@existence_check(("Question", "question_id"), ("Answer", "answer_id"))
+@authorization_check(owner_check, "answer")
 def edit_answer_by_questionId_and_answerId(question_id, question, answer_id, answer):
-    # answer = Answer.query.get(answer_id)
     data = request.get_json()
     new_content = data.get("content")
     if not new_content:
@@ -110,12 +105,11 @@ def edit_answer_by_questionId_and_answerId(question_id, question, answer_id, ans
 @bp.route("/<int:question_id>/answers/<int:answer_id>", methods=["DELETE"])
 # @csrf_protect
 @login_check
-# @answer_exist_check
-# @answer_ownership_check
-@existence_check(("Question","question_id"),("Answer","answer_id"))
-@authorization_check(owner_check,"answer")
-def delete_answer_by_questionId_and_answerId(question_id,question,answer_id,answer):
-    # answer = Answer.query.get(answer_id)
+@existence_check(("Question", "question_id"), ("Answer", "answer_id"))
+@authorization_check(owner_check, "answer")
+def delete_answer_by_questionId_and_answerId(question_id, question, answer_id, answer):
+    if answer.question_id != question_id:
+        raise ValidationError(errors=[("Answer","answer does not belong to this question")])
     db.session.delete(answer)
     db.session.commit()
     return jsonify({"message": "answer deleted"})
@@ -124,14 +118,13 @@ def delete_answer_by_questionId_and_answerId(question_id,question,answer_id,answ
 @bp.route("/<int:question_id>/answers/<int:answer_id>/accept", methods=["PUT"])
 # @csrf_protect
 @login_check
-# @question_exist_check
-# @question_ownership_check
-@existence_check(("Question","question_id"),("Answer","answer_id"))
-@authorization_check(owner_check,"answer")
-def mark_answer_accepted_by_questionId_and_answerId(question_id,question,answer_id,answer):
-    # answer = Answer.query.get(answer_id)
-    # if not answer:
-    #     return jsonify({"error": "Answer not found"}), 404
+@existence_check(("Question", "question_id"), ("Answer", "answer_id"))
+@authorization_check(owner_check, "answer")
+def mark_answer_accepted_by_questionId_and_answerId(
+    question_id, question, answer_id, answer
+):
+    if answer.question_id != question_id:
+        raise ValidationError(errors=[("Answer","answer does not belong to this question")])
     answer.accepted = not answer.accepted
     db.session.commit()
     return jsonify({"answer": answer.to_dict()}), 200

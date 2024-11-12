@@ -4,19 +4,17 @@ from sqlalchemy import asc, desc  # noqa
 from ..models.answer import Answer
 from ..models.comment import Comment
 from ..models.db import db
-from ..utils.errors import ValidationError
+from ..utils.errors import ValidationError,ExistenceError,AuthorizationError
 from ..utils.decorator import (
     login_check,
     collect_query_params,
-    existence_check,
-    authorization_check,
-    owner_check,
+    existence_check
 )
 
-bp = Blueprint("comment", __name__, url_prefix="/api/questions")
+bp = Blueprint("comment", __name__, url_prefix="/api/comments")
 
 
-@bp.route("/<int:question_id>/comments", methods=["GET"])
+@bp.route("/question/<int:question_id>", methods=["GET"])
 @existence_check(("Question", "question_id"))
 @collect_query_params(Comment)
 def get_all_comments_for_question(
@@ -39,11 +37,11 @@ def get_all_comments_for_question(
     ), 200
 
 
-@bp.route("/<int:question_id>/answers/<int:answer_id>/comments", methods=["GET"])
-@existence_check(("Question", "question_id"))
+@bp.route("/answer/<int:answer_id>", methods=["GET"])
+@existence_check(("Answer", "answer_id"))
 @collect_query_params(Comment)
 def get_all_comments_for_an_answer(
-    question_id, question, answer_id, page, per_page, sort_column, sort_order
+    answer_id, answer, page, per_page, sort_column, sort_order
 ):
     comments = (
         Comment.query.filter_by(content_id=answer_id, content_type="answer")
@@ -61,7 +59,7 @@ def get_all_comments_for_an_answer(
     ), 200
 
 
-@bp.route("/<int:question_id>/allcomments", methods=["GET"])
+@bp.route("/question/<int:question_id>/allcomments", methods=["GET"])
 @existence_check(("Question", "question_id"))
 def get_all_comments(question_id, question):
     comments_list = []
@@ -86,139 +84,53 @@ def get_all_comments(question_id, question):
     return jsonify({"comments": comments_list}), 200
 
 
-@bp.route("/<int:question_id>/comments", methods=["POST"])
-# @csrf_protect
+@bp.route("/<int:comment_id>", methods=["POST","PUT","DELETE"])
 @login_check
-@existence_check(("Question", "question_id"))
-def create_comment_for_question(question_id, question):
-    data = request.get_json()
-    content = data.get("content")
-    errors = []
-    if not content:
-        errors.append(("content", "Data is required"))
-    if errors:
-        raise ValidationError(errors=errors)
-    new_comment = Comment(
-        user_id=current_user.id,
-        content=content,
-        content_id=question_id,
-        content_type="question",
-    )
-    db.session.add(new_comment)
-    db.session.commit()
-    return jsonify({"comment": new_comment.to_dict()}), 201
+def create_comment(comment_id):
+    if request.method == "POST" and comment_id==0:
+        data = request.get_json()
+        content = data.get("content")
+        content_type = data.get("content_type")
+        content_id = data.get("content_id")
+        errors = []
+        if not content:
+            errors.append(("Content", "Data is required"))
+        if errors:
+            raise ValidationError(errors=errors)
 
+        new_comment = Comment(
+            user_id=current_user.id,
+            content=content,
+            content_id=content_id,
+            content_type=content_type,
+        )
+        db.session.add(new_comment)
+        db.session.commit()
+        return jsonify({"comment": new_comment.to_dict()}), 201
+    
+    elif request.method == "PUT":
+        target_comment = Comment.query.get(comment_id)
+        if not target_comment:
+            raise ExistenceError(errors=[("Comment", "comment not found")])
+        if target_comment.user_id != current_user.id:
+            raise AuthorizationError("comment")
+        data = request.get_json()
+        content = data.get("content")
+        errors = []
+        if not content:
+            errors.append(("Content", "Data is required"))
+        if errors:
+            raise ValidationError(errors=errors)
+        target_comment.content = content
+        db.session.commit()
+        return jsonify({"comment": target_comment.to_dict()}), 200
 
-@bp.route("/<int:question_id>/comments/<int:comment_id>", methods=["PUT"])
-# @csrf_protect
-@login_check
-@existence_check(("Question", "question_id"), ("Comment", "comment_id"))
-@authorization_check(owner_check, "comment")
-def edit_comment_for_question(question_id, question, comment_id, comment):
-    data = request.get_json()
-    content = data.get("content")
-    errors = []
-    if not content:
-        errors.append(("content", "Data is required"))
-    elif comment.content_id != question.id:
-        errors.append(("comment", "comment does not belong to this question"))
-    if errors:
-        raise ValidationError(errors=errors)
-    comment.content = content
-    db.session.commit()
-    return jsonify({"comment": comment.to_dict()}), 200
-
-
-@bp.route("/<int:question_id>/comments/<int:comment_id>", methods=["DELETE"])
-# @csrf_protect
-@login_check
-@existence_check(("Question", "question_id"), ("Comment", "comment_id"))
-@authorization_check(owner_check, "comment")
-def delete_comment_for_question(question_id, question, comment_id, comment):
-    errors = []
-    if comment.content_id != question.id:
-        errors.append(("comment", "comment does not belong to this question"))
-    if errors:
-        raise ValidationError(errors=errors)
-    db.session.delete(comment)
-    db.session.commit()
-    return jsonify({"message": "comment for question deleted"}), 200
-
-
-@bp.route("/<int:question_id>/answers/<int:answer_id>/comments", methods=["POST"])
-# @csrf_protect
-@login_check
-@existence_check(("Question", "question_id"), ("Answer", "answer_id"))
-def create_comment_for_answer(question_id, question, answer_id, answer):
-    data = request.get_json()
-    content = data.get("content")
-    errors = []
-    if answer.question_id != question.id:
-        errors.append(("answer", "answer does not belong to this question"))
-    if not content:
-        errors.append(("comment", "Data is required"))
-    if errors:
-        raise ValidationError(errors=errors)
-    new_comment = Comment(
-        user_id=current_user.id,
-        content=content,
-        content_id=answer_id,
-        content_type="answer",
-    )
-    db.session.add(new_comment)
-    db.session.commit()
-    return jsonify({"comment": new_comment.to_dict()}), 201
-
-
-@bp.route(
-    "/<int:question_id>/answers/<int:answer_id>/comments/<int:comment_id>",
-    methods=["PUT"],
-)
-# @csrf_protect
-@login_check
-@existence_check(
-    ("Question", "question_id"), ("Answer", "answer_id"), ("Comment", "comment_id")
-)
-@authorization_check(owner_check, "comment")
-def edit_comment_for_answer(
-    question_id, question, answer_id, answer, comment_id, comment
-):
-    data = request.get_json()
-    content = data.get("content")
-    errors = []
-    if answer.question_id != question.id:
-        errors.append(("answer", "answer does not belong to this question"))
-    if comment.content_id != answer.id:
-        errors.append(("comment", "comment does not belong to this answer"))
-    if not content:
-        errors.append(("comment", "Data is required"))
-    if errors:
-        raise ValidationError(errors=errors)
-    comment.content = content
-    db.session.commit()
-    return jsonify({"comment": comment.to_dict()}), 200
-
-
-@bp.route(
-    "/<int:question_id>/answers/<int:answer_id>/comments/<int:comment_id>",
-    methods=["DELETE"],
-)
-# @csrf_protect
-@login_check
-@existence_check(
-    ("Question", "question_id"), ("Answer", "answer_id"), ("Comment", "comment_id")
-)
-@authorization_check(owner_check, "comment")
-def delete_comment_for_answer(
-    question_id, question, answer_id, answer, comment_id, comment
-):
-    errors = []
-    if answer.question_id != question.id:
-        errors.append(("answer", "answer does not belong to this question"))
-    if comment.content_id != answer.id:
-        errors.append(("comment", "comment does not belong to this answer"))
-    if errors:
-        raise ValidationError(errors=errors)
-    db.session.delete(comment)
-    db.session.commit()
-    return jsonify({"message": "comment for answer deleted"}), 200
+    elif request.method == "DELETE":
+        target_comment = Comment.query.get(comment_id)
+        if not target_comment:
+            raise ExistenceError(errors=[("Comment", "comment not found")])
+        if target_comment.user_id != current_user.id:
+            raise AuthorizationError("comment")
+        db.session.delete(target_comment)
+        db.session.commit()
+        return jsonify({"message": "comment deleted"}), 200

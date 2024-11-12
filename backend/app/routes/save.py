@@ -91,12 +91,11 @@ def get_all_saves():
 @bp.route("/<int:save_id>", methods = ["POST","DELETE"])
 @login_check
 def add_or_delete_save(save_id):
-    print("in route")
-    data = request.get_json()
-    content_type = data.get("content_type")
-    content_id = data.get("content_id")
-    parent_type = data.get("parent_type")
     if request.method == "POST" and save_id==0:
+        data = request.get_json()
+        content_type = data.get("content_type")
+        content_id = data.get("content_id")
+        parent_type = data.get("parent_type")
         existing_save = Save.query.filter_by(
             content_id=content_id,
             content_type=content_type,

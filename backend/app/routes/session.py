@@ -15,7 +15,6 @@ def get_current_user():
 
 
 @bp.route("/", methods=["POST"])
-# @csrf_protect
 def login():
     if current_user.is_authenticated:
         return jsonify({"message": "already logged in bro"})
@@ -44,7 +43,6 @@ def login():
 
 
 @bp.route("/", methods=["DELETE"])
-# @csrf_protect
 def logout():
     if not current_user.is_authenticated:
         return jsonify({"error": "No user logged in"}), 401

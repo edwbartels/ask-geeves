@@ -12,7 +12,6 @@ bp = Blueprint("user", __name__, url_prefix="/api/user")
 
 
 @bp.route("/register", methods=["POST"])
-# @csrf_protect
 def sign_up():
     if current_user.is_authenticated:
         return jsonify({"message": "already logged in bro"}), 200

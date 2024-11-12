@@ -12,7 +12,6 @@ bp = Blueprint("vote", __name__, url_prefix="/api")
 
 
 @bp.route("/vote", methods=["POST"])
-# @csrf_protect
 @login_check
 def add_vote():
     data = request.get_json()

@@ -23,7 +23,6 @@ def get_all_tags():
 
 
 @bp.route("/<int:question_id>/tags", methods=["GET"])
-# @csrf_protect
 @existence_check(("Question", "question_id"))
 def get_all_tags_by_questionId(question_id, question):
     tags = question.tags
@@ -32,7 +31,6 @@ def get_all_tags_by_questionId(question_id, question):
 
 
 @bp.route("/<int:question_id>/tags", methods=["POST"])
-# @csrf_protect
 @login_check
 @existence_check(("Question", "question_id"))
 @authorization_check(owner_check, "question")
@@ -63,7 +61,6 @@ def add_tag_to_question(question_id, question):
 
 
 @bp.route("/<int:question_id>/tags/<int:tag_id>", methods=["DELETE"])
-# @csrf_protect
 @login_check
 @existence_check(("Question", "question_id"), ("Tag", "tag_id"))
 @authorization_check(owner_check, "question")

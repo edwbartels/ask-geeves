@@ -8,19 +8,7 @@ from ..models.question import Question
 from ..models.answer import Answer
 from ..models.comment import Comment
 from ..models.tag import Tag
-from .errors import ExistenceError , AuthorizationError
-
-# def csrf_protect(func):
-#     @wraps(func)
-#     def wrapper(*args, **kwargs):
-#         try:
-#             csrf_token = request.headers.get("X-CSRF-Token")
-#             validate_csrf(csrf_token)  # Validate against the token in the header
-#         except Exception as e:
-#             return jsonify({"error": f"CSRF token validation failed: {str(e)}"}), 400
-#         return func(*args, **kwargs)
-
-#     return wrapper
+from .errors import ExistenceError , AuthorizationError , AuthenticationError
 
 
 def existence_check(*QAC_id_pairs):
@@ -68,7 +56,7 @@ def login_check(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if not current_user.is_authenticated:
-            return jsonify({"message":"Authentication Error","error": "need log in first"}), 401
+            raise AuthenticationError(message="need log in first")
         return func(*args, **kwargs)
 
     return wrapper

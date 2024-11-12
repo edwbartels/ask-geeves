@@ -71,7 +71,6 @@ def get_all_answers_by_questionId_and_currentUser(question_id, question):
 @bp.route("/<int:question_id>/answers", methods=["POST"])
 @login_check
 @existence_check(("Question", "question_id"))
-# @csrf_protect
 def create_answer_by_questionId(question_id, question):
     data = request.get_json()
     new_content = data.get("content")
@@ -88,7 +87,6 @@ def create_answer_by_questionId(question_id, question):
 
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>", methods=["PUT"])
-# @csrf_protect
 @login_check
 @existence_check(("Question", "question_id"), ("Answer", "answer_id"))
 @authorization_check(owner_check, "answer")
@@ -103,20 +101,20 @@ def edit_answer_by_questionId_and_answerId(question_id, question, answer_id, ans
 
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>", methods=["DELETE"])
-# @csrf_protect
 @login_check
 @existence_check(("Question", "question_id"), ("Answer", "answer_id"))
 @authorization_check(owner_check, "answer")
 def delete_answer_by_questionId_and_answerId(question_id, question, answer_id, answer):
     if answer.question_id != question_id:
-        raise ValidationError(errors=[("Answer","answer does not belong to this question")])
+        raise ValidationError(
+            errors=[("Answer", "answer does not belong to this question")]
+        )
     db.session.delete(answer)
     db.session.commit()
     return jsonify({"message": "answer deleted"})
 
 
 @bp.route("/<int:question_id>/answers/<int:answer_id>/accept", methods=["PUT"])
-# @csrf_protect
 @login_check
 @existence_check(("Question", "question_id"), ("Answer", "answer_id"))
 @authorization_check(owner_check, "answer")
@@ -124,7 +122,9 @@ def mark_answer_accepted_by_questionId_and_answerId(
     question_id, question, answer_id, answer
 ):
     if answer.question_id != question_id:
-        raise ValidationError(errors=[("Answer","answer does not belong to this question")])
+        raise ValidationError(
+            errors=[("Answer", "answer does not belong to this question")]
+        )
     answer.accepted = not answer.accepted
     db.session.commit()
     return jsonify({"answer": answer.to_dict()}), 200

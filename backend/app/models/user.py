@@ -92,6 +92,7 @@ class User(HasTimestamps, UserMixin):
             "created_at": self.created_at,
             "updated_at": self.updated_at,
             "votes": [vote.to_dict_session() for vote in self.votes],
+            "saves": [save.to_dict_session() for save in self.saves],
             "followers": self.get_followers(),
             "following": self.get_following(),
         }

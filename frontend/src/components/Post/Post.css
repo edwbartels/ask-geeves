@@ -540,6 +540,7 @@ button.down {
   box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
 }
 
+
 .save-button {
   margin-left: 20px;
   margin-right: 20px;
@@ -617,3 +618,14 @@ save-button::after {
 *::after {
   box-sizing: border-box;
 }
+
+button.vote-active{
+  background-color: pink;
+  box-shadow: 0;
+  border-radius:0 px;
+  color: white
+}
+
+/* .save-active{}
+
+.question-body{} */

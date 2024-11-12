@@ -11,6 +11,9 @@ export default defineConfig(({ mode }) => {
       proxy: {
         "/api": env.VITE_API_URL,
       },
+      watch: {
+        usePolling: process.env.VITE_USE_POLLING === "true",
+      },
     },
     test: {
       globals: true,

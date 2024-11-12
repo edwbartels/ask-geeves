@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from flask_login import current_user
 from ..models.save import Save
 from ..models.db import db
@@ -12,8 +12,9 @@ from ..utils.decorator import (
     comment_for_question_exist_check,
     comment_for_answer_exist_check,
 )
+from ..utils.error_handlers import ValidationError
 
-bp = Blueprint("save", __name__, url_prefix="/api/questions")
+bp = Blueprint("save", __name__, url_prefix="/api/saves")
 
 
 @bp.route("/usersaves")
@@ -238,3 +239,43 @@ def delete_answer_comment_from_saves(question_id, answer_id, comment_id):
     db.session.delete(save)
     db.session.commit()
     return jsonify({"message": "comment in answer deleted from saves"}), 200
+
+
+@bp.route("/<int:save_id>", methods=["POST", "DELETE"])
+@login_check
+def add_or_delete_save(save_id):
+    if request.method == "POST" and save_id == 0:
+        print("in route")
+        data = request.get_json()
+        content_type = data.get("content_type")
+        content_id = data.get("content_id")
+        parent_type = data.get("parent_type")
+        existing_save = Save.query.filter_by(
+            content_id=content_id,
+            content_type=content_type,
+            parent_type=parent_type,
+            user_id=current_user.id,
+        ).first()
+        if existing_save:
+            raise ValidationError(errors=[("save", "save already exist")])
+        new_save = Save(
+            content_id=content_id,
+            content_type=content_type,
+            parent_type=parent_type,
+            user_id=current_user.id,
+        )
+        db.session.add(new_save)
+        db.session.commit()
+        print(new_save)
+        return jsonify(new_save.to_dict_session()), 201
+    elif request.method == "DELETE":
+        print("at the delete waaaa")
+        save = Save.query.get(save_id)
+        # res = save.to_dict_session()
+        if not save:
+            raise Exception(("save", "save not found"))
+        if save.user_id != current_user.id:
+            raise Exception("save")
+        db.session.delete(save)
+        db.session.commit()
+        return jsonify({"message": "Save deleted successfully"}), 204

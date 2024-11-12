@@ -14,16 +14,16 @@ export interface Save {
   content_id: number
   content_type: "question" | "answer" | "comment"
 }
+export type SavesSliceState = {
+  question: Record<number, Save>
+  answer: Record<number, Save>
+  comment: Record<number, Save>
+}
 export type ToggleSaveRequest = {
   id: number
   content_id: number
   content_type: "question" | "answer" | "comment"
   savedStatus: boolean
-}
-export type SavesSliceState = {
-  question: Record<number, Save>
-  answer: Record<number, Save>
-  comment: Record<number, Save>
 }
 
 interface toggleSaveError {
@@ -120,22 +120,16 @@ export const savesSlice = createAppSlice({
           }
         }
       })
-    //   .addCase(toggleSave.fulfilled, (state, action) => {})
   },
   selectors: {
     selectSaves: state => state,
     selectSaveByContentAndId: (
-      state: SavesSliceState,
+      state,
       content_type: "question" | "answer" | "comment",
       content_id: number,
     ) => {
-      return state[content_type]?.[content_id]?.id || 0
+      return state[content_type][content_id]
     },
-    // (
-    //   state: SavesSliceState,
-    //   content_type: "question" | "answer" | "comment",
-    //   content_id: number,
-    // ) => {
   },
 })
 

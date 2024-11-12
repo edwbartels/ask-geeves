@@ -48,6 +48,7 @@ def add_vote():
             existing_vote.value = 0
         else:
             existing_vote.value = value
+        response_vote = existing_vote.to_dict_session()
     else:
         new_vote = Vote(
             user_id=user_id,
@@ -56,6 +57,7 @@ def add_vote():
             content_id=content_id,
         )
         db.session.add(new_vote)
+        response_vote = new_vote.to_dict_session()
     db.session.commit()
 
     if content_type == "comment":
@@ -67,8 +69,11 @@ def add_vote():
     elif content_type == "answer":
         content = Answer.query.get(content_id)
         content.update_total_score(db.session)
+    response_vote["total_score"] = content.total_score
+    print(response_vote)
 
-    return jsonify({"message": "⭐I VOTED!⭐🦅🦅"}), 200
+    return jsonify(response_vote), 200
+
 
 
 @bp.route("/vote/current")

@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify,request
+from flask import Blueprint, jsonify, request
 from flask_login import current_user
 from ..models.save import Save
 from ..models.db import db
@@ -112,7 +112,7 @@ def add_or_delete_save(save_id):
         )
         db.session.add(new_save)
         db.session.commit()
-        return new_save.to_dict(), 201
+        return jsonify(new_save.to_dict_session()), 201
 
     elif request.method == "DELETE":
         save = Save.query.get(save_id)
@@ -122,6 +122,4 @@ def add_or_delete_save(save_id):
             raise AuthorizationError("save")
         db.session.delete(save)
         db.session.commit()
-        return {"message": "Save deleted successfully"}, 200
-
-
+        return jsonify({"message": "Save deleted successfully"}), 204

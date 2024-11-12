@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from .errors import ValidationError
+from .errors import ValidationError,ExistenceError,AuthorizationError,AuthenticationError
 
 errors = Blueprint("errors", __name__)
 
@@ -34,3 +34,21 @@ def register_error_handlers(app):
         ]
     }
     """
+
+    @app.errorhandler(ExistenceError)
+    def handle_existence_error(error):
+        response = jsonify(error.to_dict())
+        response.status_code = 404
+        return response
+    
+    @app.errorhandler(AuthorizationError)
+    def handle_authorization_error(error):
+        response = jsonify(error.to_dict())
+        response.status_code = 403
+        return response
+    
+    @app.errorhandler(AuthenticationError)
+    def handle_authentication_error(error):
+        response = jsonify(error.to_dict())
+        response.status_code = 401
+        return response

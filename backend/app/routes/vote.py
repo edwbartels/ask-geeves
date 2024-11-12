@@ -12,7 +12,6 @@ bp = Blueprint("vote", __name__, url_prefix="/api")
 
 
 @bp.route("/vote", methods=["POST"])
-# @csrf_protect
 @login_check
 def add_vote():
     data = request.get_json()
@@ -70,6 +69,7 @@ def add_vote():
         content.update_total_score(db.session)
 
     return jsonify({"message": "⭐I VOTED!⭐🦅🦅"}), 200
+
 
 @bp.route("/vote/current")
 @login_check

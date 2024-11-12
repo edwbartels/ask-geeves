@@ -28,6 +28,7 @@ class ExistenceError(Exception):
         error_response = {
             "message": self.message,
             "errors": [{"field": field, "message": msg} for field, msg in self.errors],
+            # "errors": [{"message": msg} for msg in self.errors],
         }
         return error_response
 
@@ -41,5 +42,17 @@ class AuthorizationError(Exception):
         error_response = {
             "message": self.message,
             "error": f"Forbidden, not the owner of this {self.resource}"
+        }
+        return error_response
+    
+class AuthenticationError(Exception):
+    def __init__(self, message=""):
+        super().__init__(message)
+        self.message = message
+
+    def to_dict(self):
+        error_response = {
+            "message": "Authorization Error",
+            "error": f"{self.message}"
         }
         return error_response

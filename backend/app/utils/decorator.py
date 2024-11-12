@@ -7,6 +7,7 @@ from sqlalchemy import asc, desc
 from ..models.question import Question
 from ..models.answer import Answer
 from ..models.comment import Comment
+from ..models.tag import Tag
 from .errors import ExistenceError , AuthorizationError
 
 # def csrf_protect(func):
@@ -33,8 +34,10 @@ def existence_check(*QAC_id_pairs):
                 resource = model.query.get(id)
                 if not resource:
                     errors.append((QAC, f"{QAC} not found"))
+                    # errors.append((f"{QAC} not found"))
                 else:
                     kwargs[QAC.lower()] = resource
+                    # del kwargs[QAC_id]
             if errors:
                 raise ExistenceError(errors=errors)
             
@@ -56,30 +59,8 @@ def authorization_check(check,QAC_type):
         return wrapper
     return decorator
 
-def comment_owner_check(comment):
-    return comment.user_id == current_user.id
-
-def question_owner_check(question):
-    return question.user_id == current_user.id
-
-def answer_owner_check(answer):
-    return answer.user_id == current_user.id
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def owner_check(resource):
+    return resource.user_id == current_user.id
 
 
 
@@ -87,116 +68,116 @@ def login_check(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if not current_user.is_authenticated:
-            return jsonify({"error": "not authenticated, need log in first"}), 401
+            return jsonify({"message":"Authentication Error","error": "need log in first"}), 401
         return func(*args, **kwargs)
 
     return wrapper
 
 
-def question_exist_check(func):
-    @wraps(func)
-    def wrapper(question_id, *args, **kwargs):
-        question = Question.query.get(question_id)
-        if not question:
-            return jsonify({"error": "question not found"}), 404
-        return func(question_id, *args, **kwargs)
+# def question_exist_check(func):
+#     @wraps(func)
+#     def wrapper(question_id, *args, **kwargs):
+#         question = Question.query.get(question_id)
+#         if not question:
+#             return jsonify({"error": "question not found"}), 404
+#         return func(question_id, *args, **kwargs)
 
-    return wrapper
-
-
-def question_ownership_check(func):
-    @wraps(func)
-    def wrapper(question_id, *args, **kwargs):
-        question = Question.query.get(question_id)
-        if question.user_id != current_user.id:
-            return jsonify(
-                {"error": "not authenticated, not the owner of this question"}
-            ), 403
-        return func(question_id, *args, **kwargs)
-
-    return wrapper
+#     return wrapper
 
 
-def answer_exist_check(func):
-    @wraps(func)
-    def wrapper(question_id, answer_id, *args, **kwargs):
-        question = Question.query.get(question_id)
-        if not question:
-            return jsonify({"error": "question not found"}), 404
-        answer = Answer.query.get(answer_id)
-        if not answer:
-            return jsonify({"error": "Answer not found"}), 404
-        return func(question_id, answer_id, *args, **kwargs)
+# def question_ownership_check(func):
+#     @wraps(func)
+#     def wrapper(question_id, *args, **kwargs):
+#         question = Question.query.get(question_id)
+#         if question.user_id != current_user.id:
+#             return jsonify(
+#                 {"error": "not authenticated, not the owner of this question"}
+#             ), 403
+#         return func(question_id, *args, **kwargs)
 
-    return wrapper
-
-
-def answer_ownership_check(func):
-    @wraps(func)
-    def wrapper(question_id, answer_id, *args, **kwargs):
-        answer = Answer.query.get(answer_id)
-        if answer.user_id != current_user.id:
-            return jsonify({"error": "not authorized, not owner of this answer"}), 403
-        return func(question_id, answer_id, *args, **kwargs)
-
-    return wrapper
+#     return wrapper
 
 
-def comment_for_question_exist_check(func):
-    @wraps(func)
-    def wrapper(question_id, comment_id, *args, **kwargs):
-        question = Question.query.get(question_id)
-        if not question:
-            return jsonify({"error": "question not found"}), 404
-        comment = Comment.query.get(comment_id)
-        if not comment:
-            return jsonify({"error": "comment not found"}), 404
-        return func(question_id, comment_id, *args, **kwargs)
+# def answer_exist_check(func):
+#     @wraps(func)
+#     def wrapper(question_id, answer_id, *args, **kwargs):
+#         question = Question.query.get(question_id)
+#         if not question:
+#             return jsonify({"error": "question not found"}), 404
+#         answer = Answer.query.get(answer_id)
+#         if not answer:
+#             return jsonify({"error": "Answer not found"}), 404
+#         return func(question_id, answer_id, *args, **kwargs)
 
-    return wrapper
-
-
-def comment_for_question_ownership_check(func):
-    @wraps(func)
-    def wrapper(question_id, comment_id, *args, **kwargs):
-        comment = Comment.query.get(comment_id)
-        if comment.user_id != current_user.id:
-            return jsonify(
-                {"error": "not authenticated, not the owner of this comment"}
-            ), 403
-        return func(question_id, comment_id, *args, **kwargs)
-
-    return wrapper
+#     return wrapper
 
 
-def comment_for_answer_exist_check(func):
-    @wraps(func)
-    def wrapper(question_id, answer_id, comment_id, *args, **kwargs):
-        question = Question.query.get(question_id)
-        if not question:
-            return jsonify({"error": "question not found"}), 404
-        answer = Answer.query.get(answer_id)
-        if not answer:
-            return jsonify({"error": "answer not found"}), 404
-        comment = Comment.query.get(comment_id)
-        if not comment:
-            return jsonify({"error": "comment not found"}), 404
-        return func(question_id, answer_id, comment_id, *args, **kwargs)
+# def answer_ownership_check(func):
+#     @wraps(func)
+#     def wrapper(question_id, answer_id, *args, **kwargs):
+#         answer = Answer.query.get(answer_id)
+#         if answer.user_id != current_user.id:
+#             return jsonify({"error": "not authorized, not owner of this answer"}), 403
+#         return func(question_id, answer_id, *args, **kwargs)
 
-    return wrapper
+#     return wrapper
 
 
-def comment_for_answer_ownership_check(func):
-    @wraps(func)
-    def wrapper(question_id, answer_id, comment_id, *args, **kwargs):
-        comment = Comment.query.get(comment_id)
-        if comment.user_id != current_user.id:
-            return jsonify(
-                {"error": "not authenticated, not the owner of this comment"}
-            ), 403
-        return func(question_id, answer_id, comment_id, *args, **kwargs)
+# def comment_for_question_exist_check(func):
+#     @wraps(func)
+#     def wrapper(question_id, comment_id, *args, **kwargs):
+#         question = Question.query.get(question_id)
+#         if not question:
+#             return jsonify({"error": "question not found"}), 404
+#         comment = Comment.query.get(comment_id)
+#         if not comment:
+#             return jsonify({"error": "comment not found"}), 404
+#         return func(question_id, comment_id, *args, **kwargs)
 
-    return wrapper
+#     return wrapper
+
+
+# def comment_for_question_ownership_check(func):
+#     @wraps(func)
+#     def wrapper(question_id, comment_id, *args, **kwargs):
+#         comment = Comment.query.get(comment_id)
+#         if comment.user_id != current_user.id:
+#             return jsonify(
+#                 {"error": "not authenticated, not the owner of this comment"}
+#             ), 403
+#         return func(question_id, comment_id, *args, **kwargs)
+
+#     return wrapper
+
+
+# def comment_for_answer_exist_check(func):
+#     @wraps(func)
+#     def wrapper(question_id, answer_id, comment_id, *args, **kwargs):
+#         question = Question.query.get(question_id)
+#         if not question:
+#             return jsonify({"error": "question not found"}), 404
+#         answer = Answer.query.get(answer_id)
+#         if not answer:
+#             return jsonify({"error": "answer not found"}), 404
+#         comment = Comment.query.get(comment_id)
+#         if not comment:
+#             return jsonify({"error": "comment not found"}), 404
+#         return func(question_id, answer_id, comment_id, *args, **kwargs)
+
+#     return wrapper
+
+
+# def comment_for_answer_ownership_check(func):
+#     @wraps(func)
+#     def wrapper(question_id, answer_id, comment_id, *args, **kwargs):
+#         comment = Comment.query.get(comment_id)
+#         if comment.user_id != current_user.id:
+#             return jsonify(
+#                 {"error": "not authenticated, not the owner of this comment"}
+#             ), 403
+#         return func(question_id, answer_id, comment_id, *args, **kwargs)
+
+#     return wrapper
 
 
 def collect_query_params(model):

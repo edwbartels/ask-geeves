@@ -7,10 +7,11 @@ from ..models.answer import Answer
 from ..models.comment import Comment
 from ..utils.decorator import (
     login_check,
-    question_exist_check,
-    answer_exist_check,
-    comment_for_question_exist_check,
-    comment_for_answer_exist_check,
+    # question_exist_check,
+    # answer_exist_check,
+    # comment_for_question_exist_check,
+    # comment_for_answer_exist_check,
+    existence_check
 )
 
 bp = Blueprint("save", __name__, url_prefix="/api/questions")
@@ -98,13 +99,14 @@ def get_all_saves():
 @bp.route("/<int:question_id>/saves", methods=["POST"])
 # @csrf_protect
 @login_check
-@question_exist_check
-def add_question_to_saves(question_id):
+# @question_exist_check
+@existence_check(("Question","question_id"))
+def add_question_to_saves(question_id,question):
     save = Save.query.filter_by(
         user_id=current_user.id, content_id=question_id, content_type="question"
     ).first()
     if save:
-        return jsonify({"message": "question already saved"}), 200
+        return jsonify({"message": "Validation Error","error":"question already saved"}), 400
     new_save = Save(
         user_id=current_user.id, content_id=question_id, content_type="question"
     )
@@ -116,13 +118,16 @@ def add_question_to_saves(question_id):
 @bp.route("/<int:question_id>/saves", methods=["DELETE"])
 # @csrf_protect
 @login_check
-@question_exist_check
-def delete_question_from_saves(question_id):
+# @question_exist_check
+@existence_check(("Question","question_id"))
+def delete_question_from_saves(question_id,question):
     save = Save.query.filter_by(
         user_id=current_user.id, content_id=question_id, content_type="question"
     ).first()
+    # if not save:
+    #     return jsonify({"error": "save not found"}), 404
     if not save:
-        return jsonify({"error": "save not found"}), 404
+        return jsonify({"message": "Validation Error","error":"question has not been saved yet"}), 400
     db.session.delete(save)
     db.session.commit()
     return jsonify({"message": "question deleted from saves"}), 200
@@ -131,13 +136,16 @@ def delete_question_from_saves(question_id):
 @bp.route("/<int:question_id>/answers/<int:answer_id>/saves", methods=["POST"])
 # @csrf_protect
 @login_check
-@answer_exist_check
-def add_answer_to_saves(question_id, answer_id):
+# @answer_exist_check
+@existence_check(("Question","question_id"),("Answer","answer_id"))
+def add_answer_to_saves(question_id, question, answer_id, answer):
     save = Save.query.filter_by(
         user_id=current_user.id, content_id=answer_id, content_type="answer"
     ).first()
+    # if save:
+    #     return jsonify({"message": "answer already saved"}), 200
     if save:
-        return jsonify({"message": "answer already saved"}), 200
+        return jsonify({"message": "Validation Error","error":"question already saved"}), 400
     new_save = Save(
         user_id=current_user.id, content_id=answer_id, content_type="answer"
     )
@@ -149,13 +157,16 @@ def add_answer_to_saves(question_id, answer_id):
 @bp.route("/<int:question_id>/answers/<int:answer_id>/saves", methods=["DELETE"])
 # @csrf_protect
 @login_check
-@answer_exist_check
-def delete_answer_from_saves(question_id, answer_id):
+# @answer_exist_check
+@existence_check(("Question","question_id"),("Answer","answer_id"))
+def delete_answer_from_saves(question_id, question, answer_id, answer):
     save = Save.query.filter_by(
         user_id=current_user.id, content_id=answer_id, content_type="answer"
     ).first()
+    # if not save:
+    #     return jsonify({"error": "save not found"}), 404
     if not save:
-        return jsonify({"error": "save not found"}), 404
+        return jsonify({"message": "Validation Error","error":"answer has not been saved yet"}), 400
     db.session.delete(save)
     db.session.commit()
     return jsonify({"message": "answer deleted from saves"}), 200
@@ -164,13 +175,16 @@ def delete_answer_from_saves(question_id, answer_id):
 @bp.route("/<int:question_id>/comments/<int:comment_id>/saves", methods=["POST"])
 # @csrf_protect
 @login_check
-@comment_for_question_exist_check
-def add_question_comment_to_saves(question_id, comment_id):
+# @comment_for_question_exist_check
+@existence_check(("Question","question_id"),("Comment","comment_id"))
+def add_question_comment_to_saves(question_id,question, comment_id,comment):
     save = Save.query.filter_by(
         user_id=current_user.id, content_id=comment_id, content_type="comment"
     ).first()
+    # if save:
+    #     return jsonify({"message": "comment in question already saved"}), 200
     if save:
-        return jsonify({"message": "comment in question already saved"}), 200
+        return jsonify({"message": "Validation Error","error":"comment in question already saved"}), 400
 
     new_save = Save(
         user_id=current_user.id,
@@ -186,13 +200,17 @@ def add_question_comment_to_saves(question_id, comment_id):
 @bp.route("/<int:question_id>/comments/<int:comment_id>/saves", methods=["DELETE"])
 # @csrf_protect
 @login_check
-@comment_for_question_exist_check
-def delete_question_comment_from_saves(question_id, comment_id):
+# @comment_for_question_exist_check
+@existence_check(("Question","question_id"),("Comment","comment_id"))
+def delete_question_comment_from_saves(question_id,question, comment_id,comment):
     save = Save.query.filter_by(
         user_id=current_user.id, content_id=comment_id, content_type="comment"
     ).first()
+    # if not save:
+    #     return jsonify({"error": "save not found"}), 404
     if not save:
-        return jsonify({"error": "save not found"}), 404
+        return jsonify({"message": "Validation Error","error":"comment in question has not been saved yet"}), 400
+    
     db.session.delete(save)
     db.session.commit()
     return jsonify({"message": "comment in question deleted from saves"}), 200
@@ -203,13 +221,17 @@ def delete_question_comment_from_saves(question_id, comment_id):
     methods=["POST"],
 )
 @login_check
-@comment_for_answer_exist_check
-def add_answer_comment_to_saves(question_id, answer_id, comment_id):
+# @comment_for_answer_exist_check
+@existence_check(("Question","question_id"),("Answer","answer_id"),("Comment","comment_id"))
+def add_answer_comment_to_saves(question_id, question, answer_id, answer, comment_id, comment):
     save = Save.query.filter_by(
         user_id=current_user.id, content_id=comment_id, content_type="comment"
     ).first()
+    # if save:
+    #     return jsonify({"message": "comment in answer already saved"}), 200
+
     if save:
-        return jsonify({"message": "comment in answer already saved"}), 200
+        return jsonify({"message": "Validation Error","error":"comment in answer already saved"}), 400
 
     new_save = Save(
         user_id=current_user.id,
@@ -228,13 +250,17 @@ def add_answer_comment_to_saves(question_id, answer_id, comment_id):
 )
 # @csrf_protect
 @login_check
-@comment_for_answer_exist_check
-def delete_answer_comment_from_saves(question_id, answer_id, comment_id):
+# @comment_for_answer_exist_check
+@existence_check(("Question","question_id"),("Answer","answer_id"),("Comment","comment_id"))
+def delete_answer_comment_from_saves(question_id, question, answer_id, answer, comment_id, comment):
     save = Save.query.filter_by(
         user_id=current_user.id, content_id=comment_id, content_type="comment"
     ).first()
+    # if not save:
+    #     return jsonify({"error": "save not found"}), 404
     if not save:
-        return jsonify({"error": "save not found"}), 404
+        return jsonify({"message": "Validation Error","error":"comment in question has not been saved yet"}), 400    
+
     db.session.delete(save)
     db.session.commit()
     return jsonify({"message": "comment in answer deleted from saves"}), 200

@@ -6,9 +6,9 @@ from ..models.tag import Tag
 from ..models.db import db
 from ..utils.decorator import (
     login_check,
-    question_exist_check,
-    question_ownership_check,
-    collect_query_params,
+    # question_exist_check,
+    # question_ownership_check,
+    collect_query_params, existence_check,authorization_check,owner_check
 )
 from ..utils.errors import ValidationError
 # from sqlalchemy.orm import noload, lazyload, load_only
@@ -49,8 +49,9 @@ def get_all_questions(page, per_page, sort_column, sort_order):
 
 
 @bp.route("/<int:question_id>", methods=["GET"])
-@question_exist_check
-def get_question_by_id(question_id):
+# @question_exist_check
+@existence_check(("Question","question_id"))
+def get_question_by_id(question_id,question):
     question = Question.query.get(question_id)
     return jsonify({"question": question.to_dict(detail_page=True)})
 
@@ -147,10 +148,13 @@ def create_question():
 
 @bp.route("/<int:question_id>", methods=["PUT"])
 @login_check
-@question_exist_check
-@question_ownership_check
-def edit_question(question_id):
-    question = Question.query.get(question_id)
+# @question_exist_check
+# @question_ownership_check
+@existence_check(("Question", "question_id"))
+@authorization_check(owner_check,"question")
+def edit_question(question_id,question):
+    # question = Question.query.get(question_id)
+    print(question)
     data = request.get_json()
     new_content = data.get("content")
     new_title = data.get("title")
@@ -180,10 +184,12 @@ def edit_question(question_id):
 
 @bp.route("/<int:question_id>", methods=["DELETE"])
 @login_check
-@question_exist_check
-@question_ownership_check
-def delete_question(question_id):
-    question = Question.query.get(question_id)
+# @question_exist_check
+# @question_ownership_check
+@existence_check(("Question","question_id"))
+@authorization_check(owner_check,"question")
+def delete_question(question_id,question):
+    # question = Question.query.get(question_id)
     db.session.delete(question)
     db.session.commit()
     return jsonify({"message": "question deleted"}), 200

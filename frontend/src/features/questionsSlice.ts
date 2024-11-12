@@ -12,6 +12,7 @@ import {
   FetchOneQuestionResponse,
   Tag,
   Vote,
+  Save,
 } from "./api-types"
 import { setAllQuestionsSettings, AllQuestionsSettings } from "./sessionSlice"
 import { User, addUser, addManyUsers } from "./usersSlice"
@@ -21,6 +22,7 @@ import {
   createOneAnswer,
   deleteOneAnswer,
 } from "./answersSlice"
+// import { addSave, removeSave } from "./savesSlice"
 //   import { SessionResponse, restoreSession, loginAsync } from "./sessionSlice"
 
 interface Answer {
@@ -47,6 +49,7 @@ export interface Question {
   total_score: number // db aggregate function
   num_votes: number // only votes that are not 0
   num_answers: number // db aggregate function
+  questionSave: boolean
 
   answerIds: number[]
   tagIds: number[]
@@ -301,6 +304,18 @@ export const questionsSlice = createAppSlice({
           id => id !== answerId,
         )
       })
+    // .addCase(updateQuestionSaveStatus.fulfilled, (state, action) => {
+    //   const { ...newSave, content_id, savedStatus } = action.payload
+    //   if (savedStatus) delete state.saves.questions[content_id]
+    //   else state.saves.questions[content_id] = newSave
+    // })
+    // .addCase(toggleQuestionSave.fulfilled, (state, action) => {
+    //   const { questionId, questionSave } = action.payload
+    //   state.questions[questionId].questionSave = questionSave
+    // })
+    // .addCase(toggleQuestionSave.rejected, (state, action) => {
+    //   state.error = action.payload?.message || "Failed to toggle save status"
+    // })
   },
   selectors: {
     selectQuestions: state => state,

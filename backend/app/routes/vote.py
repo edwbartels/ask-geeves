@@ -70,6 +70,8 @@ def add_vote():
     elif content_type == "answer":
         content = Answer.query.get(content_id)
         content.update_total_score(db.session)
+    response_vote["total_score"] = content.total_score
+    print(response_vote)
 
     return jsonify(response_vote), 200
 

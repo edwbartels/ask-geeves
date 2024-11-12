@@ -11,12 +11,11 @@ import {
   FetchAllQuestionsResponse,
   FetchOneQuestionResponse,
   Tag,
-  Vote,
   Save,
 } from "./api-types"
 import { setAllQuestionsSettings, AllQuestionsSettings } from "./sessionSlice"
 import { User, addUser, addManyUsers } from "./usersSlice"
-import { addManyVotes } from "./votesSlice"
+import { addManyVotes, UpdateVoteResponse } from "./votesSlice"
 import {
   addManyAnswers,
   createOneAnswer,
@@ -268,7 +267,18 @@ const initialState: QuestionsSliceState = { questions: {}, error: null }
 export const questionsSlice = createAppSlice({
   name: "questions",
   initialState,
-  reducers: {},
+  reducers: create => {
+    return {
+      updateQuestionTotalScore: create.reducer(
+        (state, action: PayloadAction<UpdateVoteResponse>) => {
+          const { content_id, total_score } = action.payload
+          if (state.questions[content_id]) {
+            state.questions[content_id].total_score = total_score
+          }
+        },
+      ),
+    }
+  },
   extraReducers: builder => {
     builder
       .addCase(fetchAllQuestions.fulfilled, (state, action) => {
@@ -304,18 +314,6 @@ export const questionsSlice = createAppSlice({
           id => id !== answerId,
         )
       })
-    // .addCase(updateQuestionSaveStatus.fulfilled, (state, action) => {
-    //   const { ...newSave, content_id, savedStatus } = action.payload
-    //   if (savedStatus) delete state.saves.questions[content_id]
-    //   else state.saves.questions[content_id] = newSave
-    // })
-    // .addCase(toggleQuestionSave.fulfilled, (state, action) => {
-    //   const { questionId, questionSave } = action.payload
-    //   state.questions[questionId].questionSave = questionSave
-    // })
-    // .addCase(toggleQuestionSave.rejected, (state, action) => {
-    //   state.error = action.payload?.message || "Failed to toggle save status"
-    // })
   },
   selectors: {
     selectQuestions: state => state,
@@ -325,7 +323,7 @@ export const questionsSlice = createAppSlice({
 })
 
 // Action creators are generated for each case reducer function.
-export const {} = questionsSlice.actions
+export const { updateQuestionTotalScore } = questionsSlice.actions
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
 export const { selectQuestions, selectQuestionsArr, selectQuestionById } =

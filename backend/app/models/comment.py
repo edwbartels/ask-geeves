@@ -43,7 +43,7 @@ class Comment(BelongsToUser, HasTimestamps, HasVotes):
         return {
             "id": self.id,
             "user_id": self.user.id,
-            "commentSave": status,
+            # "commentSave": status,
             "content_type": self.content_type,
             "content_id": self.content_id,
             "content": self.content,

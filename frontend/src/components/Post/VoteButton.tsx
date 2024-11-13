@@ -4,7 +4,7 @@ import { selectVoteByContentAndId, updateVote } from "../../features/votesSlice"
 
 interface VoteButtonProps {
   id: number
-  type: "question" | "answer"
+  type: "question" | "answer" | "comment"
   voteType: "up" | "down"
 }
 export const VoteButton: React.FC<VoteButtonProps> = ({

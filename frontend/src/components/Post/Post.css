@@ -330,6 +330,8 @@ p {
 
 .save {
   color: white;
+  margin: 10px;
+  padding: 5px;
 }
 
 .share {
@@ -696,8 +698,3 @@ button.down {
   color: rgb(4, 252, 248);
 }
 
-ul {
-  margin: 10px;
-  padding: 5px;
-  
-}

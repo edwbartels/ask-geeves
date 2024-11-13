@@ -6,12 +6,12 @@ from ..models.comment import Comment
 from ..models.answer import Answer
 from ..models.db import db
 from ..utils.decorator import login_check
+from sqlalchemy import case
 
 bp = Blueprint("vote", __name__, url_prefix="/api")
 
 
 @bp.route("/vote", methods=["POST"])
-# @csrf_protect
 @login_check
 def add_vote():
     data = request.get_json()
@@ -48,6 +48,7 @@ def add_vote():
             existing_vote.value = 0
         else:
             existing_vote.value = value
+        response_vote = existing_vote.to_dict_session()
     else:
         new_vote = Vote(
             user_id=user_id,
@@ -56,6 +57,7 @@ def add_vote():
             content_id=content_id,
         )
         db.session.add(new_vote)
+        response_vote = new_vote.to_dict_session()
     db.session.commit()
 
     if content_type == "comment":
@@ -67,5 +69,23 @@ def add_vote():
     elif content_type == "answer":
         content = Answer.query.get(content_id)
         content.update_total_score(db.session)
+    response_vote["total_score"] = content.total_score
+    print(response_vote)
 
-    return jsonify({"message": "⭐I VOTED!⭐🦅🦅"}), 200
+    return jsonify(response_vote), 200
+
+
+
+@bp.route("/vote/current")
+@login_check
+def get_all_votes_for_current_user():
+    user_id = current_user.id
+    votes = Vote.query.filter_by(user_id=user_id).order_by(
+        case(
+            (Vote.content_type == "question", 1),
+            (Vote.content_type == "answer", 2),
+            (Vote.content_type == "comment", 3),
+        )
+    )
+    vote_list = [vote.to_dict_current_user() for vote in votes]
+    return jsonify({"votes": vote_list})

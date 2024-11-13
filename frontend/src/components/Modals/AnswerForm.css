@@ -1,0 +1,148 @@
+
+#modal-content {
+    box-shadow: 0 0 5px 2px #ce6aac,
+                0 0 10px 3px #ec78cc,
+                0 0 12px 10px #e984d0,
+                0 0 15px 12px #ed6ece;
+    background-color: black;
+}
+
+.add-your-answer-title {
+    color: white;
+    font-family: "Clip";
+    text-transform: uppercase;
+    text-shadow:
+    0 0 5px #fff,
+    0 0 10px #feaee3,
+    0 0 20px #feaee3,
+    0 0 40px #f550c6,
+    0 0 80px #f550c6,
+    0 0 90px #f550c6,
+    0 0 100px #f550c6,
+    0 0 150px #f550c6;
+}
+
+.submit-new-answer-button {
+    font-family: "Clip";
+    text-transform: uppercase;
+    margin-bottom: 50px;
+}
+
+.submit-answer-button-div {
+    display: flex;
+    justify-self: center;
+}
+
+.submit-new-answer-button {
+font-family: "Clip";
+margin-top: 15px;
+background-color: black;
+font-size: 1rem;
+display: inline-block;
+cursor: pointer;
+text-decoration: none;
+color: hsl(317 100% 54%);
+border: hsl(317 100% 54%) 0.125em solid;
+padding: 0.25em 1em;
+border-radius: 0.25em;
+
+text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
+
+box-shadow: inset 0 0 0.5em 0 hsl(317 100% 54%), 0 0 0.5em 0 hsl(317 100% 54%);
+
+position: relative;
+}
+
+.submit-new-answer-button::before {
+pointer-events: none;
+content: "";
+position: absolute;
+background: hsl(317 100% 54%);
+top: 120%;
+left: 0;
+width: 100%;
+height: 100%;
+
+transform: perspective(1em) rotateX(40deg) scale(1, 0.35);
+filter: blur(1em);
+opacity: 0.7;
+}
+
+.submit-new-answer-button::after {
+content: "";
+position: absolute;
+top: 0;
+bottom: 0;
+left: 0;
+right: 0;
+box-shadow: 0 0 2em 0.5em hsl(317 100% 54%);
+opacity: 0;
+background-color: hsl(317 100% 54%);
+z-index: -1;
+transition: opacity 100ms linear;
+}
+
+.submit-new-answer-button:hover,
+.submit-new-answer-button:focus {
+color: white;
+text-shadow: none;
+}
+
+.submit-new-answer-button:hover::before,
+.submit-new-answer-button:focus::before {
+opacity: 1;
+}
+.submit-new-answer-button:hover::after,
+.submit-new-answer-button:focus::after {
+opacity: 1;
+}
+
+.question-title-preview {
+    color: white;
+    font-family: "Clip";
+    text-transform: uppercase;
+    height: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-decoration: underline;
+}
+
+.answer-modal-question-content {
+    color: white;
+    font-family: "Clip";
+    margin: 8px;
+    margin-top: 30px;
+    padding: 8px;
+}
+
+.answer-modal {
+    font-family: "Clip";
+    margin: 8px;
+    padding: 4px;
+}
+
+textarea.answer-box {
+    font-family: "Clip";
+    border-radius: 8px;
+    background-color: black;
+    color: white;
+    
+}
+/* background-color: rgb(99, 98, 98); */
+pre {
+    box-shadow: 0 0 5px 2px #feaee3,
+                0 0 10px 3px #f087d3;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    border-radius: 8px;
+    color: white;
+    background-color: rgb(99, 98, 98);
+}
+
+h1 {
+    display: flex;
+    justify-content: flex-start;
+}
+

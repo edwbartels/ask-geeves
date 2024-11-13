@@ -1,6 +1,8 @@
 import { useAppSelector } from "../../app/hooks"
 import { selectQuestionById } from "../../features/questionsSlice"
 import { selectUserById } from "../../features/usersSlice"
+import { selectTagById } from "../../features/tagsSlice"
+import { Tag } from "../Tag/Tag"
 import "./AllQuestions.css"
 interface Props {
   questionId: number
@@ -11,6 +13,9 @@ export const QuestionTile = ({ questionId }: Props) => {
   )
   const writer = useAppSelector(state =>
     selectUserById(state, question.user_id),
+  )
+  const tags = question.tagIds.map(tagId =>
+    useAppSelector(state => selectTagById(state, tagId)),
   )
   const createdAtDate = new Date(question.created_at)
   const createdDate = createdAtDate.toLocaleDateString("en-US", {
@@ -24,18 +29,23 @@ export const QuestionTile = ({ questionId }: Props) => {
   return (
     <div className="question-tile">
       <div className="question-stats">
-        <p className="votes">{question.total_score}</p>
+        <p className="votes">{question.total_score} Votes</p>
         <p className="answers">{numAnswersText}</p>
       </div>
       <div className="question-block">
         <p>
           <a className="sub-title" href={`questions/${questionId}`}>
             {question.id} - {question.title}
+            <hr className="underline" />
           </a>
         </p>
-        <p  className="question-summary">{question.content}</p>
+        <p className="question-summary">{question.content}</p>
         <div>
-          <p className="question-tags">Question tags</p>
+          <div className="question-tags">
+            {question.tagIds.map(tagId => (
+              <Tag key={tagId} tagId={tagId} />
+            ))}
+          </div>
           <p>
             Written by {writer.first_name} on {question.created_at}
           </p>

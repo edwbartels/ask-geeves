@@ -9,7 +9,7 @@ content_types = {"question": question_ids, "answer": answer_ids, "comment": comm
 
 existing_votes = set()
 votes = []
-while len(votes) < 200:
+while len(votes) < 500:
     user_id = random.choice(user_ids)
     content_type = random.choice(list(content_types.keys()))
     content_id = random.choice(list(content_types[content_type]))

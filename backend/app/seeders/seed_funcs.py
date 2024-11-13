@@ -7,8 +7,20 @@ from .seed_lists import (
     question_tags_list,
     votes,
     saves,
+    follow_data_list,
 )
-from ..models import db, User, Question, Answer, Comment, Tag, question_tags, Vote, Save
+from ..models import (
+    db,
+    User,
+    Question,
+    Answer,
+    Comment,
+    Tag,
+    question_tags,
+    Vote,
+    Save,
+    follow_data,
+)
 
 import os
 from sqlalchemy.sql import text
@@ -18,10 +30,14 @@ SCHEMA = os.environ.get("SCHEMA")
 
 
 def seed_users():
-    for entry in users:
-        user = User(**entry)
-        db.session.add(user)
-    db.session.commit()
+    try:
+        for entry in users:
+            user = User(**entry)
+            db.session.add(user)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error seeding users: {e}")
 
 
 def undo_users():
@@ -117,14 +133,21 @@ def seed_question_tags():
     db.session.commit()
 
 
-def undo_question_tags():
     if environment == "production":
         db.session.execute(
             text(f"TRUNCATE table {SCHEMA}.question_tags RESTART IDENTITY CASCADE;")
         )
     else:
         db.session.execute(text("DELETE FROM question_tags"))
-
+        
+def seed_follow_data():
+    for entry in follow_data_list:
+        db.session.execute(
+            follow_data.insert().values(
+                followed_by_id=entry["followed_by_id"],
+                following_id=entry["following_id"],
+            )
+        )
     db.session.commit()
 
 
@@ -188,6 +211,7 @@ def seed_all():
     seed_answers()
     seed_comments()
     seed_question_tags()
+    seed_follow_data()
     seed_votes()
     seed_saves()
     update_all_total_scores()
@@ -210,3 +234,4 @@ def clear_all_data():
     # db.session.query(User).delete()
     # db.session.query(Vote).delete()
     # db.session.commit()
+

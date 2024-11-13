@@ -1,12 +1,46 @@
-.question-body {
-  display: grid;
-  grid-template-columns: 1fr 9fr;
+.post-body {
+  /* display: grid;
+  grid-template-columns: 1fr 9fr; */
   margin-bottom: 20px;
 }
 
-.question-meta {
+.main-body {
+  margin-right: 40px;
+  margin-left: 40px;
+}
+
+.post-meta {
   display: flex;
   justify-content: space-between;
+}
+
+.close-modal-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  background: none;
+  border: none;
+  color: gray;
+}
+.close-modal-button:hover {
+  color: black;
+  cursor: pointer;
+}
+.answer-modal {
+  display: grid;
+  grid-template-columns: 4fr 3fr;
+  column-gap: 20px;
+  position: relative;
+  overflow-y: auto;
+  height: 75vh;
+}
+.answer-modal-form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  text-wrap: nowrap;
+  padding: 10px;
+  resize: vertical;
 }
 
 .question-title {
@@ -21,16 +55,28 @@
   color: white;
 }
 
-.like-post-button {
-  margin-left: 10px;
-  border-radius: 6px;
-  font-family: "Clip";
-  text-transform: uppercase;
-  font-size: 1em;
-  background-color: black;
+.line {
+  border: 2px solid rgba(0, 255, 255, 1);
+  box-shadow: 0 0 12px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
 }
 
-.like-post-button {
+.answer-btn-div {
+  justify-self: center;
+}
+
+.add-answer-div {
+  margin-left: 20px;
+  margin-right: 20px;
+  font-family: "Clip";
+  border-radius: 8px;
+  justify-self: center;
+}
+
+.add-answer-div {
+  font-family: "Clip";
+  text-transform: uppercase;
+  margin-top: 15px;
+  background-color: black;
   font-size: 1rem;
   display: inline-block;
   cursor: pointer;
@@ -47,7 +93,7 @@
   position: relative;
 }
 
-.like-post-button::before {
+.add-answer-div::before {
   pointer-events: none;
   content: "";
   position: absolute;
@@ -61,8 +107,7 @@
   filter: blur(1em);
   opacity: 0.7;
 }
-
-.like-post-button::after {
+add-answer-div::after {
   content: "";
   position: absolute;
   top: 0;
@@ -76,17 +121,23 @@
   transition: opacity 100ms linear;
 }
 
-.like-post-button:hover,
-.like-post-button:focus {
+.add-answer-div:hover,
+.add-answer-div:focus {
   color: white;
   text-shadow: none;
 }
 
-.like-post-button:hover::before,
-.like-post-button:focus::before {
+.add-answer-div:hover::before,
+.add-answer-div:focus::before {
   opacity: 1;
 }
-.like-post-button:hover::after,
-.like-post-button:focus::after {
+.add-answer-div:hover::after,
+.add-answer-div:focus::after {
   opacity: 1;
 }
+
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+

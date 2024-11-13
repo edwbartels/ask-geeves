@@ -1,0 +1,52 @@
+
+
+.name {
+    color: white;
+    font-family: "Clip";
+    text-transform: uppercase;
+}
+
+.name-div {
+    margin-bottom: 30px;
+}
+
+.user-title {
+    color: white;
+    font-family: "Clip";
+    text-transform: uppercase;
+    justify-self: center;
+    font-size: 30px;
+}
+
+i {
+    font-size: 75px;
+}
+
+.name-div {
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    align-items: center;
+}
+
+.profile-icon {
+    margin: 25px;
+    justify-self: center;
+
+}
+
+.question-line {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    border: 3px solid rgba(255, 255, 255, 1);
+    box-shadow: 0 0 10px 3px #feaee3,
+                0 0 10px 5px #f087d3;
+}
+
+.answer-line {
+    margin-bottom: 40px;
+    margin-top: 40px;
+    border: 2px solid rgba(0, 255, 255, 1);
+    box-shadow: 0 0 12px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
+}
+

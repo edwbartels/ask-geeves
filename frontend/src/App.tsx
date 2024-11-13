@@ -17,6 +17,12 @@ import { AllQuestions } from "./components/AllQuestions/AllQuestions"
 import { QuestionMain } from "./components/Question/QuestionMain"
 import { CreateOrEditPost } from "./components/Post/CreateOrEditPost"
 import { Footer } from "./components/Footer/Footer"
+import { Contact } from "./components/Contact/Contact"
+import { FAQ } from "./components/FAQ/FAQ"
+import { AboutUs } from "./components/AboutUs/AboutUs"
+import { UserDetailPage } from "./components/User/UserDetailPage"
+import { AllTags } from "./components/AllTags/AllTags"
+import { TaggedQuestions } from "./components/AllQuestions/TaggedQuestions"
 
 import { restoreSession } from "./features/sessionSlice"
 
@@ -37,10 +43,7 @@ const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
-      {
-        path: "/",
-        element: <HomePage />,
-      },
+      { path: "/", element: <HomePage /> },
       {
         path: "questions",
         children: [
@@ -58,8 +61,26 @@ const router = createBrowserRouter([
       },
       {
         path: "tagged",
-        element: <h1>All tags</h1>,
+        children: [
+          { path: "", element: <AllTags /> },
+          {
+            path: ":tagId/:tagName",
+            element: <TaggedQuestions/>,
+          },
+          {
+            path:":tagId/questions/:questionId",
+            children: [
+              { path: "", element: <QuestionMain /> },
+              { path: "edit", element: <CreateOrEditPost /> },
+              { path: "*", element: <QuestionMain /> },
+            ],
+          }
+        ],
       },
+      { path: "/team", element: <Contact /> },
+      { path: "/faq", element: <FAQ /> },
+      { path: "about-us", element: <AboutUs /> },
+      { path: "user/:userId", element: <UserDetailPage /> },
     ],
   },
 ])

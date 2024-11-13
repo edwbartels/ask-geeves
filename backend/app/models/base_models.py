@@ -17,7 +17,7 @@ class Base(db.Model):
         if environment == "production":
             return {"schema": SCHEMA}
         return {}
-
+        return cls.__name__.lower()
     id = db.Column(db.Integer, primary_key=True)
 
 
@@ -100,7 +100,7 @@ class HasVotes(Base):
 
         self.total_score = (
             session.query(db.func.sum(Vote.value))
-            .filter(Vote.content_type == "question", Vote.content_id == self.id)
+            .filter(Vote.content_type == self.model_name, Vote.content_id == self.id)
             .scalar()
             or 0
         )

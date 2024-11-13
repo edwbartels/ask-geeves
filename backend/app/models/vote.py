@@ -3,7 +3,6 @@ from .answer import Answer
 from .comment import Comment
 from .base_models import BelongsToUser, Base
 
-
 class Vote(BelongsToUser):
     value = db.Column(db.Integer, nullable=False)
     content_type = db.Column(db.String, nullable=False)
@@ -55,3 +54,13 @@ class Vote(BelongsToUser):
             "content_id": self.content_id,
             "value": self.value,
         }
+
+    def to_dict_current_user(self):
+        res = {
+            "question_id": self.question_id,
+            "content_type": self.content_type,
+            "value": self.value
+        }
+        if self.content_type == "comment":
+            res["parent_type"] = self.parent_type
+        return res

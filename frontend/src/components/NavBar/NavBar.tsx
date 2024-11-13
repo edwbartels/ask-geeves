@@ -8,6 +8,7 @@ import {
   selectSession,
   selectUser,
 } from "../../features/sessionSlice"
+import { getAllTags } from "../../features/tagsSlice"
 import { OpenModalButton } from "../Modals/OpenModalButton"
 import { LoginFormModal } from "../Modals/LoginFormModal"
 import { SignupFormModal } from "../Modals/SignUpFormModal"
@@ -18,33 +19,41 @@ export const NavBar = () => {
   const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(restoreSession())
+    dispatch(getAllTags())
   }, [])
   // const onClick = () => {
   //   if (onModalClose) setOnModalClose(onModalClose)
   //   setModalContent(modalComponent)
   //   if (typeof onButtonClick === "function") onButtonClick()
   // }
+  console.log("in nav bar")
   return (
     <nav className="nav-bar">
       <Logo />
       <>
-        <NavLink to="/" className="home-links">Home</NavLink>
-        <NavLink to="/questions" className="question-links">Questions</NavLink>
+        <NavLink to="/" className="home-links">
+          Home
+        </NavLink>
+        <NavLink to="/questions" className="question-links">
+          Questions
+        </NavLink>
       </>
       <form>
-        <input className="search-links" placeholder="Search..."/>
+        <input className="search-links" placeholder="Search..." />
       </form>
       <div className="user-greeting">
-      {user ? `Welcome ${user?.first_name}` : ""}
+        {user ? `Welcome ${user?.first_name}` : ""}
       </div>
-        <a href="/questions/ask" className="post-links">Post a question</a>
+      <a href="/questions/ask" className="post-links">
+        Post a question
+      </a>
       {!user ? (
         <div className="nav-buttons">
-          <OpenModalButton 
+          <OpenModalButton
             additionalClassNames={["login-button"]}
             buttonText="Log in"
             modalComponent={<LoginFormModal />}
-            />
+          />
           <OpenModalButton
             additionalClassNames={["signup-button"]}
             buttonText="Sign up"
@@ -52,7 +61,12 @@ export const NavBar = () => {
           />
         </div>
       ) : (
-        <button className="logout-button" onClick={() => dispatch(logoutAsync())}>Log out</button>
+        <button
+          className="logout-button"
+          onClick={() => dispatch(logoutAsync())}
+        >
+          Log out
+        </button>
       )}
     </nav>
   )

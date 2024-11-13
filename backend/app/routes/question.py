@@ -20,20 +20,19 @@ bp = Blueprint("question", __name__, url_prefix="/api/questions")
 @bp.route("/", methods=["GET"])
 @collect_query_params(Question)
 def get_all_questions(page, per_page, sort_column, sort_order):
-    # all_questions = Question.query.options(noload(Question.saves),noload(Question.answers),noload(Question.comments)).all()
-    # all_questions = Question.query.options(lazyload(Question.answers)).all()
-    # all_questions = Question.query.options(load_only(Question.id, Question.title)).all()
-
+  
     filter_tag = request.args.get("tag")
     following_feed = request.args.get("follow") == "1"
 
     query = Question.query
     if filter_tag:
+        filter_tag = filter_tag.replace("-", " ")
         query = query.filter(Question.tags.any(Tag.name.ilike(filter_tag)))
     if following_feed:
         query = query.filter(
             Question.user_id.in_([user.id for user in current_user.following])
         )
+
 
     questions = query.order_by(sort_order(sort_column)).paginate(
         page=page, per_page=per_page
@@ -51,7 +50,6 @@ def get_all_questions(page, per_page, sort_column, sort_order):
             "questions": questions_list,
         }
     ), 200
-
 
 @bp.route("/<int:question_id>", methods=["GET"])
 @existence_check(("Question", "question_id"))

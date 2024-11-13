@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { fetchOneQuestion } from "../../features/questionsSlice"
 import { selectQuestionById } from "../../features/questionsSlice"
+import { selectTagsArr } from "../../features/tagsSlice"
 
 import { Post } from "../Post/Post"
 import { OpenModalButton } from "../Modals/OpenModalButton"

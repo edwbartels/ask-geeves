@@ -19,6 +19,7 @@ import { OpenModalButton } from "../Modals/OpenModalButton"
 
 
 
+
 const absurd = (input: never): never => input
 type PostType =
   | {
@@ -91,27 +92,29 @@ export const Post = ({ type, id }: Props) => {
   }
   return (
     <div>
-      <div className="post-body">
+      <div className={`post-body ${post.type}-body`}>
         <div className="vote-counter-div">
           <div className="up-vote">
-            <button className="up"><i className="fa-solid fa-2x fa-arrow-up"></i></button>
+            <button className="up vote-active"><i className="fa-solid fa-2x fa-arrow-up"></i></button>
           </div>
           <div className="vote-counter">{post.post.total_score}</div>
           <div className="down-vote">
-            <button className="down"><i className="fa-solid fa-2x fa-arrow-down"></i></button>
+            <button className="down vote-active"><i className="fa-solid fa-2x fa-arrow-down"></i></button>
           </div>
           <div className="save">
-            <button className="save-button">Save</button>
+            <ul className="save-button">
+              <i className="fa-regular fa-bookmark fa-xl"></i>
+            </ul>
           </div>
         </div>
         <div id={permalink}>
           <RenderPost postContent={post.post.content} />
           <div className="post-meta">
             <div>
-              <a href={`#${permalink}`}>Share</a> |<button>Like post</button>
+              <a href={`#${permalink}`}><i className="fa-solid fa-xl fa-link"></i></a>
               {isUserPostWriter && post.type === "question" ? (
                 <Link to={`edit`}>Edit {post.type}</Link>
-              ) : post.type === "answer" ? (
+              ) : isUserPostWriter && post.type === "answer" ? (
                 <OpenModalButton
                   buttonText="Edit answer"
                   modalComponent={

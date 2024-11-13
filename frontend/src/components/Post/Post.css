@@ -282,8 +282,8 @@ p {
   width: 100%;
   padding: 10px;
   background-color: black;
-  box-shadow: 0 0 10px 5px #feaee3,
-              0 0 20px 7px #f087d3;
+  /* box-shadow: 0 0 5px 3px #feaee3,
+              0 0 10px 4px #f087d3; */
 }
 
 .post-user {
@@ -517,16 +517,18 @@ delete-button::after {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 button.up {
   margin-bottom: 6px;
   color: black;
-  background-color: black;
+  background-color: rgba(0, 255, 251, 1);
   border-radius: 60px;
   box-shadow: none;
   border: 5px solid rgba(255, 255, 255, 1);
-  box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
+  /* box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset; */
 }
 
 button.down {
@@ -540,80 +542,67 @@ button.down {
   box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
 }
 
-.save-button {
-  margin-left: 20px;
-  margin-right: 20px;
-  font-family: "Clip";
-  border-radius: 8px;
-  display: flex;
-  justify-self: center;
+/* .render-question-div {
+  box-shadow: 0 0 2px 2px #feaee3,
+              0 0 5px 2px #f087d3;
+              box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
+} */
+
+.question-body {
+  border: 3px solid rgba(255, 255, 255, 1);
+  box-shadow: 0 0 10px 3px #feaee3,
+              0 0 10px 5px #f087d3;
+}
+
+.vote-active {
+
+}
+
+.save-active {
+
 }
 
 .save-button {
-  font-family: "Clip";
-  text-transform: uppercase;
-  margin-top: 15px;
   background-color: black;
-  font-size: 1rem;
-  display: inline-block;
-  cursor: pointer;
-  text-decoration: none;
+  align-content: center;
+}
+
+.save {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
+.fa-link {
+  color: rgba(0, 255, 251, 1);
+}
+
+.fa-floppy-disk {
+  color: #feaee3;
+}
+
+.fa-floppy-disk:hover {
+  color: #f087d3;
+}
+
+.fa-bookmark {
+  color: gray;
+}
+
+.fa-bookmark:hover {
   color: hsl(317 100% 54%);
-  border: hsl(317 100% 54%) 0.125em solid;
-  padding: 0.25em 1em;
-  border-radius: 0.25em;
-
-  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
-
-  box-shadow: inset 0 0 0.5em 0 hsl(317 100% 54%), 0 0 0.5em 0 hsl(317 100% 54%);
-
-  position: relative;
 }
 
-.save-button::before {
-  pointer-events: none;
-  content: "";
-  position: absolute;
-  background: hsl(317 100% 54%);
-  top: 120%;
-  left: 0;
-  width: 100%;
-  height: 100%;
-
-  transform: perspective(1em) rotateX(40deg) scale(1, 0.35);
-  filter: blur(1em);
-  opacity: 0.7;
-}
-save-button::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  box-shadow: 0 0 2em 0.5em hsl(317 100% 54%);
-  opacity: 0;
-  background-color: hsl(317 100% 54%);
-  z-index: -1;
-  transition: opacity 100ms linear;
+.fa-star {
+  color: rgb(159, 247, 245);
 }
 
-.save-button:hover,
-.save-button:focus {
-  color: white;
-  text-shadow: none;
+.fa-star:hover {
+  color: rgb(4, 252, 248);
 }
 
-.save-button:hover::before,
-.save-button:focus::before {
-  opacity: 1;
-}
-.save-button:hover::after,
-.save-button:focus::after {
-  opacity: 1;
-}
-
-*::before,
-*::after {
-  box-sizing: border-box;
+ul {
+  margin: 10px;
+  padding: 5px;
+  
 }

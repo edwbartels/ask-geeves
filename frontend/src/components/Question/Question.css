@@ -55,42 +55,43 @@
   color: white;
 }
 
-.like-post-button {
-  margin-left: 20px;
-  margin-right: 20px;
-  border-radius: 6px;
-  font-family: "Clip";
-  text-transform: uppercase;
-  font-size: 1em;
-  background-color: black;
+.line {
+  border: 2px solid rgba(0, 255, 255, 1);
+  box-shadow: 0 0 12px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
 }
 
-.like-post-button {
+
+.add-answer-div {
+  margin-top: 20px;
+  font-family: "Clip";
+  text-transform: uppercase;
   font-size: 1rem;
+  margin-left: 20px;
+  margin-right: 20px;
   display: inline-block;
   cursor: pointer;
   text-decoration: none;
-  color: hsl(317 100% 54%);
-  border: hsl(317 100% 54%) 0.125em solid;
-  padding: 0.25em 1em;
+  color: white;
+  background-color: rgba(0, 255, 251, 0.67);
+  border: rgba(0, 255, 251, 0.67) 0.125em solid;
+  padding-top: 4.2px;
+  padding-bottom: 4.2px;
   border-radius: 0.25em;
+  padding-left: 12px;
+  padding-right: 12px;
 
-  text-shadow:
-    0 0 0.125em hsl(0 0% 100% / 0.3),
-    0 0 0.45em currentColor;
+  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
 
-  box-shadow:
-    inset 0 0 0.5em 0 hsl(317 100% 54%),
-    0 0 0.5em 0 hsl(317 100% 54%);
+  box-shadow: inset 0 0 0.5em 0 rgba(0, 255, 251, 0.67), 0 0 0.5em 0 rgba(0, 255, 251, 0.67);
 
   position: relative;
 }
 
-.like-post-button::before {
+.add-answer-div::before {
   pointer-events: none;
   content: "";
   position: absolute;
-  background: hsl(317 100% 54%);
+  background: rgba(0, 255, 251, 0.67);
   top: 120%;
   left: 0;
   width: 100%;
@@ -101,31 +102,32 @@
   opacity: 0.7;
 }
 
-.like-post-button::after {
+.add-answer-div::after {
   content: "";
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  box-shadow: 0 0 2em 0.5em hsl(317 100% 54%);
+  box-shadow: 0 0 2em 0.5em rgba(0, 255, 251, 0.67);
   opacity: 0;
-  background-color: hsl(317 100% 54%);
+  background-color: rgba(0, 255, 251, 0.67);
   z-index: -1;
   transition: opacity 100ms linear;
 }
 
-.like-post-button:hover,
-.like-post-button:focus {
-  color: white;
+.add-answer-div:hover,
+.add-answer-div:focus {
+  color :white;
   text-shadow: none;
 }
 
-.like-post-button:hover::before,
-.like-post-button:focus::before {
+.add-answer-div:hover::before,
+.add-answer-div:focus::before {
   opacity: 1;
 }
-.like-post-button:hover::after,
-.like-post-button:focus::after {
+.add-answer-div:hover::after,
+.add-answer-div:focus::after {
   opacity: 1;
 }
+

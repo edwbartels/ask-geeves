@@ -24,7 +24,7 @@ export const Contact = () => {
                 </div>
                 <div className='bottom-right-box'>
                     <div><h2 className='name'>Ziwen Zhang</h2></div>
-                    <div><img className='image' src='' /></div>
+                    <div><img className='image' src='/Images/Ziwen.jpg' /></div>
                     <p className='ziwen-description'>Full Stack Software Engineer</p>
                 </div>
             </div>

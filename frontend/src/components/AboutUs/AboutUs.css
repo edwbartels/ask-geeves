@@ -2,24 +2,26 @@
 
 .about-us-div {
     background-color: black;
-    font-family: 'Short Stack', cursive;
+    font-family: 'Clip';
     color: white;
+    margin: 100px;
 }
 
-.about-us-button {
-    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
-    padding:1em;
-    line-height:1.5em;
-    border-color: hotpink;
-    background-color: black;
-    color: hotpink;
+.mission-title {
+    color: white;
+    font-family: 'Clip';
+    font-size: 35px;
 }
 
-.about-us-button-div {
-    display: flex;
+.mission-statement {
+    color: white;
+    font-family: 'Clip';
+    font-size: 20px;
+}
+
+.about-us-title {
+    font-family: 'Clip';
+    color: white;
+    font-size: 55px;
     justify-self: center;
-    margin-bottom: 40px;
-    color: white;
-    
 }
-

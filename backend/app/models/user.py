@@ -1,6 +1,4 @@
 from .db import db
-from sqlalchemy import func
-from sqlalchemy.orm import foreign
 from .base_models import HasTimestamps
 from flask_login import UserMixin
 from .join_tables import follow_data

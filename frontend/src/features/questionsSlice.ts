@@ -68,6 +68,25 @@ export interface CreateQuestionError {
   }
 }
 
+interface Comment {
+  id: number
+  user_id: number
+  content_type: "answer"
+  content_id: number
+  content: string
+  total_score: number
+  created_at: string
+  updated_at: string
+
+  // user object that matches answer-comment writer
+  CommentUser: {
+    id: number
+    first_name: string
+    last_name: string
+    username: string
+  }
+}
+
 export type QuestionsSliceState = {
   questions: Record<number, Question>
   error: CreateQuestionError | null
@@ -142,23 +161,31 @@ export const fetchOneQuestion = createAsyncThunk<
     // Unpack API response
     // Make payload for questions and users slices
     const answerIds = Answers.map(answer => answer.id)
+    const commentIds = Comments.map(comment => comment.id)
     const tagIds = Tags.map(tag => tag.id)
     const questionPayload = {
       ...remaining,
       user_id: QuestionUser.id,
       answerIds,
+      commentIds,
       tagIds,
-      num_votes: 100,
     }
     const tagsPayload = Tags
     const votesPayload = Votes
     // answersPayload
+    const answerComments: Comment[] = []
     const answersPayload = Answers.map(answer => {
       const { AnswerUser, Comments, ...remaining } = answer
       const user_id = AnswerUser.id
-      return { ...remaining, user_id }
+      answerComments.push(...Comments)
+      const commentIds = Comments.map(comment => {
+        return comment.id
+      })
+      return { ...remaining, user_id, commentIds }
     })
-    const commentsPayload = Comments.map(comment => {
+
+    const allComments = [...answerComments, ...Comments]
+    const commentsPayload = allComments.map(comment => {
       const { CommentUser, ...remaining } = comment
       return { ...remaining }
     })
@@ -170,7 +197,7 @@ export const fetchOneQuestion = createAsyncThunk<
     const usersPayload = []
     const allReturnedUsers = [
       QuestionUser,
-      ...Comments.map(comment => comment.CommentUser),
+      ...allComments.map(comment => comment.CommentUser),
       ...Answers.map(answer => answer.AnswerUser),
     ]
     for (const user of allReturnedUsers) {

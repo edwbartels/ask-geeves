@@ -25,15 +25,17 @@ export interface CreateAnswerResponse {
     answerSave: boolean
 
     AnswerUser: User
+    num_comments: number
     Comments: {
       id: number
       user_id: number
-      content_type: "question"
+      content_type: "answer"
       content_id: number
       content: string
       total_score: number
       created_at: string
       updated_at: string
+      CommentUser: User
     }[]
   }
 }
@@ -90,14 +92,15 @@ export const createOneAnswer = createAsyncThunk<
   const { Comments, AnswerUser, answerSave, ...remaining } = answer.answer
 
   const answerPayload: Answer = { ...remaining, user_id: AnswerUser.id }
-  // const commentPayload = Comments.map(comment => {
-  //   return { comment }
-  // })
+  const commentPayload = Comments.map(comment => {
+    const { CommentUser, ...remaining } = comment
+    return { ...remaining }
+  })
   const userPayload = {}
   const savedPayload = {}
 
   thunkApi.dispatch(addManyAnswers([answerPayload]))
-  // thunkApi.dispatch(addManyComments([commentPayload]))
+  thunkApi.dispatch(addManyComments(commentPayload))
   // dispatch comments
   // dispatch saves
   // dispatch user

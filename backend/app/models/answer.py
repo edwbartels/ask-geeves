@@ -86,5 +86,5 @@ class Answer(BelongsToUser, HasTimestamps, HasVotes):
             "total_score": self.total_score,
             "num_comments": len(self.comments),
             "AnswerUser": self.user.to_dict_basic_info(),
-            "Comments": [comment.for_question_detail() for comment in self.comments],
+            "Comments": [comment.to_dict() for comment in self.comments],
         }

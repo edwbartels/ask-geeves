@@ -20,12 +20,12 @@ export const SaveButton: React.FC<Props> = ({ id, type }) => {
       }),
     )
   }
-  const buttonClass = classNames("save-button", {
+  const buttonClass = classNames("save-button fa-regular fa-bookmark fa-xl", {
     "save-active": isSaved,
   })
   return (
-    <button className={buttonClass} onClick={handleToggleSave}>
-      <i className="fa-regular fa-bookmark fa-xl"></i>
-    </button>
+    // <button className={buttonClass} onClick={handleToggleSave}>
+    <i className={buttonClass} onClick={handleToggleSave}></i>
+    // </button>
   )
 }

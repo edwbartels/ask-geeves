@@ -22,6 +22,7 @@ export interface CommentForm {
   content_type: "question" | "answer"
 }
 export interface CommentEntry {
+  id: number
   user_id: number
   content_type: "question" | "answer"
   content_id: number
@@ -142,7 +143,7 @@ export const commentsSlice = createAppSlice({
         (state, action: PayloadAction<Comment[]>) => {
           for (const comment of action.payload) {
             const { id, ...remaining } = comment
-            state[id] = { ...remaining }
+            state[id] = comment
           }
         },
       ),

@@ -108,10 +108,10 @@ export const Post = ({ type, id }: Props) => {
           </div>
           <div className="save">
             {/* // ? Idk why this is a ul so im just leaving both icons here until god saves me */}
-            <ul className="save-button">
-              <i className="fa-regular fa-bookmark fa-xl"></i>
-              <SaveButton id={id} type={type} />
-            </ul>
+            {/* <ul className="save-button"> */}
+            {/* <i className="fa-regular fa-bookmark fa-xl"></i> */}
+            <SaveButton id={id} type={type} />
+            {/* </ul> */}
           </div>
         </div>
         <div id={permalink}>

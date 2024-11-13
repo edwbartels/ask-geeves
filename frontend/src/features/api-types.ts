@@ -197,7 +197,7 @@ export interface FetchOneQuestionResponse {
       content: string
       created_at: string
       updated_at: string
-
+      num_comments: number
       total_score: number // db aggregate function
 
       // user object that matches answer writer
@@ -215,6 +215,9 @@ export interface FetchOneQuestionResponse {
         content_type: "answer"
         content_id: number
         content: string
+        total_score: number
+        created_at: string
+        updated_at: string
 
         // user object that matches answer-comment writer
         CommentUser: {

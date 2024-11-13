@@ -5,7 +5,7 @@ from .config import config_dict
 from flask_login import LoginManager
 from .models.db import db
 from .models.user import User
-from .routes import session, user, question, save, tag, answer, comment, vote, search
+from .routes import session, user, question, save, tag, answer, comment, vote, search, follow
 from .utils.error_handlers import register_error_handlers
 from .seeders.seed_funcs import seed_all, clear_all_data
 from flask_wtf.csrf import CSRFProtect, generate_csrf
@@ -36,6 +36,7 @@ app.register_blueprint(answer.bp)
 app.register_blueprint(comment.bp)
 app.register_blueprint(vote.bp)
 app.register_blueprint(search.bp)
+app.register_blueprint(follow.bp)
 
 register_error_handlers(app)
 

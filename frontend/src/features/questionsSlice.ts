@@ -10,7 +10,6 @@ import type { AppThunk } from "../app/store"
 import {
   FetchAllQuestionsResponse,
   FetchOneQuestionResponse,
-  Tag,
   Vote,
 } from "./api-types"
 import { setAllQuestionsSettings, AllQuestionsSettings } from "./sessionSlice"
@@ -21,17 +20,9 @@ import {
   createOneAnswer,
   deleteOneAnswer,
 } from "./answersSlice"
+import { Tag, addManyTags } from "./tagsSlice"
 //   import { SessionResponse, restoreSession, loginAsync } from "./sessionSlice"
 
-interface Answer {
-  id: number
-  question_id: number
-  content: string
-  accepted: boolean
-  created_at: string
-  updated_at: string
-  total_score: number
-}
 interface FetchAllQuestionsError {
   error: string
 }
@@ -91,11 +82,15 @@ export const fetchAllQuestions = createAsyncThunk<
       questions: Question[]
       users: User[]
       userIds: Set<number>
+      tags: Tag[]
+      tagIds: Set<number>
     }
     const payload: payload = {
       questions: [],
       users: [],
       userIds: new Set(),
+      tags: [],
+      tagIds: new Set(),
     }
     for (const question of questions) {
       const { User, Tags, ...remaining } = question
@@ -108,6 +103,13 @@ export const fetchAllQuestions = createAsyncThunk<
         payload.userIds.add(User.id)
         payload.users.push(User)
       }
+      // only add unique tag objects from the API response
+      for (const tag of Tags) {
+        if (!payload.tagIds.has(tag.id)) {
+          payload.tagIds.add(tag.id)
+          payload.tags.push(tag)
+        }
+      }
     }
 
     thunkApi.dispatch(
@@ -118,6 +120,7 @@ export const fetchAllQuestions = createAsyncThunk<
       }),
     )
     thunkApi.dispatch(addManyUsers(payload.users))
+    thunkApi.dispatch(addManyTags(payload.tags))
     return payload.questions
   } else {
     return thunkApi.rejectWithValue({ error: "Couldn't fetch all questions!" })

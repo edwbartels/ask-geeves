@@ -21,8 +21,8 @@ export const AllQuestions = () => {
     searchParams.set("size", pageSettings.size)
   }
 
-  console.log(searchParams.get("size"))
-  console.log(searchParams, searchParams.keys())
+  // console.log(searchParams.get("size"))
+  // console.log(searchParams, searchParams.keys())
 
   const [gotQuestions, setGotQuestions] = useState(false)
   const questions = useAppSelector(selectQuestionsArr)
@@ -90,11 +90,19 @@ export const AllQuestions = () => {
       </div>
       <div className="page-count-container">
         <p className="per-page">
-          Per page:  
-          <button className='page-number' onClick={handleSetResultsSize(5)}>5</button>
-          <button className='page-number' onClick={handleSetResultsSize(15)}>15</button>
-          <button className='page-number' onClick={handleSetResultsSize(30)}>30</button>
-          <button className='page-number' onClick={handleSetResultsSize(50)}>50</button>
+          Per page:
+          <button className="page-number" onClick={handleSetResultsSize(5)}>
+            5
+          </button>
+          <button className="page-number" onClick={handleSetResultsSize(15)}>
+            15
+          </button>
+          <button className="page-number" onClick={handleSetResultsSize(30)}>
+            30
+          </button>
+          <button className="page-number" onClick={handleSetResultsSize(50)}>
+            50
+          </button>
         </p>
       </div>
     </div>

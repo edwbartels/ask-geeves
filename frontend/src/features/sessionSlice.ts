@@ -1,6 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "../app/createAppSlice"
 import { Vote } from "./votesSlice"
+import { Save } from "./savesSlice"
 
 export type AllQuestionsSettings_old = Record<
   string | "page" | "size" | "num_pages",
@@ -41,6 +42,7 @@ export interface SessionResponse {
     created_at: string
     updated_at: string
     votes: Vote[]
+    saves: Save[]
   } | null
 }
 interface LoginError {
@@ -80,7 +82,7 @@ export const sessionSlice = createAppSlice({
           fulfilled: (state, action: PayloadAction<SessionResponse>) => {
             const { user: sessionUser } = action.payload
             if (sessionUser) {
-              const { votes, ...user } = sessionUser
+              const { votes, saves, ...user } = sessionUser
               state.user = user
               state.status = "idle"
               state.error = null
@@ -118,7 +120,7 @@ export const sessionSlice = createAppSlice({
           fulfilled: (state, action) => {
             const { user: sessionUser } = action.payload
             if (sessionUser) {
-              const { votes, ...user } = sessionUser
+              const { votes, saves, ...user } = sessionUser
               state.user = user
               state.status = "idle"
               state.error = null

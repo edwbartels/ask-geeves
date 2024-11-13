@@ -542,6 +542,7 @@ button.down {
   box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
 }
 
+
 /* .render-question-div {
   box-shadow: 0 0 2px 2px #feaee3,
               0 0 5px 2px #f087d3;
@@ -552,6 +553,7 @@ button.down {
   border: 3px solid rgba(255, 255, 255, 1);
   box-shadow: 0 0 10px 3px #feaee3,
               0 0 10px 5px #f087d3;
+
 }
 
 .vote-active {
@@ -597,6 +599,7 @@ button.down {
   color: rgb(159, 247, 245);
 }
 
+
 .fa-star:hover {
   color: rgb(4, 252, 248);
 }
@@ -606,3 +609,4 @@ ul {
   padding: 5px;
   
 }
+

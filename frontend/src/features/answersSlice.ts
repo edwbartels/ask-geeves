@@ -3,6 +3,7 @@ import { createAppSlice } from "../app/createAppSlice"
 import { User } from "./usersSlice"
 import { Comment } from "./api-types"
 import { json } from "stream/consumers"
+import { UpdateVoteResponse } from "./votesSlice"
 
 export interface AnswerForm {
   content: string
@@ -158,6 +159,14 @@ export const answersSlice = createAppSlice({
           }
         },
       ),
+      updateAnswerTotalScore: create.reducer(
+        (state, action: PayloadAction<UpdateVoteResponse>) => {
+          const { content_id, total_score } = action.payload
+          if (state[content_id]) {
+            state[content_id].total_score = total_score
+          }
+        },
+      ),
     }
   },
   extraReducers: builder => {
@@ -173,7 +182,7 @@ export const answersSlice = createAppSlice({
 })
 
 // Action creators are generated for each case reducer function.
-export const { addManyAnswers } = answersSlice.actions
+export const { addManyAnswers, updateAnswerTotalScore } = answersSlice.actions
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
 export const { selectAnswers, selectAnswerById } = answersSlice.selectors

@@ -1,11 +1,13 @@
 from flask import Blueprint, jsonify, request
 from ..models.tag import Tag
 from ..models.question import Question
+from ..utils.errors import ValidationError
 from ..models.db import db
 from ..utils.decorator import (
-    question_exist_check,
-    question_ownership_check,
     login_check,
+    existence_check,
+    authorization_check,
+    owner_check,
 )
 
 bp = Blueprint("tags", __name__, url_prefix="/api/questions")
@@ -21,22 +23,18 @@ def get_all_tags():
 
 
 @bp.route("/<int:question_id>/tags", methods=["GET"])
-# @csrf_protect
-@question_exist_check
-def get_all_tags_by_questionId(question_id):
-    question = Question.query.get(question_id)
+@existence_check(("Question", "question_id"))
+def get_all_tags_by_questionId(question_id, question):
     tags = question.tags
     tags_list = [tag.to_dict() for tag in tags]
     return jsonify({"tags": tags_list}), 200
 
 
 @bp.route("/<int:question_id>/tags", methods=["POST"])
-# @csrf_protect
 @login_check
-@question_exist_check
-@question_ownership_check
-def add_tag_to_question(question_id):
-    question = Question.query.get(question_id)
+@existence_check(("Question", "question_id"))
+@authorization_check(owner_check, "question")
+def add_tag_to_question(question_id, question):
     tags_list = [tag.to_dict() for tag in question.tags]
     data = request.get_json()
     input_tag = data.get("tag")
@@ -50,7 +48,9 @@ def add_tag_to_question(question_id):
             tags_list = [tag.to_dict() for tag in question.tags]
             return jsonify({"tags": tags_list}), 201
         else:
-            return jsonify({"message": "tag already exist"}), 200
+            return jsonify(
+                {"message": "Validation Error", "error": "tag already exist"}
+            ), 400
     else:
         new_tag = Tag(name=input_tag)
         db.session.add(new_tag)
@@ -61,18 +61,12 @@ def add_tag_to_question(question_id):
 
 
 @bp.route("/<int:question_id>/tags/<int:tag_id>", methods=["DELETE"])
-# @csrf_protect
 @login_check
-@question_exist_check
-@question_ownership_check
-def delete_tag_from_question(question_id, tag_id):
-    question = Question.query.get(question_id)
-
-    tag = Tag.query.get(tag_id)
-    if not tag:
-        return jsonify({"error": "tag not found"}), 404
+@existence_check(("Question", "question_id"), ("Tag", "tag_id"))
+@authorization_check(owner_check, "question")
+def delete_tag_from_question(question_id, question, tag_id, tag):
     if tag not in question.tags:
-        return jsonify({"error": "tag did not add to this question"}), 404
+        raise ValidationError(errors=[("Tag", "tag did not add to this question")])
     question.tags.remove(tag)
     db.session.commit()
     return jsonify({"message": "tag removed"}), 200

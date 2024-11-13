@@ -66,10 +66,10 @@ class User(HasTimestamps, UserMixin):
         return [{"id": user.id, "username": user.username} for user in self.following]
 
     def is_following(self, user):
-        return self.following.filter_by(id == user.id).count() > 0
+        return self.following.filter_by(id = user.id).count() > 0
 
     def is_followed_by(self, user):
-        return self.followers.filter_by(id == user.id).count() > 0
+        return self.followers.filter_by(id = user.id).count() > 0
 
     def follow(self, user):
         if not self.is_following(user):
@@ -92,6 +92,7 @@ class User(HasTimestamps, UserMixin):
             "created_at": self.created_at,
             "updated_at": self.updated_at,
             "votes": [vote.to_dict_session() for vote in self.votes],
+            "saves": [save.to_dict_session() for save in self.saves],
             "followers": self.get_followers(),
             "following": self.get_following(),
         }

@@ -11,16 +11,17 @@ import {
   FetchAllQuestionsResponse,
   FetchOneQuestionResponse,
   Tag,
-  Vote,
+  Save,
 } from "./api-types"
 import { setAllQuestionsSettings, AllQuestionsSettings } from "./sessionSlice"
 import { User, addUser, addManyUsers } from "./usersSlice"
-import { addManyVotes } from "./votesSlice"
+import { addManyVotes, UpdateVoteResponse } from "./votesSlice"
 import {
   addManyAnswers,
   createOneAnswer,
   deleteOneAnswer,
 } from "./answersSlice"
+// import { addSave, removeSave } from "./savesSlice"
 //   import { SessionResponse, restoreSession, loginAsync } from "./sessionSlice"
 
 interface Answer {
@@ -47,6 +48,7 @@ export interface Question {
   total_score: number // db aggregate function
   num_votes: number // only votes that are not 0
   num_answers: number // db aggregate function
+  questionSave: boolean
 
   answerIds: number[]
   tagIds: number[]
@@ -265,7 +267,18 @@ const initialState: QuestionsSliceState = { questions: {}, error: null }
 export const questionsSlice = createAppSlice({
   name: "questions",
   initialState,
-  reducers: {},
+  reducers: create => {
+    return {
+      updateQuestionTotalScore: create.reducer(
+        (state, action: PayloadAction<UpdateVoteResponse>) => {
+          const { content_id, total_score } = action.payload
+          if (state.questions[content_id]) {
+            state.questions[content_id].total_score = total_score
+          }
+        },
+      ),
+    }
+  },
   extraReducers: builder => {
     builder
       .addCase(fetchAllQuestions.fulfilled, (state, action) => {
@@ -310,7 +323,7 @@ export const questionsSlice = createAppSlice({
 })
 
 // Action creators are generated for each case reducer function.
-export const {} = questionsSlice.actions
+export const { updateQuestionTotalScore } = questionsSlice.actions
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
 export const { selectQuestions, selectQuestionsArr, selectQuestionById } =

@@ -15,9 +15,12 @@ import {
 import { RenderPost } from "./RenderPost"
 import { AnswerForm } from "../Modals/AnswerForm"
 import { OpenModalButton } from "../Modals/OpenModalButton"
-
-
-
+import { updateVote, selectVoteByContentAndId } from "../../features/votesSlice"
+import { toggleSave, selectSaveByContentAndId } from "../../features/savesSlice"
+import classNames from "classnames"
+import React from "react"
+import { VoteButton } from "./VoteButton"
+import { SaveButton } from "./SaveButton"
 
 
 const absurd = (input: never): never => input
@@ -31,10 +34,11 @@ type PostType =
       post: Answer
     }
 
-interface Props {
+export interface Props {
   type: "question" | "answer"
   id: number
 }
+
 // Post renders top level question or answer
 export const Post = ({ type, id }: Props) => {
   const returnQuestionOrAnswerPost = (
@@ -90,6 +94,7 @@ export const Post = ({ type, id }: Props) => {
       dispatch(deleteOneAnswer({ questionId: question_id, answerId: id }))
     }
   }
+
   return (
     <div>
       <div className={`post-body ${post.type}-body`}>
@@ -105,6 +110,7 @@ export const Post = ({ type, id }: Props) => {
             <ul className="save-button">
               <i className="fa-regular fa-bookmark fa-xl"></i>
             </ul>
+
           </div>
         </div>
         <div id={permalink}>
@@ -127,15 +133,17 @@ export const Post = ({ type, id }: Props) => {
               ) : (
                 ""
               )}
-              
               {isUserPostWriter && (
-                <button className="delete-button" onClick={handleDeletePost}>Delete {type}</button>
+                <button className="delete-button" onClick={handleDeletePost}>
+                  Delete {type}
+                </button>
               )}
             </div>
             <div className="post-user">
               Posted by{" "}
-
-              <Link className="posted-by-user" to={`/user/${postWriter.id}`}>{postWriter.username}</Link>
+              <Link className="posted-by-user" to={`/user/${postWriter.id}`}>
+                {postWriter.username}
+              </Link>
             </div>
           </div>
           <div className="comments-here">Comments here</div>

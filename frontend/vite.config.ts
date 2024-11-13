@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
         "/api": env.VITE_API_URL,
       },
       watch: {
-        usePolling: process.env.VITE_USE_POLLING === "true",
+        usePolling: env.VITE_USE_POLLING === "true",
       },
     },
     test: {

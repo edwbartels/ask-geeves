@@ -174,6 +174,9 @@ export interface FetchOneQuestionResponse {
       content_type: "question"
       content_id: number
       content: string
+      total_score: number
+      created_at: string
+      updated_at: string
 
       // user object that matches question-comment writer
       CommentUser: {

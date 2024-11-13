@@ -21,7 +21,7 @@ import classNames from "classnames"
 import React from "react"
 import { VoteButton } from "./VoteButton"
 import { SaveButton } from "./SaveButton"
-
+// import { CommentTile } from "../Comments/Comments"
 
 const absurd = (input: never): never => input
 type PostType =
@@ -100,24 +100,27 @@ export const Post = ({ type, id }: Props) => {
       <div className={`post-body ${post.type}-body`}>
         <div className="vote-counter-div">
           <div className="up-vote">
-            <button className="up vote-active"><i className="fa-solid fa-2x fa-arrow-up"></i></button>
+            <VoteButton id={id} type={type} voteType="up" />
           </div>
           <div className="vote-counter">{post.post.total_score}</div>
           <div className="down-vote">
-            <button className="down vote-active"><i className="fa-solid fa-2x fa-arrow-down"></i></button>
+            <VoteButton id={id} type={type} voteType="down" />
           </div>
           <div className="save">
+            {/* // ? Idk why this is a ul so im just leaving both icons here until god saves me */}
             <ul className="save-button">
               <i className="fa-regular fa-bookmark fa-xl"></i>
+              <SaveButton id={id} type={type} />
             </ul>
-
           </div>
         </div>
         <div id={permalink}>
           <RenderPost postContent={post.post.content} />
           <div className="post-meta">
             <div>
-              <a href={`#${permalink}`}><i className="fa-solid fa-xl fa-link"></i></a>
+              <a href={`#${permalink}`}>
+                <i className="fa-solid fa-xl fa-link"></i>
+              </a>
               {isUserPostWriter && post.type === "question" ? (
                 <Link to={`edit`}>Edit {post.type}</Link>
               ) : isUserPostWriter && post.type === "answer" ? (
@@ -146,7 +149,9 @@ export const Post = ({ type, id }: Props) => {
               </Link>
             </div>
           </div>
-          <div className="comments-here">Comments here</div>
+
+          <div className="comments-here">{post.post.num_comments} Comments</div>
+          {/* <CommentTile commentId={id} /> */}
         </div>
       </div>
     </div>

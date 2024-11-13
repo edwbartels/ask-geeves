@@ -32,14 +32,14 @@ export const QuestionMain = () => {
     <div className="main-body">
       <h1 className="question-title">{question.title}</h1>
       <Post type="question" id={questionIdNum} />
-      <h1 className="answers-title">## Answers</h1>
+      <h1 className="answers-title">{question.num_answers} Answers</h1>
       <div className="answers-list">
         {answerIds && answerIds.length > 0
           ? answerIds.map(answerId => {
               return (
                 <div key={answerId} className="post-key">
                   <Post type="answer" id={answerId} />
-                  <hr className="line"/>
+                  <hr className="line" />
                   {/* <br /> */}
                 </div>
               )
@@ -47,8 +47,8 @@ export const QuestionMain = () => {
           : "No one answered yet"}
       </div>
       <div>
-        <OpenModalButton 
-        additionalClassNames={['add-answer-div']}
+        <OpenModalButton
+          additionalClassNames={["add-answer-div"]}
           buttonText="Add an answer"
           modalComponent={<AnswerForm questionId={question.id} />}
         />

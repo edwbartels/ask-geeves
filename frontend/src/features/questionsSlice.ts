@@ -21,6 +21,7 @@ import {
   createOneAnswer,
   deleteOneAnswer,
 } from "./answersSlice"
+import { addManyComments } from "./commentsSlice"
 // import { addSave, removeSave } from "./savesSlice"
 //   import { SessionResponse, restoreSession, loginAsync } from "./sessionSlice"
 
@@ -48,6 +49,7 @@ export interface Question {
   total_score: number // db aggregate function
   num_votes: number // only votes that are not 0
   num_answers: number // db aggregate function
+  num_comments: number
   questionSave: boolean
 
   answerIds: number[]
@@ -147,7 +149,6 @@ export const fetchOneQuestion = createAsyncThunk<
       answerIds,
       tagIds,
       num_votes: 100,
-      num_answers: 100,
     }
     const tagsPayload = Tags
     const votesPayload = Votes
@@ -157,7 +158,12 @@ export const fetchOneQuestion = createAsyncThunk<
       const user_id = AnswerUser.id
       return { ...remaining, user_id }
     })
+    const commentsPayload = Comments.map(comment => {
+      const { CommentUser, ...remaining } = comment
+      return { ...remaining }
+    })
     thunkApi.dispatch(addManyAnswers(answersPayload))
+    thunkApi.dispatch(addManyComments(commentsPayload))
 
     // add user objects from QuestionUser, Comments.CommentUser, and Answers.AnswerUser
     const uniqueUserIds = new Set()

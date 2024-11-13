@@ -9,6 +9,7 @@ import { createAppSlice } from "../app/createAppSlice"
 import { SessionResponse, restoreSession, loginAsync } from "./sessionSlice"
 import { updateQuestionTotalScore } from "./questionsSlice"
 import { updateAnswerTotalScore } from "./answersSlice"
+import { updateCommentTotalScore } from "./commentsSlice"
 
 export interface Vote {
   content_id: number
@@ -58,6 +59,8 @@ export const updateVote = createAsyncThunk<
       thunkApi.dispatch(updateQuestionTotalScore(payload))
     } else if (content_type === "answer") {
       thunkApi.dispatch(updateAnswerTotalScore(payload))
+    } else if (content_type === "comment") {
+      thunkApi.dispatch(updateCommentTotalScore(payload))
     }
 
     return payload

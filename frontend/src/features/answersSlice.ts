@@ -1,7 +1,8 @@
 import { PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
 import { createAppSlice } from "../app/createAppSlice"
 import { User } from "./usersSlice"
-import { Comment } from "./api-types"
+// import { Comment } from "./api-types"
+import { addManyComments } from "./commentsSlice"
 import { json } from "stream/consumers"
 import { UpdateVoteResponse } from "./votesSlice"
 
@@ -24,7 +25,16 @@ export interface CreateAnswerResponse {
     answerSave: boolean
 
     AnswerUser: User
-    Comments: Comment[]
+    Comments: {
+      id: number
+      user_id: number
+      content_type: "question"
+      content_id: number
+      content: string
+      total_score: number
+      created_at: string
+      updated_at: string
+    }[]
   }
 }
 export interface CreateAnswerValidationError {
@@ -55,6 +65,7 @@ export interface Answer {
   updated_at: string
 
   total_score: number // db aggregate function
+  num_comments: number
 }
 export type AnswersSliceState = Record<number, Answer>
 
@@ -79,11 +90,14 @@ export const createOneAnswer = createAsyncThunk<
   const { Comments, AnswerUser, answerSave, ...remaining } = answer.answer
 
   const answerPayload: Answer = { ...remaining, user_id: AnswerUser.id }
-  const commentPayload = {}
+  // const commentPayload = Comments.map(comment => {
+  //   return { comment }
+  // })
   const userPayload = {}
   const savedPayload = {}
 
   thunkApi.dispatch(addManyAnswers([answerPayload]))
+  // thunkApi.dispatch(addManyComments([commentPayload]))
   // dispatch comments
   // dispatch saves
   // dispatch user

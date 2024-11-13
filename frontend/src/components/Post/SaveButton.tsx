@@ -25,7 +25,7 @@ export const SaveButton: React.FC<Props> = ({ id, type }) => {
   })
   return (
     <button className={buttonClass} onClick={handleToggleSave}>
-      {isSaved ? "Saved" : "Save"}
+      <i className="fa-regular fa-bookmark fa-xl"></i>
     </button>
   )
 }

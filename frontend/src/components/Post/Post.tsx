@@ -122,6 +122,7 @@ export const Post = ({ type, id }: Props) => {
                 <Link to={`edit`}>Edit {post.type}</Link>
               ) : isUserPostWriter && post.type === "answer" ? (
                 <OpenModalButton
+                  additionalClassNames={["edit"]}
                   buttonText="Edit answer"
                   modalComponent={
                     <AnswerForm

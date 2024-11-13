@@ -8,6 +8,7 @@ import { usersSlice } from "../features/usersSlice"
 import { votesSlice } from "../features/votesSlice"
 import { questionsSlice } from "../features/questionsSlice"
 import { answersSlice } from "../features/answersSlice"
+import { tagsSlice } from "../features/tagsSlice"
 import { savesSlice } from "../features/savesSlice"
 import { commentsSlice } from "../features/commentsSlice"
 
@@ -20,6 +21,7 @@ const rootReducer = combineSlices(
   answersSlice,
   commentsSlice,
   votesSlice,
+  tagsSlice,
   savesSlice,
   counterSlice,
   quotesApiSlice,

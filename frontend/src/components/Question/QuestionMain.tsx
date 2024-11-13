@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { fetchOneQuestion } from "../../features/questionsSlice"
 import { selectQuestionById } from "../../features/questionsSlice"
+import { selectTagsArr } from "../../features/tagsSlice"
 
 import { Post } from "../Post/Post"
 import { OpenModalButton } from "../Modals/OpenModalButton"
@@ -48,9 +49,9 @@ export const QuestionMain = () => {
             })
           : "No one answered yet"}
       </div>
-      <div>
-        <OpenModalButton
-          additionalClassNames={["add-answer-div"]}
+      <div className="answer-btn-div">
+        <OpenModalButton 
+          additionalClassNames={['add-answer-div']}
           buttonText="Add an answer"
           modalComponent={<AnswerForm questionId={question.id} />}
         />

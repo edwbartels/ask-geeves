@@ -14,6 +14,7 @@ import {
   deleteOneAnswer,
 } from "../../features/answersSlice"
 import { RenderPost } from "./RenderPost"
+import { Tag } from "../Tag/Tag"
 import { AnswerForm } from "../Modals/AnswerForm"
 import { OpenModalButton } from "../Modals/OpenModalButton"
 import { updateVote, selectVoteByContentAndId } from "../../features/votesSlice"
@@ -127,15 +128,24 @@ export const Post = ({ type, id }: Props) => {
             </div>
             <div className="post-interact" id={permalink}>
               <RenderPost postContent={post.post.content} />
+              {post.type === "question" && (
+                <div className="all-tags">
+                  {post.post.tagIds.map((tagId, i) => (
+                    <Tag key={tagId} tagId={tagId} />
+                  ))}
+                </div>
+              )}
               <div className="post-meta">
                 <div>
                   <a href={`#${permalink}`}>
                     <i className="fa-solid fa-xl fa-link"></i>
                   </a>
+
                   {isUserPostWriter && post.type === "question" ? (
                     <Link to={`edit`}>Edit {post.type}</Link>
                   ) : isUserPostWriter && post.type === "answer" ? (
                     <OpenModalButton
+                      additionalClassNames={["edit"]}
                       buttonText="Edit answer"
                       modalComponent={
                         <AnswerForm

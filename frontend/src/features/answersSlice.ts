@@ -26,6 +26,7 @@ export interface CreateAnswerResponse {
 
     AnswerUser: User
     num_comments: number
+    commentIds: number[]
     Comments: {
       id: number
       user_id: number
@@ -68,6 +69,7 @@ export interface Answer {
 
   total_score: number // db aggregate function
   num_comments: number
+  commentIds: number[]
 }
 export type AnswersSliceState = Record<number, Answer>
 

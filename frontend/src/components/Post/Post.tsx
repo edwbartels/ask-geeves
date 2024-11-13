@@ -21,6 +21,7 @@ import classNames from "classnames"
 import React from "react"
 import { VoteButton } from "./VoteButton"
 import { SaveButton } from "./SaveButton"
+import { CommentList, CommentListProps } from "../Comments/CommentList"
 // import { CommentTile } from "../Comments/Comments"
 
 const absurd = (input: never): never => input
@@ -61,6 +62,8 @@ export const Post = ({ type, id }: Props) => {
   const post = returnQuestionOrAnswerPost(type, id)
   const { user } = useAppSelector(selectSession)
   const isUserPostWriter = user && user.id === post.post.user_id
+  const commentIds =
+    post.type === "question" ? post.post.commentIds : post.post.commentIds
 
   if (!post) {
     // return <div>Loading post...</div>
@@ -151,7 +154,9 @@ export const Post = ({ type, id }: Props) => {
           </div>
 
           <div className="comments-here">{post.post.num_comments} Comments</div>
+          <hr></hr>
           {/* <CommentTile commentId={id} /> */}
+          <CommentList commentIds={commentIds} />
         </div>
       </div>
     </div>

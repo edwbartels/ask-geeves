@@ -7,6 +7,7 @@ import { selectQuestionById } from "../../features/questionsSlice"
 import { Post } from "../Post/Post"
 import { OpenModalButton } from "../Modals/OpenModalButton"
 import { AnswerForm } from "../Modals/AnswerForm"
+import { selectAnswerById } from "../../features/answersSlice"
 
 import "./Question.css"
 
@@ -28,6 +29,7 @@ export const QuestionMain = () => {
     return <div className="question-tile">Trying to load question...</div>
   }
   const answerIds = question.answerIds
+  const commentIds = question.commentIds
   return (
     <div className="main-body">
       <h1 className="question-title">{question.title}</h1>

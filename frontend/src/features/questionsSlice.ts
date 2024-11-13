@@ -53,6 +53,7 @@ export interface Question {
   questionSave: boolean
 
   answerIds: number[]
+  commentIds: number[]
   tagIds: number[]
 }
 export interface QuestionForm {

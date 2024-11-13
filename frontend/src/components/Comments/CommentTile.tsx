@@ -9,22 +9,17 @@ interface Props {
 export const CommentTile = ({ id }: Props) => {
   const comment = useAppSelector(state => selectCommentById(state, id))
   const writer = useAppSelector(state => selectUserById(state, comment.user_id))
-  const createdAtDate = new Date(comment.created_at)
-  const createdDate = createdAtDate.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  })
-  const numCommentsText =
-    comment.num_comments + "comment" + (comment.num_comments === 1 ? "" : "s")
 
   return (
     <div>
-      <div>
-        <p className="total-num-comments">{numCommentsText}</p>
-      </div>
-      <div>
-        <p></p>
+      <div className="comment-body">
+        <p>{comment.content}</p>
+        <div className="comment-info">
+          <p>
+            <a href={`/user/${writer.id}`}>@{writer.username}</a>
+          </p>
+          <p>{comment.created_at}</p>
+        </div>
       </div>
     </div>
   )

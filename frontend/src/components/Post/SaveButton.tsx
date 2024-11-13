@@ -3,7 +3,12 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { selectSaveByContentAndId, toggleSave } from "../../features/savesSlice"
 import classNames from "classnames"
 
-export const SaveButton: React.FC<Props> = ({ id, type }) => {
+export interface SaveButtonProps {
+  type: "question" | "answer" | "comment"
+  id: number
+}
+
+export const SaveButton: React.FC<SaveButtonProps> = ({ id, type }) => {
   const dispatch = useAppDispatch()
   const saveInstance = useAppSelector(state =>
     selectSaveByContentAndId(state, type, id),

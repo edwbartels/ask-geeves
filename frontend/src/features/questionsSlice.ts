@@ -307,6 +307,7 @@ export const createOneQuestion = createAsyncThunk<
 
   thunkApi.dispatch(addManyUsers(usersPayload))
   thunkApi.dispatch(addManyVotes(votesPayload))
+  thunkApi.dispatch(addManyTags(tagsPayload))
   // dispatch addManyAnswers
   return questionPayload
   // }

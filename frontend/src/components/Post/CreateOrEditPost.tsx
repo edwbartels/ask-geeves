@@ -8,7 +8,7 @@ import {
   CreateQuestionError,
   fetchOneQuestion,
 } from "../../features/questionsSlice"
-import { selectTags, Tag } from "../../features/tagsSlice"
+import { selectTags, Tag, cleanTagName } from "../../features/tagsSlice"
 
 import { RenderPost } from "./RenderPost"
 
@@ -34,7 +34,7 @@ interface Error {
 export const CreateOrEditPost = () => {
   console.log("first render")
   const { questionId } = useParams()
-  const questionIdNum = Number(questionId)
+  // const questionIdNum = Number(questionId)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -64,10 +64,7 @@ export const CreateOrEditPost = () => {
         })
         const cleanedTags = question.Tags.map(tag => ({
           ...tag,
-          cleanedName: tag.name
-            .replace(/[^a-zA-Z0-9\s]/, "")
-            .replace(/[\s]/, "-")
-            .toLowerCase(),
+          cleanedName: cleanTagName(tag.name),
         }))
         setSelectedTags(cleanedTags)
       })
@@ -82,9 +79,9 @@ export const CreateOrEditPost = () => {
       })
   }
 
-  const tagsInputRef = useRef<HTMLInputElement>(null)
-  const tagsListRef = useRef<HTMLDivElement>(null)
-  const [showTagList, setShowTagList] = useState(false)
+  // const tagsInputRef = useRef<HTMLInputElement>(null)
+  // const tagsListRef = useRef<HTMLDivElement>(null)
+  // const [showTagList, setShowTagList] = useState(false)
   const allTags = useAppSelector(selectTags)
   // const availableTagsToAdd = Object.values(allTags).filter(
   //   tag => !selectedTags.includes(tag.id),
@@ -98,19 +95,19 @@ export const CreateOrEditPost = () => {
       }
     }
 
-  const handleFocusTagInput = (e: MouseEvent) => {
-    setShowTagList(true)
-  }
-  const handleClickOutside = (e: MouseEvent) => {
-    if (
-      tagsInputRef.current &&
-      !tagsInputRef.current.contains(e.target as Node) &&
-      tagsListRef.current &&
-      !tagsListRef.current.contains(e.target as Node)
-    ) {
-      setShowTagList(false)
-    }
-  }
+  // const handleFocusTagInput = (e: MouseEvent) => {
+  //   setShowTagList(true)
+  // }
+  // const handleClickOutside = (e: MouseEvent) => {
+  //   if (
+  //     tagsInputRef.current &&
+  //     !tagsInputRef.current.contains(e.target as Node) &&
+  //     tagsListRef.current &&
+  //     !tagsListRef.current.contains(e.target as Node)
+  //   ) {
+  //     setShowTagList(false)
+  //   }
+  // }
   // useEffect(() => {
   //   document.addEventListener("click", handleClickOutside)
   //   return () => document.removeEventListener("click", handleClickOutside)
@@ -125,7 +122,9 @@ export const CreateOrEditPost = () => {
   const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      const response = await dispatch(createOneQuestion(form)).unwrap()
+      const tag = selectedTags.map(tag => tag.name)
+      const newQuestion = { ...form, tag }
+      const response = await dispatch(createOneQuestion(newQuestion)).unwrap()
       const { id: questionId } = response
       navigate(`/questions/${questionId}`)
     } catch (e) {}
@@ -180,7 +179,7 @@ export const CreateOrEditPost = () => {
         </div>
       </form>
 
-      {/* <RenderPost postContent={form.content} /> */}
+      <RenderPost postContent={form.content} />
     </div>
   )
 }

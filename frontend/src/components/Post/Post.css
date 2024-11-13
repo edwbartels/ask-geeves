@@ -71,10 +71,19 @@
 }
 .tags {
   display: grid;
+  column-gap: 10px;
   grid-template-columns: 1fr 2fr;
+  /* box-sizing: border-box; */
+  background-color: #1b2432;
+  border: 5px dashed #2c2b3c;
+  border-radius: 25px;
+  padding: 15px;
+  color: white;
+  text-transform: none;
+  scrollbar-color: white transparent;
 }
 .tag-list {
-  background-color: white;
+  /* background-color: white; */
   height: 100px;
   overflow: auto;
   /* position: absolute;
@@ -85,15 +94,54 @@
 }
 .selected-tags,
 .tag-selector {
-  background-color: white;
+  /* background-color: white; */
+}
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  /* align-items: flex-start; */
+  align-content: start;
+  gap: 5px;
+}
+.one-selected-tag {
+  display: inline-block;
+  background-color: #403f4c;
+  border-radius: 5px;
+  color: #b76d68;
+  padding: 5px;
+  text-transform: none;
+}
+.one-selected-tag:hover {
+  cursor: pointer;
+  opacity: 0.75;
+}
+.tag-selector input {
+  background-color: transparent;
+  box-shadow: none;
+  border: 2px dashed #2c2b3c;
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 0.9em;
+  width: 100%;
+  box-sizing: border-box;
+}
+.tag-selector input:focus {
+  border-color: white;
+  outline: none;
 }
 .tag-list ul {
   list-style: none;
   padding: 0;
+  margin: 0;
   text-transform: none;
 }
+.tag-list li {
+  padding: 5px;
+  border-radius: 5px;
+}
 .tag-list li:hover {
-  background-color: lightblue;
+  background-color: #403f4c;
+  cursor: pointer;
 }
 .buttons-div {
   margin-top: 20px;

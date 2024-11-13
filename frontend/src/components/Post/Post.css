@@ -51,7 +51,8 @@ p {
 }
 
 .post-meta {
-  margin-bottom: 30px;
+  align-content: end;
+  /* margin-bottom: 30px; */
   margin-top: 15px;
   margin-right: 15px;
   margin-left: 15px;
@@ -64,9 +65,6 @@ p {
   color: black;
 }
 
-.post-body {
-  height: auto;
-}
 
 .title-required {
   color: white;
@@ -284,9 +282,27 @@ p {
   width: 100%;
   padding: 10px;
   background-color: black;
+  display:flex;
+  flex-direction: column
   /* box-shadow: 0 0 5px 3px #feaee3,
               0 0 10px 4px #f087d3; */
 }
+
+.post-container{
+  display: flex;
+  flex-direction: column
+}
+.post-info{
+  display:grid;
+  grid-template-columns: 1fr 9fr;
+  margin-bottom:20px
+}
+.post-interact{
+  display:flex;
+  flex-direction:column;
+  justify-content: space-between;
+}
+
 
 .post-user {
   display: flex;

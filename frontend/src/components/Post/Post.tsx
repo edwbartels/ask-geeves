@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { selectSession } from "../../features/sessionSlice"
@@ -42,6 +43,7 @@ export interface Props {
 
 // Post renders top level question or answer
 export const Post = ({ type, id }: Props) => {
+  const [isCommentsVisible, setCommentsVisible] = useState(false)
   const returnQuestionOrAnswerPost = (
     type: "question" | "answer",
     id: number,
@@ -98,66 +100,83 @@ export const Post = ({ type, id }: Props) => {
     }
   }
 
+  const toggleComments = () => {
+    setCommentsVisible(!isCommentsVisible)
+  }
+
   return (
     <div>
       <div className={`post-body ${post.type}-body`}>
-        <div className="vote-counter-div">
-          <div className="up-vote">
-            <VoteButton id={id} type={type} voteType="up" />
-          </div>
-          <div className="vote-counter">{post.post.total_score}</div>
-          <div className="down-vote">
-            <VoteButton id={id} type={type} voteType="down" />
-          </div>
-          <div className="save">
-            {/* // ? Idk why this is a ul so im just leaving both icons here until god saves me */}
-            {/* <ul className="save-button"> */}
-            {/* <i className="fa-regular fa-bookmark fa-xl"></i> */}
-            <SaveButton id={id} type={type} />
-            {/* </ul> */}
-          </div>
-        </div>
-        <div id={permalink}>
-          <RenderPost postContent={post.post.content} />
-          <div className="post-meta">
-            <div>
-              <a href={`#${permalink}`}>
-                <i className="fa-solid fa-xl fa-link"></i>
-              </a>
-              {isUserPostWriter && post.type === "question" ? (
-                <Link to={`edit`}>Edit {post.type}</Link>
-              ) : isUserPostWriter && post.type === "answer" ? (
-                <OpenModalButton
-                  buttonText="Edit answer"
-                  modalComponent={
-                    <AnswerForm
-                      questionId={post.post.question_id}
-                      answerId={post.post.id}
+        <div className={`post-container ${post.type}-container`}>
+          <div className="post-info">
+            <div className="vote-counter-div">
+              <div className="up-vote">
+                <VoteButton id={id} type={type} voteType="up" />
+              </div>
+              <div className="vote-counter">{post.post.total_score}</div>
+              <div className="down-vote">
+                <VoteButton id={id} type={type} voteType="down" />
+              </div>
+              <div className="save">
+                {/* // ? Idk why this is a ul so im just leaving both icons here until god saves me */}
+                {/* <ul className="save-button"> */}
+                {/* <i className="fa-regular fa-bookmark fa-xl"></i> */}
+                <SaveButton id={id} type={type} />
+                {/* </ul> */}
+              </div>
+            </div>
+            <div className="post-interact" id={permalink}>
+              <RenderPost postContent={post.post.content} />
+              <div className="post-meta">
+                <div>
+                  <a href={`#${permalink}`}>
+                    <i className="fa-solid fa-xl fa-link"></i>
+                  </a>
+                  {isUserPostWriter && post.type === "question" ? (
+                    <Link to={`edit`}>Edit {post.type}</Link>
+                  ) : isUserPostWriter && post.type === "answer" ? (
+                    <OpenModalButton
+                      buttonText="Edit answer"
+                      modalComponent={
+                        <AnswerForm
+                          questionId={post.post.question_id}
+                          answerId={post.post.id}
+                        />
+                      }
                     />
-                  }
-                />
-              ) : (
-                ""
-              )}
-              {isUserPostWriter && (
-                <button className="delete-button" onClick={handleDeletePost}>
-                  Delete {type}
-                </button>
-              )}
-            </div>
-            <div className="post-user">
-              Posted by{" "}
-              <Link className="posted-by-user" to={`/user/${postWriter.id}`}>
-                {postWriter.username}
-              </Link>
+                  ) : (
+                    ""
+                  )}
+                  {isUserPostWriter && (
+                    <button
+                      className="delete-button"
+                      onClick={handleDeletePost}
+                    >
+                      Delete {type}
+                    </button>
+                  )}
+                </div>
+                <div className="post-user">
+                  <Link
+                    className="posted-by-user"
+                    to={`/user/${postWriter.id}`}
+                  >
+                    {postWriter.username}
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
-
-          <div className="comments-here">{post.post.num_comments} Comments</div>
-          <hr></hr>
-          {/* <CommentTile commentId={id} /> */}
-          <CommentList commentIds={commentIds} />
+          <a
+            className="comment-toggle"
+            style={{ cursor: "pointer" }}
+            onClick={toggleComments}
+          >
+            {isCommentsVisible ? "Hide Comments" : "Show Comments"}
+          </a>
+          <div className="comment-break"></div>
         </div>
+        {isCommentsVisible && <CommentList commentIds={commentIds} />}
       </div>
     </div>
   )

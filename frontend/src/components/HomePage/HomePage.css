@@ -1,0 +1,229 @@
+
+
+body {
+    background-color: black;
+}
+
+.title {
+    padding-left: 15px;
+    font-family: "Clip";
+    padding-bottom: 15px;
+    font-size: 50px;
+    color: #fff;
+    /* text-shadow:
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 20px #fff,
+        0 0 40px #fff,
+        0 0 80px #fff,
+        0 0 90px #fff,
+        0 0 100px #fff,
+        0 0 150px #fff; */
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+.homepage {
+    margin-right: 20px;
+    padding-right: 20px;
+
+}
+
+.description {
+    padding-left: 15px;
+    padding-right: 15px;
+    max-width: 50%;
+    font-size: 24px;
+    padding-top: 15px;
+    font-family: "Clip";
+    color: white;
+}
+
+.image img {
+  margin: 25px;
+  width: 150%; /* Makes the image take up 100% of its container's width */
+  max-width: 600px; /* Ensures the image doesn't exceed 600px in width */
+  height: auto; /* Maintains the aspect ratio of the image */
+    border-radius: 14px;
+    border: 5px solid rgba(255, 255, 255, 1);
+    box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset,0 0 40px rgba(0, 255, 251, 1),0 0 40px rgba(0, 255, 251, 1) inset;    
+}
+
+
+.language-title {
+    color: white;
+    padding-left: 15px;
+    font-family: "Clip";
+    text-transform: uppercase;
+    padding-bottom: 15px;
+    font-size: 35px;
+    margin-top: 50px;
+}
+
+.gallery {
+    background: #EEE;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 1rem;
+    color: white;
+  }
+
+  .container-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 150px;
+
+
+  }
+  .container__icon-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    background-color: #18191f;
+    color: #fff;
+    font-size: 4rem;
+    width: 4rem;
+    height: 4rem;
+    box-shadow: 2px 2px 2px #00000080, 10px 1px 12px #00000080,
+      2px 2px 10px #00000080, 2px 2px 3px #00000080, inset 2px 2px 10px #00000080,
+      inset 2px 2px 10px #00000080, inset 2px 2px 10px #00000080,
+      inset 2px 2px 10px #00000080;
+    border-radius: 29px;
+    /*   padding: 11px 19px; */
+    margin: 0 40px;
+    animation: animate 3s linear infinite;
+    text-shadow: 0 0 50px #0072ff, 0 0 100px #0072ff, 0 0 150px #0072ff,
+      0 0 200px #0072ff;
+  }
+  .apple {
+    animation: animate 3s linear infinite;
+  }
+  .twitter {
+    animation: animate 3s linear 0.3s infinite;
+  }
+  .facebook {
+    animation: animate 3s linear 0.7s infinite;
+  }
+  .github {
+    animation: animate 3s linear infinite;
+  }
+  
+  @keyframes animate {
+    from {
+      filter: hue-rotate(0deg);
+    }
+    to {
+      filter: hue-rotate(360deg);
+    }
+  }
+
+.text-center {
+  color: white;
+  font-family: "Clip";
+  text-transform: uppercase;
+  justify-self: center;
+  font-size: 35px;
+  margin-top: 100px;
+}
+
+
+.wrapper {
+  max-width: 650px;
+  justify-self: center
+}
+
+h1 {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.5em;
+}
+
+.speechbubble {
+  background-color: #26272b;
+  color: #9fa2a7;
+  font-size: .8em;
+  line-height: 1.75;
+  padding: 15px 25px;
+  margin-bottom: 75px;
+  cursor: default;
+}
+
+.speechbubble:nth-child(2n) {
+  border-left: 5px solid;
+}
+
+.speechbubble:nth-child(2n):after {
+  content: '';
+  margin-top: -30px;
+  position: relative;
+  bottom: -45px;
+  left: 20px;
+  border-width: 30px 0 0 30px;
+  border-style: solid;
+  border-color: #26272b transparent;
+  display: block;
+  width: 0;
+}
+
+.speechbubble:nth-child(2n+1) {
+  border-right: 5px solid;
+}
+
+.speechbubble:nth-child(2n+1):after {
+  content: '';
+  margin-top: -30px;
+  position: relative;
+  bottom: -45px;
+  left: 350px;
+  border-width: 30px 30px 0 0;
+  border-style: solid;
+  border-color: #26272b transparent;
+  display: block;
+  width: 0;
+}
+
+/* Randomize every 4th bubble's border color */
+.speechbubble:nth-child(4n+1) {
+  border-color: #56b273;
+}
+
+.speechbubble:nth-child(4n+2) {
+  border-color: #01AD9B;
+}
+
+.speechbubble:nth-child(4n+3) {
+  border-color: #b388dd;
+}
+
+.speechbubble:nth-child(4n+4) {
+  border-color: #ff8750;
+}
+
+/* Quotation symbols */
+.speechbubble p:before {
+  content: "“";
+  font-family: Georgia;
+  font-size: 40px;
+  line-height: 0;
+  display: inline-block;
+}
+
+.username {
+  display: inline;
+  font-style: italic;
+  
+}
+
+.username:before {
+  content: '- ';
+}

@@ -8,3 +8,11 @@ question_tags = db.Table(
     ),
     db.Column("tag_id", db.Integer, db.ForeignKey("tags.id"), primary_key=True),
 )
+
+follow_data = db.Table(
+    "follow_data",
+    db.Column(
+        "followed_by_id", db.Integer, db.ForeignKey("users.id"), primary_key=True
+    ),
+    db.Column("following_id", db.Integer, db.ForeignKey("users.id"), primary_key=True),
+)

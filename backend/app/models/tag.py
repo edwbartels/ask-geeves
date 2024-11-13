@@ -1,11 +1,9 @@
 from .db import db
+from .base_models import Base
 from .join_tables import question_tags
 
 
-class Tag(db.Model):
-    __tablename__ = "tags"
-
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
+class Tag(Base):
     name = db.Column(db.String(50), nullable=False)
 
     questions = db.relationship(

@@ -1,4 +1,304 @@
+@import url('https://fonts.googleapis.com/css2?family=Short+Stack&display=swap');
+
+
 .nav-bar {
   display: flex;
   justify-content: space-between;
+  background-color: black;
+}
+
+.logo {
+  padding: 15px;
+}
+
+.icon {
+  height: 100px;
+}
+
+
+.home-links {
+  font-family: "Clip";
+  text-transform: uppercase;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.question-links {
+  font-family: "Clip";
+  text-transform: uppercase;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.search-links {
+  font-family: "Clip";
+  text-transform: uppercase;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 5px solid rgba(255, 255, 255, 1);
+  box-shadow: 0 0 10px rgba(0, 255, 251, 0.67),0 0 10px rgba(0, 255, 251, 0.67) inset,0 0 20px rgba(0, 255, 251, 0.67),0 0 20px rgba(0, 255, 251, 0.67) inset,0 0 30px rgba(0, 255, 251, 0.67),0 0 30px rgba(0, 255, 251, 0.67) inset,0 0 40px rgba(0, 255, 251, 0.67),0 0 40px rgba(0, 255, 251, 0.67) inset;       
+  background-color: black;
+}
+
+.post-links {
+  font-family: "Clip";
+  text-transform: uppercase;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.nav-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.login-button {
+  margin-right: 10px;
+  border-radius: 6px;
+  font-family: "Clip";
+  text-transform: uppercase;
+  font-size: 1em;
+  background-color: black;
+}
+
+
+
+.login-button {
+  font-size: 1rem;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  color: hsl(317 100% 54%);
+  border: hsl(317 100% 54%) 0.125em solid;
+  padding: 0.25em 1em;
+  border-radius: 0.25em;
+
+  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
+
+  box-shadow: inset 0 0 0.5em 0 hsl(317 100% 54%), 0 0 0.5em 0 hsl(317 100% 54%);
+
+  position: relative;
+}
+
+.login-button::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  background: hsl(317 100% 54%);
+  top: 120%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  transform: perspective(1em) rotateX(40deg) scale(1, 0.35);
+  filter: blur(1em);
+  opacity: 0.7;
+}
+
+.login-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 0 2em 0.5em hsl(317 100% 54%);
+  opacity: 0;
+  background-color: hsl(317 100% 54%);
+  z-index: -1;
+  transition: opacity 100ms linear;
+}
+
+.login-button:hover,
+.login-button:focus {
+  color: white;
+  text-shadow: none;
+}
+
+.login-button:hover::before,
+.login-button:focus::before {
+  opacity: 1;
+}
+.login-button:hover::after,
+.login-button:focus::after {
+  opacity: 1;
+}
+
+
+.signup-button {
+  margin-left: 10px;
+  border-radius: 6px;
+  font-family: "Clip";
+  text-transform: uppercase;
+  font-size: 1em;
+  background-color: black;
+}
+
+.signup-button {
+  font-size: 1rem;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  color: hsl(317 100% 54%);
+  border: hsl(317 100% 54%) 0.125em solid;
+  padding: 0.25em 1em;
+  border-radius: 0.25em;
+
+  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
+
+  box-shadow: inset 0 0 0.5em 0 hsl(317 100% 54%), 0 0 0.5em 0 hsl(317 100% 54%);
+
+  position: relative;
+}
+
+.signup-button::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  background: hsl(317 100% 54%);
+  top: 120%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  transform: perspective(1em) rotateX(40deg) scale(1, 0.35);
+  filter: blur(1em);
+  opacity: 0.7;
+}
+
+.signup-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 0 2em 0.5em hsl(317 100% 54%);
+  opacity: 0;
+  background-color: hsl(317 100% 54%);
+  z-index: -1;
+  transition: opacity 100ms linear;
+}
+
+.signup-button:hover,
+.signup-button:focus {
+  color: white;
+  text-shadow: none;
+}
+
+.signup-button:hover::before,
+.signup-button:focus::before {
+  opacity: 1;
+}
+.signup-button:hover::after,
+.signup-button:focus::after {
+  opacity: 1;
+}
+
+
+.logout-button {
+  margin-right: 10px;
+  border-radius: 6px;
+  font-family: "Clip";
+  text-transform: uppercase;
+  font-size: 1em;
+  background-color: black;
+}
+
+
+
+.logout-button {
+  font-size: 1rem;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  color: hsl(317 100% 54%);
+  border: hsl(317 100% 54%) 0.125em solid;
+  padding: 0.25em 1em;
+  border-radius: 0.25em;
+
+  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
+
+  box-shadow: inset 0 0 0.5em 0 hsl(317 100% 54%), 0 0 0.5em 0 hsl(317 100% 54%);
+
+  position: relative;
+}
+
+.logout-button::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  background: hsl(317 100% 54%);
+  top: 120%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  transform: perspective(1em) rotateX(40deg) scale(1, 0.35);
+  filter: blur(1em);
+  opacity: 0.7;
+}
+
+.logout-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 0 2em 0.5em hsl(317 100% 54%);
+  opacity: 0;
+  background-color: hsl(317 100% 54%);
+  z-index: -1;
+  transition: opacity 100ms linear;
+}
+
+.logout-button:hover,
+.logout-button:focus {
+  color: white;
+  text-shadow: none;
+}
+
+.logout-button:hover::before,
+.logout-button:focus::before {
+  opacity: 1;
+}
+.logout-button:hover::after,
+.logout-button:focus::after {
+  opacity: 1;
+}
+
+.user-greeting {
+  font-family: "Clip";
+  text-transform: uppercase;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
 }

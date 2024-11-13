@@ -1,0 +1,85 @@
+
+
+.contact-title {
+    color: white;
+    font-family: "Clip";
+    text-transform: uppercase;
+    font-size: 35px;
+    justify-self: center;
+}
+
+.name {
+    color: white;
+    font-family: "Clip";
+    text-transform: uppercase;
+    justify-self: center;
+}
+
+.image {
+    max-width: 300px;
+    max-height: 300px;
+    border-radius: 150px;
+}
+
+.eddie-description {
+    color: white;
+}
+
+.josh-description {
+    color: white;
+}
+
+.tina-description {
+    color: white;
+}
+
+.ziwen-description {
+    color: white;
+}
+
+.top-row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.bottom-row {
+    display: flex;
+    justify-content: space-around;
+}
+
+.top-left-box {
+    display: flex;
+    margin-left: 30px;
+    margin-right: 30px;
+    font-family: "Clip";
+    text-transform: uppercase;
+    flex-direction: column;
+}
+
+.top-right-box {
+    display: flex;
+    margin-left: 30px;
+    margin-right: 30px;
+    font-family: "Clip";
+    text-transform: uppercase;
+    flex-direction: column;
+}
+
+.bottom-left-box {
+    display: flex;
+    margin-left: 30px;
+    margin-right: 30px;
+    font-family: "Clip";
+    text-transform: uppercase;
+    flex-direction: column;
+}
+
+.bottom-right-box {
+    display: flex;
+    margin-left: 30px;
+    margin-right: 30px;
+    font-family: "Clip";
+    text-transform: uppercase;
+    flex-direction: column;
+}

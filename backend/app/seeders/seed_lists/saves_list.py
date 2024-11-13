@@ -23,6 +23,9 @@ while len(saves) < 100:
             "content_type": content_type,
             "content_id": content_id,
         }
+        if content_type == "comment":
+            parent_type = random.choice(["question", "answer"])
+            save["parent_type"] = parent_type
 
         saves.append(save)
         existing_saves.add(save_key)

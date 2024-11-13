@@ -10,7 +10,7 @@ export const RenderPost = ({ postContent }: Props) => {
   const ast = Markdoc.parse(postContent)
   const content = Markdoc.transform(ast)
   return (
-    <div className="post-body">
+    <div className="post-content">
       {Markdoc.renderers.react(content, React, {
         components: {},
       })}

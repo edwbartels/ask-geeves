@@ -3,8 +3,9 @@ import { useModal } from "../../context/Modal"
 import { Errors } from "../Errors/Errors"
 import { useAppDispatch } from "../../app/hooks"
 import { restoreSession } from "../../features/sessionSlice"
-import { loginAsync, loginDemoUserAsync } from "../../features/sessionSlice"
+import { loginAsync } from "../../features/sessionSlice"
 import { log } from "console"
+import "./LoginFormModal.css"
 
 export const LoginFormModal = () => {
   const [loginForm, setLoginForm] = useState({
@@ -40,7 +41,12 @@ export const LoginFormModal = () => {
     e.preventDefault()
     setErrors({})
     try {
-      const response = await dispatch(loginDemoUserAsync()).unwrap()
+      const response = await dispatch(
+        loginAsync({
+          credential: "admin@admin.com",
+          password: "adminadmin",
+        }),
+      ).unwrap()
       closeModal()
     } catch (e) {
       console.log("error", e)
@@ -59,11 +65,12 @@ export const LoginFormModal = () => {
       <form onSubmit={handleSubmitLogin}>
         <div>
           <label className="login-form-item">
-            <div>Username/email</div>
-            <input
+            <h3 className="login-title">Login</h3>
+            <div className="email-title">Username/Email</div>
+            <input className="input"
               onChange={handleChangeLoginForm("credential")}
               defaultValue={loginForm.credential}
-              placeholder="Username/email"
+              placeholder="Username/Email"
               name="credential"
               type="text"
               required
@@ -72,8 +79,8 @@ export const LoginFormModal = () => {
         </div>
         <div>
           <label className="login-form-item">
-            <div>Password</div>
-            <input
+            <div className="password-title">Password</div>
+            <input className="input"
               onChange={handleChangeLoginForm("password")}
               placeholder="Password"
               defaultValue={loginForm.password}
@@ -83,16 +90,18 @@ export const LoginFormModal = () => {
             />
           </label>
         </div>
-        <button
+        <div className="button-div">
+        <button className="login-form-button"
           disabled={isDisabledSubmit}
           data-testid="login-button" // Identifier
         >
           Log In
         </button>
-      </form>
-      <button onClick={handleLogInDemo} data-testid="demo-user-login">
+      <button className="demo-form-button" onClick={handleLogInDemo} data-testid="demo-user-login">
         Log in Demo User
       </button>
+      </div>
+      </form>
     </div>
   )
 }

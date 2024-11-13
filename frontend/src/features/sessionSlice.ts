@@ -1,8 +1,17 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "../app/createAppSlice"
-import type { AppThunk } from "../app/store"
-// import { fetchCount } from "./counterAPI"
-import { csrfFetch } from "../app/csrfFetch"
+import { Vote } from "./votesSlice"
+import { Save } from "./savesSlice"
+
+export type AllQuestionsSettings_old = Record<
+  string | "page" | "size" | "num_pages",
+  string
+>
+export interface AllQuestionsSettings {
+  page: number
+  size: number
+  num_pages: number
+}
 
 export interface SessionSliceState {
   user: {
@@ -14,15 +23,16 @@ export interface SessionSliceState {
     created_at: string
     updated_at: string
   } | null
-  status: "idle" | "loading" | "failed"
+  status: "idle" | "loading" | "failed" | "logged out" | "logged in"
   error: string | null
+  allQuestionsSettings: AllQuestionsSettings
 }
 
 interface LoginRequest {
   credential: string
   password: string
 }
-interface LoginResponse {
+export interface SessionResponse {
   user: {
     id: number
     first_name: string
@@ -31,7 +41,9 @@ interface LoginResponse {
     username: string
     created_at: string
     updated_at: string
-  }
+    votes: Vote[]
+    saves: Save[]
+  } | null
 }
 interface LoginError {
   error: string
@@ -44,6 +56,7 @@ const initialState: SessionSliceState = {
   user: null,
   status: "idle",
   error: null,
+  allQuestionsSettings: { page: 1, size: 15, num_pages: 1 },
 }
 
 // If you are not using async thunks you can use the standalone `createSlice`.
@@ -54,77 +67,39 @@ export const sessionSlice = createAppSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: create => {
     return {
-      loginDemoUserAsync: create.asyncThunk<
-        LoginResponse,
-        void,
-        { rejectValue: any }
-      >(
-        async (_, thunkApi) => {
-          try {
-            const response = await csrfFetch("/api/session/", {
-              method: "POST",
-              // headers: {
-              //   "Content-Type": "application/json",
-              // },
-              body: JSON.stringify({
-                credential: "admin@admin.com",
-                password: "adminadmin",
-              }),
-            })
-            // The value we return becomes the `fulfilled` action payload
-            return await response.json()
-          } catch (err: any) {
-            if (!err.ok && err.status === 400) {
-              const error = await err.json()
-              console.log(error)
-              return thunkApi.rejectWithValue(error.error)
-            } else {
-              return thunkApi.rejectWithValue("An unknown error occured")
-            }
-          }
-        },
-        {
-          fulfilled: (state, action) => {
-            state.user = action.payload.user
-          },
-          rejected: (state, action) => {
-            state.status = "failed"
-            state.error = action.payload
-          },
+      setAllQuestionsSettings: create.reducer(
+        (state, action: PayloadAction<AllQuestionsSettings>) => {
+          state.allQuestionsSettings = action.payload
         },
       ),
       restoreSession: create.asyncThunk(
-        async () => {
+        async (_, thunkApi) => {
           const response = await fetch("/api/session/")
           const userSession = await response.json()
           return userSession
         },
         {
-          fulfilled: (state, action: PayloadAction<LoginResponse>) => {
-            state.user = action.payload.user
+          fulfilled: (state, action: PayloadAction<SessionResponse>) => {
+            const { user: sessionUser } = action.payload
+            if (sessionUser) {
+              const { votes, saves, ...user } = sessionUser
+              state.user = user
+              state.status = "idle"
+              state.error = null
+            }
           },
         },
       ),
-      // Use the `PayloadAction` type to declare the contents of `action.payload`
-      // incrementByAmount: create.reducer(
-      //   (state, action: PayloadAction<SessionSliceState>) => {
-      //     state.user = action.payload
-      //   },
-      // ),
-      // The function below is called a thunk and allows us to perform async logic. It
-      // can be dispatched like a regular action: `dispatch(loginAsync(10))`. This
-      // will call the thunk with the `dispatch` function as the first argument. Async
-      // code can then be executed and other actions can be dispatched. Thunks are
-      // typically used to make async requests.
       loginAsync: create.asyncThunk<
-        LoginResponse,
+        SessionResponse,
         LoginRequest,
         { rejectValue: LoginError }
       >(
         async (loginInfo, thunkApi) => {
           try {
-            const response = await csrfFetch(`/api/session/`, {
+            const response = await fetch(`/api/session/`, {
               method: "POST",
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify(loginInfo),
             })
             const sessionInfo = await response.json()
@@ -143,9 +118,13 @@ export const sessionSlice = createAppSlice({
         },
         {
           fulfilled: (state, action) => {
-            state.status = "idle"
-            state.user = action.payload.user
-            state.error = null
+            const { user: sessionUser } = action.payload
+            if (sessionUser) {
+              const { votes, saves, ...user } = sessionUser
+              state.user = user
+              state.status = "idle"
+              state.error = null
+            }
           },
           rejected: (state, action) => {
             state.status = "failed"
@@ -157,7 +136,7 @@ export const sessionSlice = createAppSlice({
       ),
       logoutAsync: create.asyncThunk(
         async () => {
-          const response = await csrfFetch("/api/session/", {
+          const response = await fetch("/api/session/", {
             method: "DELETE",
           })
           const sessionInfo = await response.json()
@@ -179,16 +158,28 @@ export const sessionSlice = createAppSlice({
   selectors: {
     selectSession: session => session,
     selectUser: session => session.user,
+    selectAllQuestionsSettings: session => {
+      const settingsToString: Record<string, string> = {}
+      for (const [key, value] of Object.entries(session.allQuestionsSettings)) {
+        settingsToString[key] = value.toString()
+      }
+      return settingsToString
+    },
     // selectStatus: counter => counter.status,
   },
 })
 
 // Action creators are generated for each case reducer function.
-export const { restoreSession, loginAsync, logoutAsync, loginDemoUserAsync } =
-  sessionSlice.actions
+export const {
+  setAllQuestionsSettings,
+  restoreSession,
+  loginAsync,
+  logoutAsync,
+} = sessionSlice.actions
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectSession, selectUser } = sessionSlice.selectors
+export const { selectSession, selectUser, selectAllQuestionsSettings } =
+  sessionSlice.selectors
 
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.

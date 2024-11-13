@@ -17,9 +17,13 @@ export const AllQuestions = () => {
   if (!searchParams.has("page")) {
     searchParams.set("page", pageSettings.page)
   }
-  if (!searchParams.has("size")) {
-    searchParams.set("size", pageSettings.size)
-  }
+  // if (!searchParams.has("size")) {
+  //   searchParams.set("size", pageSettings.size)
+  // }
+  useEffect(() => {
+      searchParams.set("size", "15")
+    setSearchParams(searchParams) 
+  }, [])
 
   // console.log(searchParams.get("size"))
   // console.log(searchParams, searchParams.keys())
@@ -49,15 +53,16 @@ export const AllQuestions = () => {
     setGotQuestions(false)
   }
 
-  if (!gotQuestions) {
-    dispatch(
-      fetchAllQuestions({
-        page: searchParams.get("page") || "1",
-        size: searchParams.get("size") || "15",
-      }),
-    )
-    setGotQuestions(true)
-  }
+    if (!gotQuestions) {
+      dispatch(
+        fetchAllQuestions({
+          page: searchParams.get("page") || "1",
+          size: searchParams.get("size") || "15",
+        }),
+      )
+      setGotQuestions(true)
+    }
+    
   return (
     <div>
       <h1 className="all-questions-title">All questions</h1>

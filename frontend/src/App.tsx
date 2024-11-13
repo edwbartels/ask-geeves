@@ -22,6 +22,7 @@ import { FAQ } from "./components/FAQ/FAQ"
 import { AboutUs } from "./components/AboutUs/AboutUs"
 import { UserDetailPage } from "./components/User/UserDetailPage"
 import { AllTags } from "./components/AllTags/AllTags"
+import { TaggedQuestions } from "./components/AllQuestions/TaggedQuestions"
 
 import { restoreSession } from "./features/sessionSlice"
 
@@ -64,8 +65,16 @@ const router = createBrowserRouter([
           { path: "", element: <AllTags /> },
           {
             path: ":tagId/:tagName",
-            element: <h1>All questions by one tag</h1>,
+            element: <TaggedQuestions/>,
           },
+          {
+            path:":tagId/questions/:questionId",
+            children: [
+              { path: "", element: <QuestionMain /> },
+              { path: "edit", element: <CreateOrEditPost /> },
+              { path: "*", element: <QuestionMain /> },
+            ],
+          }
         ],
       },
       { path: "/team", element: <Contact /> },

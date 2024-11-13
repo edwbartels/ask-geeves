@@ -127,6 +127,71 @@ export const fetchAllQuestions = createAsyncThunk<
   }
 })
 
+export const fetchTaggedQuestions = createAsyncThunk<
+  // Return type of the payload creator
+  Question[],
+  // First argument to payload creator
+  { tagName: string; page: string; size: string },
+  // Optional fields for thunkApi types
+  { rejectValue: FetchAllQuestionsError }
+>('questions/fetchTagged', async (pageSettings, thunkApi) => {
+  const { page } = pageSettings || 1
+  const { size } = pageSettings || 15
+  const { tagName } = pageSettings
+  const fetchUrl = `/api/questions?tag=${tagName}&page=${page}&per_page=${size}&sort_by=id`;
+  const response = await fetch(fetchUrl);
+  if (response.ok) {
+    const allQuestions: FetchAllQuestionsResponse = await response.json();
+    const { page, size, num_pages, questions } = allQuestions
+    interface payload {
+      questions: Question[]
+      users: User[]
+      userIds: Set<number>
+      tags: Tag[]
+      tagIds: Set<number>
+    }
+    const payload: payload = {
+      questions: [],
+      users: [],
+      userIds: new Set(),
+      tags: [],
+      tagIds: new Set(),
+    }
+    for (const question of questions) {
+      const { User, Tags, ...remaining } = question
+      const tagIds = Tags.map(tag => tag.id)
+      const newQuestion: Question = { ...remaining, answerIds: [], tagIds }
+      payload.questions.push(newQuestion)
+
+      // only add unique user objects from the API response
+      if (!payload.userIds.has(User.id)) {
+        payload.userIds.add(User.id)
+        payload.users.push(User)
+      }
+      // only add unique tag objects from the API response
+      for (const tag of Tags) {
+        if (!payload.tagIds.has(tag.id)) {
+          payload.tagIds.add(tag.id)
+          payload.tags.push(tag)
+        }
+      }
+    }
+
+    thunkApi.dispatch(
+      setAllQuestionsSettings({
+        page: page,
+        size: size,
+        num_pages: num_pages,
+      }),
+    )
+    thunkApi.dispatch(addManyUsers(payload.users))
+    thunkApi.dispatch(addManyTags(payload.tags))
+    return payload.questions
+  } else {
+    return thunkApi.rejectWithValue({ error: "Couldn't fetch all questions!" })
+  }
+})
+
 export const fetchOneQuestion = createAsyncThunk<
   Question,
   number,
@@ -303,6 +368,14 @@ export const questionsSlice = createAppSlice({
         state.questions[questionId].answerIds = oldAnswerIds?.filter(
           id => id !== answerId,
         )
+      })
+      .addCase(fetchTaggedQuestions.fulfilled,(state, action) =>{
+        state.questions = {}
+        const questions = action.payload
+        for (const question of questions) {
+          const { id } = question
+          state.questions[id] = question
+        }
       })
   },
   selectors: {

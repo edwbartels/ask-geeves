@@ -23,17 +23,23 @@ def get_all_questions(page, per_page, sort_column, sort_order):
     # all_questions = Question.query.options(lazyload(Question.answers)).all()
     # all_questions = Question.query.options(load_only(Question.id, Question.title)).all()
 
-    filter_tag = request.args.get("filter_tag")
+    filter_tag = request.args.get("tag")
+    # print(filter_tag)
+    # following_feed = request.args.get("follow") == "1"
 
+    query = Question.query
     if filter_tag:
-        questions = Question.query.filter(Question.tags.any(name=filter_tag))
-    else:
-        questions = Question.query
+        filter_tag = filter_tag.replace("-", " ")
+        query = query.filter(Question.tags.any(Tag.name.ilike(filter_tag)))
+    # if following_feed:
+    #     query = query.filter(
+    #         Question.user_id.in_([user.id for user in current_user.following])
+    #     )
 
-    questions = questions.order_by(sort_order(sort_column)).paginate(
+    questions = query.order_by(sort_order(sort_column)).paginate(
         page=page, per_page=per_page
     )
-
+    # print([question.to_dict(homepage=True) for question in questions.items])
     if not questions.items:
         return jsonify({"message": "No questions found"}), 404
     questions_list = [question.to_dict(homepage=True) for question in questions.items]
@@ -46,7 +52,6 @@ def get_all_questions(page, per_page, sort_column, sort_order):
             "questions": questions_list,
         }
     ), 200
-
 
 @bp.route("/<int:question_id>", methods=["GET"])
 @question_exist_check

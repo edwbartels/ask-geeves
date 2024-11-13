@@ -7,6 +7,9 @@ interface Props {
 }
 export const Tag = ({ tagId }: Props) => {
   const tag = useAppSelector(state => selectTagById(state, tagId))
+  if (!tag) {
+    return null;
+  }
   const tagNameSnakeCase = tag.name.replace(" ", "-").toLowerCase()
   return (
     <Link to={`/tagged/${tagId}/${tagNameSnakeCase}`} className="question-tag">

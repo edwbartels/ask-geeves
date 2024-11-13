@@ -14,6 +14,16 @@ import {
 } from "../../features/answersSlice"
 import { RenderPost } from "./RenderPost"
 import { Tag } from "../Tag/Tag"
+import { AnswerForm } from "../Modals/AnswerForm"
+import { OpenModalButton } from "../Modals/OpenModalButton"
+import { updateVote, selectVoteByContentAndId } from "../../features/votesSlice"
+import { toggleSave, selectSaveByContentAndId } from "../../features/savesSlice"
+import classNames from "classnames"
+import React from "react"
+import { VoteButton } from "./VoteButton"
+import { SaveButton } from "./SaveButton"
+
+
 
 const absurd = (input: never): never => input
 type PostType =
@@ -26,10 +36,11 @@ type PostType =
       post: Answer
     }
 
-interface Props {
+export interface Props {
   type: "question" | "answer"
   id: number
 }
+
 // Post renders top level question or answer
 export const Post = ({ type, id }: Props) => {
   const returnQuestionOrAnswerPost = (
@@ -85,23 +96,25 @@ export const Post = ({ type, id }: Props) => {
       dispatch(deleteOneAnswer({ questionId: question_id, answerId: id }))
     }
   }
+
   return (
     <div>
-      <div className="post-body">
+      <div className={`post-body ${post.type}-body`}>
         <div className="vote-counter-div">
           <div className="up-vote">
-            <button className="up">
-              <i className="fa-solid fa-2x fa-arrow-up"></i>
-            </button>
+
+            <button className="up vote-active"><i className="fa-solid fa-2x fa-arrow-up"></i></button>
           </div>
           <div className="vote-counter">{post.post.total_score}</div>
           <div className="down-vote">
-            <button className="down">
-              <i className="fa-solid fa-2x fa-arrow-down"></i>
-            </button>
+            <button className="down vote-active"><i className="fa-solid fa-2x fa-arrow-down"></i></button>
+
           </div>
           <div className="save">
-            <button className="save-button">Save</button>
+            <ul className="save-button">
+              <i className="fa-regular fa-bookmark fa-xl"></i>
+            </ul>
+
           </div>
         </div>
         <div id={permalink}>
@@ -115,14 +128,23 @@ export const Post = ({ type, id }: Props) => {
           )}
           <div className="post-meta">
             <div>
-              <a href={`#${permalink}`} className="share">
-                Share
-              </a>
-              <button className="like-post-button">Like post</button>
-              {isUserPostWriter && (
-                <Link to={`edit`} className="edit">
-                  Edit {type}
-                </Link>
+
+              <a href={`#${permalink}`}><i className="fa-solid fa-xl fa-link"></i></a>
+              {isUserPostWriter && post.type === "question" ? (
+                <Link to={`edit`}>Edit {post.type}</Link>
+              ) : isUserPostWriter && post.type === "answer" ? (
+                <OpenModalButton
+                  buttonText="Edit answer"
+                  modalComponent={
+                    <AnswerForm
+                      questionId={post.post.question_id}
+                      answerId={post.post.id}
+                    />
+                  }
+                />
+              ) : (
+                ""
+
               )}
               {isUserPostWriter && (
                 <button className="delete-button" onClick={handleDeletePost}>

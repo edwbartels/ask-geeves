@@ -20,6 +20,13 @@ class Save(BelongsToUser):
             "user_id": current_user.id,
         }
 
+    def to_dict_session(self):
+        return {
+            "id": self.id,
+            "content_id": self.content_id,
+            "content_type": self.content_type,
+        }
+
     __table_args__ = (
         db.UniqueConstraint(
             "user_id", "content_type", "content_id", name="unique_save_user"

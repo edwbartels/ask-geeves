@@ -12,6 +12,10 @@ class Base(db.Model):
     def __tablename__(cls):
         return cls.__name__.lower() + "s"
 
+    @declared_attr
+    def model_name(cls):
+        return cls.__name__.lower()
+
     id = db.Column(db.Integer, primary_key=True)
 
 
@@ -92,7 +96,7 @@ class HasVotes(Base):
 
         self.total_score = (
             session.query(db.func.sum(Vote.value))
-            .filter(Vote.content_type == "question", Vote.content_id == self.id)
+            .filter(Vote.content_type == self.model_name, Vote.content_id == self.id)
             .scalar()
             or 0
         )

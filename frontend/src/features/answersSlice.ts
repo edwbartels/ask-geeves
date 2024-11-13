@@ -3,6 +3,7 @@ import { createAppSlice } from "../app/createAppSlice"
 import { User } from "./usersSlice"
 import { Comment } from "./api-types"
 import { json } from "stream/consumers"
+import { UpdateVoteResponse } from "./votesSlice"
 
 export interface AnswerForm {
   content: string
@@ -35,6 +36,12 @@ export interface DeleteAnswerResponse {
   questionId: number
 }
 export interface DeleteAnswerError {
+  error: string
+}
+export interface EditAnswerForm extends AnswerForm {
+  answerId: number
+}
+export interface EditAnswerError {
   error: string
 }
 
@@ -102,6 +109,41 @@ export const deleteOneAnswer = createAsyncThunk<
   return { message: deletedAnswer.message, answerId, questionId }
 })
 
+export const editOneAnswer = createAsyncThunk<
+  CreateAnswerResponse,
+  EditAnswerForm,
+  { rejectValue: EditAnswerError }
+>("answers/editOneAnswer", async (editAnswerInput, thunkApi) => {
+  const { questionId, answerId } = editAnswerInput
+  const response = await fetch(
+    `/api/questions/${questionId}/answers/${answerId}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        content: editAnswerInput.content,
+      }),
+    },
+  )
+  if (!response.ok) {
+    const error = await response.json()
+    thunkApi.rejectWithValue(error)
+  }
+  const answer: CreateAnswerResponse = await response.json()
+  const { Comments, AnswerUser, answerSave, ...remaining } = answer.answer
+
+  const answerPayload: Answer = { ...remaining, user_id: AnswerUser.id }
+  const commentPayload = {}
+  const userPayload = {}
+  const savedPayload = {}
+
+  thunkApi.dispatch(addManyAnswers([answerPayload]))
+  // dispatch comments
+  // dispatch saves
+  // dispatch user
+  return answer
+})
+
 const initialState: AnswersSliceState = {}
 
 // If you are not using async thunks you can use the standalone `createSlice`.
@@ -114,6 +156,14 @@ export const answersSlice = createAppSlice({
         (state, action: PayloadAction<Answer[]>) => {
           for (const answer of action.payload) {
             state[answer.id] = answer
+          }
+        },
+      ),
+      updateAnswerTotalScore: create.reducer(
+        (state, action: PayloadAction<UpdateVoteResponse>) => {
+          const { content_id, total_score } = action.payload
+          if (state[content_id]) {
+            state[content_id].total_score = total_score
           }
         },
       ),
@@ -132,7 +182,7 @@ export const answersSlice = createAppSlice({
 })
 
 // Action creators are generated for each case reducer function.
-export const { addManyAnswers } = answersSlice.actions
+export const { addManyAnswers, updateAnswerTotalScore } = answersSlice.actions
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
 export const { selectAnswers, selectAnswerById } = answersSlice.selectors

@@ -33,3 +33,4 @@ i = "sh -c 'pipenv run u && pipenv run flask seed && pipenv run flask run'"
 dus = "pipenv run d && pipenv run u && pipenv run s"
 db = "sh -c 'pipenv run d && pipenv run u && pipenv run flask seed && pipenv run flask run'"
 
+

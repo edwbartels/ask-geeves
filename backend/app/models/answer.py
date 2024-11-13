@@ -41,6 +41,7 @@ class Answer(BelongsToUser, HasTimestamps, HasVotes):
         return f"<Answer {self.id}. Accept: {'Yes' if self.accepted else 'No'}"
 
     def to_dict(self):
+        answer_count = db.session.query(Answer).filter_by(question_id=self.question_id).count()
         saves = [
             save.to_dict()
             for save in self.saves
@@ -53,6 +54,7 @@ class Answer(BelongsToUser, HasTimestamps, HasVotes):
             "id": self.id,
             "question_id": self.question_id,
             "answerSave": status,
+            "num_answers": answer_count,
             "total_score": self.total_score,
             "accepted": self.accepted,
             "content": self.content,

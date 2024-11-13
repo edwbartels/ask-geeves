@@ -26,7 +26,7 @@ def login():
     if not credential:
         errors.append(("credential", "username/email is required"))
     if not password:
-        errors.append(("password", "username/email is required"))
+        errors.append(("password", "password is required"))
     if errors:
         raise ValidationError(errors=errors)
 

@@ -17,12 +17,16 @@ export const AllQuestions = () => {
   if (!searchParams.has("page")) {
     searchParams.set("page", pageSettings.page)
   }
-  if (!searchParams.has("size")) {
-    searchParams.set("size", pageSettings.size)
-  }
+  // if (!searchParams.has("size")) {
+  //   searchParams.set("size", pageSettings.size)
+  // }
+  useEffect(() => {
+      searchParams.set("size", "15")
+    setSearchParams(searchParams) 
+  }, [])
 
-  console.log(searchParams.get("size"))
-  console.log(searchParams, searchParams.keys())
+  // console.log(searchParams.get("size"))
+  // console.log(searchParams, searchParams.keys())
 
   const [gotQuestions, setGotQuestions] = useState(false)
   const questions = useAppSelector(selectQuestionsArr)
@@ -49,15 +53,16 @@ export const AllQuestions = () => {
     setGotQuestions(false)
   }
 
-  if (!gotQuestions) {
-    dispatch(
-      fetchAllQuestions({
-        page: searchParams.get("page") || "1",
-        size: searchParams.get("size") || "15",
-      }),
-    )
-    setGotQuestions(true)
-  }
+    if (!gotQuestions) {
+      dispatch(
+        fetchAllQuestions({
+          page: searchParams.get("page") || "1",
+          size: searchParams.get("size") || "15",
+        }),
+      )
+      setGotQuestions(true)
+    }
+    
   return (
     <div>
       <h1 className="all-questions-title">All questions</h1>
@@ -95,6 +100,7 @@ export const AllQuestions = () => {
           <button className='page-number' onClick={handleSetResultsSize(15)}>15</button>
           <button className='page-number' onClick={handleSetResultsSize(30)}>30</button>
           <button className='page-number' onClick={handleSetResultsSize(50)}>50</button>
+
         </p>
       </div>
     </div>

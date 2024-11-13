@@ -13,6 +13,7 @@ import {
   deleteOneAnswer,
 } from "../../features/answersSlice"
 import { RenderPost } from "./RenderPost"
+import { Tag } from "../Tag/Tag"
 import { AnswerForm } from "../Modals/AnswerForm"
 import { OpenModalButton } from "../Modals/OpenModalButton"
 import { updateVote, selectVoteByContentAndId } from "../../features/votesSlice"
@@ -21,6 +22,7 @@ import classNames from "classnames"
 import React from "react"
 import { VoteButton } from "./VoteButton"
 import { SaveButton } from "./SaveButton"
+
 
 
 const absurd = (input: never): never => input
@@ -100,11 +102,13 @@ export const Post = ({ type, id }: Props) => {
       <div className={`post-body ${post.type}-body`}>
         <div className="vote-counter-div">
           <div className="up-vote">
+
             <button className="up vote-active"><i className="fa-solid fa-2x fa-arrow-up"></i></button>
           </div>
           <div className="vote-counter">{post.post.total_score}</div>
           <div className="down-vote">
             <button className="down vote-active"><i className="fa-solid fa-2x fa-arrow-down"></i></button>
+
           </div>
           <div className="save">
             <ul className="save-button">
@@ -115,8 +119,16 @@ export const Post = ({ type, id }: Props) => {
         </div>
         <div id={permalink}>
           <RenderPost postContent={post.post.content} />
+          {post.type === "question" && (
+            <div className="all-tags">
+              {post.post.tagIds.map((tagId, i) => (
+                <Tag key={tagId} tagId={tagId} />
+              ))}
+            </div>
+          )}
           <div className="post-meta">
             <div>
+
               <a href={`#${permalink}`}><i className="fa-solid fa-xl fa-link"></i></a>
               {isUserPostWriter && post.type === "question" ? (
                 <Link to={`edit`}>Edit {post.type}</Link>
@@ -133,6 +145,7 @@ export const Post = ({ type, id }: Props) => {
                 />
               ) : (
                 ""
+
               )}
               {isUserPostWriter && (
                 <button className="delete-button" onClick={handleDeletePost}>

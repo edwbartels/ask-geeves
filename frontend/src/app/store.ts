@@ -8,6 +8,7 @@ import { usersSlice } from "../features/usersSlice"
 import { votesSlice } from "../features/votesSlice"
 import { questionsSlice } from "../features/questionsSlice"
 import { answersSlice } from "../features/answersSlice"
+import { tagsSlice } from "../features/tagsSlice"
 import { savesSlice } from "../features/savesSlice"
 
 // `combineSlices` automatically combines the reducers using
@@ -20,6 +21,7 @@ const rootReducer = combineSlices(
   votesSlice,
   questionsSlice,
   answersSlice,
+  tagsSlice,
   savesSlice,
 )
 // Infer the `RootState` type from the root reducer

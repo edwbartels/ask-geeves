@@ -36,6 +36,7 @@
 .post-body pre {
   padding: 10px 5px;
   border-radius: 5px;
+
   background-color: rgb(99, 98, 98);
   box-shadow: 0 0 10px 5px #feaee3,
               0 0 20px 7px #f087d3;
@@ -48,10 +49,12 @@ pre {
 
 p {
   color: white;
+
 }
 
 .post-meta {
-  margin-bottom: 30px;
+  align-content: end;
+  /* margin-bottom: 30px; */
   margin-top: 15px;
   margin-right: 15px;
   margin-left: 15px;
@@ -64,9 +67,6 @@ p {
   color: black;
 }
 
-.post-body {
-  height: auto;
-}
 
 .title-required {
   color: white;
@@ -78,7 +78,80 @@ p {
   margin-bottom: 20px;
   margin-top: 20px;
 }
-
+.tags {
+  display: grid;
+  column-gap: 10px;
+  grid-template-columns: 1fr 2fr;
+  /* box-sizing: border-box; */
+  background-color: #1b2432;
+  border: 5px dashed #2c2b3c;
+  border-radius: 25px;
+  padding: 15px;
+  color: white;
+  text-transform: none;
+  scrollbar-color: white transparent;
+}
+.tag-list {
+  /* background-color: white; */
+  height: 100px;
+  overflow: auto;
+  /* position: absolute;
+  /* z-index: 1; */
+  padding-left: 10px;
+  padding-right: 25px;
+  /* width: 100%; */
+}
+.selected-tags,
+.tag-selector {
+  /* background-color: white; */
+}
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  /* align-items: flex-start; */
+  align-content: start;
+  gap: 5px;
+}
+.one-selected-tag {
+  display: inline-block;
+  background-color: #403f4c;
+  border-radius: 5px;
+  color: #b76d68;
+  padding: 5px;
+  text-transform: none;
+}
+.one-selected-tag:hover {
+  cursor: pointer;
+  opacity: 0.75;
+}
+.tag-selector input {
+  background-color: transparent;
+  box-shadow: none;
+  border: 2px dashed #2c2b3c;
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 0.9em;
+  width: 100%;
+  box-sizing: border-box;
+}
+.tag-selector input:focus {
+  border-color: white;
+  outline: none;
+}
+.tag-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-transform: none;
+}
+.tag-list li {
+  padding: 5px;
+  border-radius: 5px;
+}
+.tag-list li:hover {
+  background-color: #403f4c;
+  cursor: pointer;
+}
 .buttons-div {
   margin-top: 20px;
   display: flex;
@@ -255,6 +328,8 @@ p {
 
 .save {
   color: white;
+  margin: 10px;
+  padding: 5px;
 }
 
 .share {
@@ -282,9 +357,27 @@ p {
   width: 100%;
   padding: 10px;
   background-color: black;
+  display:flex;
+  flex-direction: column
   /* box-shadow: 0 0 5px 3px #feaee3,
               0 0 10px 4px #f087d3; */
 }
+
+.post-container{
+  display: flex;
+  flex-direction: column
+}
+.post-info{
+  display:grid;
+  grid-template-columns: 1fr 9fr;
+  margin-bottom:20px
+}
+.post-interact{
+  display:flex;
+  flex-direction:column;
+  justify-content: space-between;
+}
+
 
 .post-user {
   display: flex;
@@ -293,7 +386,7 @@ p {
 }
 
 
-.delete-button {
+.edit {
   margin-left: 20px;
   margin-right: 20px;
   font-family: "Clip";
@@ -302,7 +395,7 @@ p {
   justify-self: center;
 }
 
-.delete-button {
+.edit {
   font-family: "Clip";
   text-transform: uppercase;
   margin-top: 15px;
@@ -316,14 +409,18 @@ p {
   padding: 0.25em 1em;
   border-radius: 0.25em;
 
-  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
+  text-shadow:
+    0 0 0.125em hsl(0 0% 100% / 0.3),
+    0 0 0.45em currentColor;
 
-  box-shadow: inset 0 0 0.5em 0 hsl(317 100% 54%), 0 0 0.5em 0 hsl(317 100% 54%);
+  box-shadow:
+    inset 0 0 0.5em 0 hsl(317 100% 54%),
+    0 0 0.5em 0 hsl(317 100% 54%);
 
   position: relative;
 }
 
-.delete-button::before {
+.edit::before {
   pointer-events: none;
   content: "";
   position: absolute;
@@ -337,7 +434,7 @@ p {
   filter: blur(1em);
   opacity: 0.7;
 }
-delete-button::after {
+edit::after {
   content: "";
   position: absolute;
   top: 0;
@@ -351,18 +448,18 @@ delete-button::after {
   transition: opacity 100ms linear;
 }
 
-.delete-button:hover,
-.delete-button:focus {
+.edit:hover,
+.edit:focus {
   color: white;
   text-shadow: none;
 }
 
-.delete-button:hover::before,
-.delete-button:focus::before {
+.edit:hover::before,
+.edit:focus::before {
   opacity: 1;
 }
-.delete-button:hover::after,
-.delete-button:focus::after {
+.edit:hover::after,
+.edit:focus::after {
   opacity: 1;
 }
 
@@ -370,8 +467,6 @@ delete-button::after {
 *::after {
   box-sizing: border-box;
 }
-
-
 
 .share {
   margin-left: 20px;
@@ -390,9 +485,13 @@ delete-button::after {
   padding-left: 12px;
   padding-right: 12px;
 
-  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
+  text-shadow:
+    0 0 0.125em hsl(0 0% 100% / 0.3),
+    0 0 0.45em currentColor;
 
-  box-shadow: inset 0 0 0.5em 0 rgba(0, 255, 251, 0.67), 0 0 0.5em 0 rgba(0, 255, 251, 0.67);
+  box-shadow:
+    inset 0 0 0.5em 0 rgba(0, 255, 251, 0.67),
+    0 0 0.5em 0 rgba(0, 255, 251, 0.67);
 
   position: relative;
 }
@@ -441,9 +540,7 @@ delete-button::after {
   opacity: 1;
 }
 
-
-
-.edit {
+.delete-button {
   font-family: "Clip";
   text-transform: uppercase;
   font-size: 1rem;
@@ -459,15 +556,18 @@ delete-button::after {
   border-radius: 0.25em;
   padding-left: 12px;
   padding-right: 12px;
+  background-color: black;
+  
 
-  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
 
-  box-shadow: inset 0 0 0.5em 0 rgba(0, 255, 251, 0.67), 0 0 0.5em 0 rgba(0, 255, 251, 0.67);
+  box-shadow:
+    inset 0 0 0.5em 0 rgba(0, 255, 251, 0.67),
+    0 0 0.5em 0 rgba(0, 255, 251, 0.67);
 
   position: relative;
 }
 
-.edit::before {
+.delete-button::before {
   pointer-events: none;
   content: "";
   position: absolute;
@@ -482,7 +582,7 @@ delete-button::after {
   opacity: 0.7;
 }
 
-.edit::after {
+.delete-button::after {
   content: "";
   position: absolute;
   top: 0;
@@ -496,18 +596,18 @@ delete-button::after {
   transition: opacity 100ms linear;
 }
 
-.edit:hover,
-.edit:focus {
+.delete-button:hover,
+.delete-button:focus {
   color :white;
   text-shadow: none;
 }
 
-.edit:hover::before,
-.edit:focus::before {
+.delete-button:hover::before,
+.delete-button:focus::before {
   opacity: 1;
 }
-.edit:hover::after,
-.edit:focus::after {
+.delete-button:hover::after,
+.delete-button:focus::after {
   opacity: 1;
 }
 
@@ -522,16 +622,20 @@ delete-button::after {
 }
 
 button.up {
+  cursor: pointer;
   margin-bottom: 6px;
   color: black;
   background-color: rgba(0, 255, 251, 1);
   border-radius: 60px;
   box-shadow: none;
   border: 5px solid rgba(255, 255, 255, 1);
+
   /* box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset; */
+
 }
 
 button.down {
+  cursor: pointer;
   margin-top: 6px;
   color: black;
   background-color: black;
@@ -539,9 +643,14 @@ button.down {
   box-shadow: none;
   margin-bottom: 5px;
   border: 5px solid rgba(255, 255, 255, 1);
-  box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
+  box-shadow:
+    0 0 10px rgba(0, 255, 251, 1),
+    0 0 10px rgba(0, 255, 251, 1) inset,
+    0 0 20px rgba(0, 255, 251, 1),
+    0 0 20px rgba(0, 255, 251, 1) inset,
+    0 0 30px rgba(0, 255, 251, 1),
+    0 0 30px rgba(0, 255, 251, 1) inset;
 }
-
 
 /* .render-question-div {
   box-shadow: 0 0 2px 2px #feaee3,
@@ -553,7 +662,6 @@ button.down {
   border: 3px solid rgba(255, 255, 255, 1);
   box-shadow: 0 0 10px 3px #feaee3,
               0 0 10px 5px #f087d3;
-
 }
 
 .vote-active {
@@ -569,6 +677,7 @@ button.down {
   align-content: center;
 }
 
+
 .save {
   display: flex;
   flex-direction: column;
@@ -578,6 +687,7 @@ button.down {
 .fa-link {
   color: rgba(0, 255, 251, 1);
 }
+
 
 .fa-floppy-disk {
   color: #feaee3;
@@ -589,6 +699,7 @@ button.down {
 
 .fa-bookmark {
   color: gray;
+  cursor: pointer;
 }
 
 .fa-bookmark:hover {
@@ -599,14 +710,7 @@ button.down {
   color: rgb(159, 247, 245);
 }
 
-
 .fa-star:hover {
   color: rgb(4, 252, 248);
-}
-
-ul {
-  margin: 10px;
-  padding: 5px;
-  
 }
 

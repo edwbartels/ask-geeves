@@ -1,0 +1,6 @@
+.comment-meta{
+    display:flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    font-size: .8rem
+}

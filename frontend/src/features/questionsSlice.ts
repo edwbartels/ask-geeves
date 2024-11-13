@@ -10,6 +10,7 @@ import type { AppThunk } from "../app/store"
 import {
   FetchAllQuestionsResponse,
   FetchOneQuestionResponse,
+  Vote,
   Tag,
   Save,
 } from "./api-types"
@@ -21,18 +22,11 @@ import {
   createOneAnswer,
   deleteOneAnswer,
 } from "./answersSlice"
+import { addManyComments } from "./commentsSlice"
+import { Tag, addManyTags } from "./tagsSlice"
 // import { addSave, removeSave } from "./savesSlice"
 //   import { SessionResponse, restoreSession, loginAsync } from "./sessionSlice"
 
-interface Answer {
-  id: number
-  question_id: number
-  content: string
-  accepted: boolean
-  created_at: string
-  updated_at: string
-  total_score: number
-}
 interface FetchAllQuestionsError {
   error: string
 }
@@ -48,9 +42,11 @@ export interface Question {
   total_score: number // db aggregate function
   num_votes: number // only votes that are not 0
   num_answers: number // db aggregate function
+  num_comments: number
   questionSave: boolean
 
   answerIds: number[]
+  commentIds: number[]
   tagIds: number[]
 }
 export interface QuestionForm {
@@ -63,6 +59,25 @@ export interface CreateQuestionError {
   errors: {
     content?: string
     title?: string
+  }
+}
+
+interface Comment {
+  id: number
+  user_id: number
+  content_type: "answer"
+  content_id: number
+  content: string
+  total_score: number
+  created_at: string
+  updated_at: string
+
+  // user object that matches answer-comment writer
+  CommentUser: {
+    id: number
+    first_name: string
+    last_name: string
+    username: string
   }
 }
 
@@ -93,11 +108,15 @@ export const fetchAllQuestions = createAsyncThunk<
       questions: Question[]
       users: User[]
       userIds: Set<number>
+      tags: Tag[]
+      tagIds: Set<number>
     }
     const payload: payload = {
       questions: [],
       users: [],
       userIds: new Set(),
+      tags: [],
+      tagIds: new Set(),
     }
     for (const question of questions) {
       const { User, Tags, ...remaining } = question
@@ -110,6 +129,13 @@ export const fetchAllQuestions = createAsyncThunk<
         payload.userIds.add(User.id)
         payload.users.push(User)
       }
+      // only add unique tag objects from the API response
+      for (const tag of Tags) {
+        if (!payload.tagIds.has(tag.id)) {
+          payload.tagIds.add(tag.id)
+          payload.tags.push(tag)
+        }
+      }
     }
 
     thunkApi.dispatch(
@@ -120,6 +146,72 @@ export const fetchAllQuestions = createAsyncThunk<
       }),
     )
     thunkApi.dispatch(addManyUsers(payload.users))
+    thunkApi.dispatch(addManyTags(payload.tags))
+    return payload.questions
+  } else {
+    return thunkApi.rejectWithValue({ error: "Couldn't fetch all questions!" })
+  }
+})
+
+export const fetchTaggedQuestions = createAsyncThunk<
+  // Return type of the payload creator
+  Question[],
+  // First argument to payload creator
+  { tagName: string; page: string; size: string },
+  // Optional fields for thunkApi types
+  { rejectValue: FetchAllQuestionsError }
+>('questions/fetchTagged', async (pageSettings, thunkApi) => {
+  const { page } = pageSettings || 1
+  const { size } = pageSettings || 15
+  const { tagName } = pageSettings
+  const fetchUrl = `/api/questions?tag=${tagName}&page=${page}&per_page=${size}&sort_by=id`;
+  const response = await fetch(fetchUrl);
+  if (response.ok) {
+    const allQuestions: FetchAllQuestionsResponse = await response.json();
+    const { page, size, num_pages, questions } = allQuestions
+    interface payload {
+      questions: Question[]
+      users: User[]
+      userIds: Set<number>
+      tags: Tag[]
+      tagIds: Set<number>
+    }
+    const payload: payload = {
+      questions: [],
+      users: [],
+      userIds: new Set(),
+      tags: [],
+      tagIds: new Set(),
+    }
+    for (const question of questions) {
+      const { User, Tags, ...remaining } = question
+      const tagIds = Tags.map(tag => tag.id)
+      const newQuestion: Question = { ...remaining, answerIds: [], tagIds }
+      payload.questions.push(newQuestion)
+
+      // only add unique user objects from the API response
+      if (!payload.userIds.has(User.id)) {
+        payload.userIds.add(User.id)
+        payload.users.push(User)
+      }
+      // only add unique tag objects from the API response
+      for (const tag of Tags) {
+        if (!payload.tagIds.has(tag.id)) {
+          payload.tagIds.add(tag.id)
+          payload.tags.push(tag)
+        }
+      }
+    }
+
+    thunkApi.dispatch(
+      setAllQuestionsSettings({
+        page: page,
+        size: size,
+        num_pages: num_pages,
+      }),
+    )
+    thunkApi.dispatch(addManyUsers(payload.users))
+    thunkApi.dispatch(addManyTags(payload.tags))
     return payload.questions
   } else {
     return thunkApi.rejectWithValue({ error: "Couldn't fetch all questions!" })
@@ -140,31 +232,43 @@ export const fetchOneQuestion = createAsyncThunk<
     // Unpack API response
     // Make payload for questions and users slices
     const answerIds = Answers.map(answer => answer.id)
+    const commentIds = Comments.map(comment => comment.id)
     const tagIds = Tags.map(tag => tag.id)
     const questionPayload = {
       ...remaining,
       user_id: QuestionUser.id,
       answerIds,
+      commentIds,
       tagIds,
-      num_votes: 100,
-      num_answers: 100,
     }
     const tagsPayload = Tags
     const votesPayload = Votes
     // answersPayload
+    const answerComments: Comment[] = []
     const answersPayload = Answers.map(answer => {
       const { AnswerUser, Comments, ...remaining } = answer
       const user_id = AnswerUser.id
-      return { ...remaining, user_id }
+      answerComments.push(...Comments)
+      const commentIds = Comments.map(comment => {
+        return comment.id
+      })
+      return { ...remaining, user_id, commentIds }
+    })
+
+    const allComments = [...answerComments, ...Comments]
+    const commentsPayload = allComments.map(comment => {
+      const { CommentUser, ...remaining } = comment
+      return { ...remaining }
     })
     thunkApi.dispatch(addManyAnswers(answersPayload))
+    thunkApi.dispatch(addManyComments(commentsPayload))
 
     // add user objects from QuestionUser, Comments.CommentUser, and Answers.AnswerUser
     const uniqueUserIds = new Set()
     const usersPayload = []
     const allReturnedUsers = [
       QuestionUser,
-      ...Comments.map(comment => comment.CommentUser),
+      ...allComments.map(comment => comment.CommentUser),
       ...Answers.map(answer => answer.AnswerUser),
     ]
     for (const user of allReturnedUsers) {
@@ -241,6 +345,7 @@ export const createOneQuestion = createAsyncThunk<
 
   thunkApi.dispatch(addManyUsers(usersPayload))
   thunkApi.dispatch(addManyVotes(votesPayload))
+  thunkApi.dispatch(addManyTags(tagsPayload))
   // dispatch addManyAnswers
   return questionPayload
   // }
@@ -313,6 +418,14 @@ export const questionsSlice = createAppSlice({
         state.questions[questionId].answerIds = oldAnswerIds?.filter(
           id => id !== answerId,
         )
+      })
+      .addCase(fetchTaggedQuestions.fulfilled,(state, action) =>{
+        state.questions = {}
+        const questions = action.payload
+        for (const question of questions) {
+          const { id } = question
+          state.questions[id] = question
+        }
       })
   },
   selectors: {

@@ -368,7 +368,7 @@ p {
 }
 
 
-.delete-button {
+.edit {
   margin-left: 20px;
   margin-right: 20px;
   font-family: "Clip";
@@ -377,7 +377,7 @@ p {
   justify-self: center;
 }
 
-.delete-button {
+.edit {
   font-family: "Clip";
   text-transform: uppercase;
   margin-top: 15px;
@@ -402,7 +402,7 @@ p {
   position: relative;
 }
 
-.delete-button::before {
+.edit::before {
   pointer-events: none;
   content: "";
   position: absolute;
@@ -416,7 +416,7 @@ p {
   filter: blur(1em);
   opacity: 0.7;
 }
-delete-button::after {
+edit::after {
   content: "";
   position: absolute;
   top: 0;
@@ -430,18 +430,18 @@ delete-button::after {
   transition: opacity 100ms linear;
 }
 
-.delete-button:hover,
-.delete-button:focus {
+.edit:hover,
+.edit:focus {
   color: white;
   text-shadow: none;
 }
 
-.delete-button:hover::before,
-.delete-button:focus::before {
+.edit:hover::before,
+.edit:focus::before {
   opacity: 1;
 }
-.delete-button:hover::after,
-.delete-button:focus::after {
+.edit:hover::after,
+.edit:focus::after {
   opacity: 1;
 }
 
@@ -522,7 +522,7 @@ delete-button::after {
   opacity: 1;
 }
 
-.edit {
+.delete-button {
   font-family: "Clip";
   text-transform: uppercase;
   font-size: 1rem;
@@ -538,10 +538,9 @@ delete-button::after {
   border-radius: 0.25em;
   padding-left: 12px;
   padding-right: 12px;
+  background-color: black;
+  
 
-  text-shadow:
-    0 0 0.125em hsl(0 0% 100% / 0.3),
-    0 0 0.45em currentColor;
 
   box-shadow:
     inset 0 0 0.5em 0 rgba(0, 255, 251, 0.67),
@@ -550,7 +549,7 @@ delete-button::after {
   position: relative;
 }
 
-.edit::before {
+.delete-button::before {
   pointer-events: none;
   content: "";
   position: absolute;
@@ -565,7 +564,7 @@ delete-button::after {
   opacity: 0.7;
 }
 
-.edit::after {
+.delete-button::after {
   content: "";
   position: absolute;
   top: 0;
@@ -579,18 +578,18 @@ delete-button::after {
   transition: opacity 100ms linear;
 }
 
-.edit:hover,
-.edit:focus {
-  color: white;
+.delete-button:hover,
+.delete-button:focus {
+  color :white;
   text-shadow: none;
 }
 
-.edit:hover::before,
-.edit:focus::before {
+.delete-button:hover::before,
+.delete-button:focus::before {
   opacity: 1;
 }
-.edit:hover::after,
-.edit:focus::after {
+.delete-button:hover::after,
+.delete-button:focus::after {
   opacity: 1;
 }
 
@@ -605,6 +604,7 @@ delete-button::after {
 }
 
 button.up {
+  cursor: pointer;
   margin-bottom: 6px;
   color: black;
   background-color: rgba(0, 255, 251, 1);
@@ -617,6 +617,7 @@ button.up {
 }
 
 button.down {
+  cursor: pointer;
   margin-top: 6px;
   color: black;
   background-color: black;
@@ -633,7 +634,6 @@ button.down {
     0 0 30px rgba(0, 255, 251, 1) inset;
 }
 
-
 /* .render-question-div {
   box-shadow: 0 0 2px 2px #feaee3,
               0 0 5px 2px #f087d3;
@@ -644,7 +644,6 @@ button.down {
   border: 3px solid rgba(255, 255, 255, 1);
   box-shadow: 0 0 10px 3px #feaee3,
               0 0 10px 5px #f087d3;
-
 }
 
 .vote-active {
@@ -682,6 +681,7 @@ button.down {
 
 .fa-bookmark {
   color: gray;
+  cursor: pointer;
 }
 
 .fa-bookmark:hover {
@@ -692,7 +692,6 @@ button.down {
   color: rgb(159, 247, 245);
 }
 
-
 .fa-star:hover {
   color: rgb(4, 252, 248);
 }
@@ -702,4 +701,3 @@ ul {
   padding: 5px;
   
 }
-

@@ -36,6 +36,7 @@ export const QuestionTile = ({ questionId }: Props) => {
         <p>
           <a className="sub-title" href={`questions/${questionId}`}>
             {question.id} - {question.title}
+            <hr className="underline" />
           </a>
         </p>
         <p className="question-summary">{question.content}</p>

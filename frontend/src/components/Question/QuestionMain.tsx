@@ -47,9 +47,9 @@ export const QuestionMain = () => {
             })
           : "No one answered yet"}
       </div>
-      <div>
+      <div className="answer-btn-div">
         <OpenModalButton 
-        additionalClassNames={['add-answer-div']}
+          additionalClassNames={['add-answer-div']}
           buttonText="Add an answer"
           modalComponent={<AnswerForm questionId={question.id} />}
         />

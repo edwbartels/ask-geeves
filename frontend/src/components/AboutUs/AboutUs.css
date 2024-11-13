@@ -2,24 +2,43 @@
 
 .about-us-div {
     background-color: black;
-    font-family: 'Short Stack', cursive;
+    font-family: 'Clip';
     color: white;
+    margin: 100px;
 }
 
-.about-us-button {
-    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
-    padding:1em;
-    line-height:1.5em;
-    border-color: hotpink;
-    background-color: black;
-    color: hotpink;
+.mission-title {
+    color: white;
+    font-family: 'Clip';
+    font-size: 35px;
 }
 
-.about-us-button-div {
-    display: flex;
+.our-goals-title {
+    color: white;
+    font-family: 'Clip';
+    font-size: 35px;
+}
+
+.mission-statement {
+    color: white;
+    font-family: 'Clip';
+    font-size: 20px;
+}
+
+.our-goals-statement {
+    color: white;
+    font-family: 'Clip';
+    font-size: 20px;
+}
+
+.about-us-title {
+    font-family: 'Clip';
+    color: white;
+    font-size: 45px;
     justify-self: center;
-    margin-bottom: 40px;
-    color: white;
-    
 }
 
+.about-line {
+    border: 2px solid rgba(0, 255, 255, 1);
+  box-shadow: 0 0 12px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
+}

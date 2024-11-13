@@ -22,6 +22,7 @@ import React from "react"
 import { VoteButton } from "./VoteButton"
 import { SaveButton } from "./SaveButton"
 
+
 const absurd = (input: never): never => input
 type PostType =
   | {
@@ -96,24 +97,27 @@ export const Post = ({ type, id }: Props) => {
 
   return (
     <div>
-      <div className="post-body">
+      <div className={`post-body ${post.type}-body`}>
         <div className="vote-counter-div">
           <div className="up-vote">
-            <VoteButton id={id} type={type} voteType="up" />
+            <button className="up vote-active"><i className="fa-solid fa-2x fa-arrow-up"></i></button>
           </div>
           <div className="vote-counter">{post.post.total_score}</div>
           <div className="down-vote">
-            <VoteButton id={id} type={type} voteType="down" />
+            <button className="down vote-active"><i className="fa-solid fa-2x fa-arrow-down"></i></button>
           </div>
           <div className="save">
-            <SaveButton id={id} type={type} />
+            <ul className="save-button">
+              <i className="fa-regular fa-bookmark fa-xl"></i>
+            </ul>
+
           </div>
         </div>
         <div id={permalink}>
           <RenderPost postContent={post.post.content} />
           <div className="post-meta">
             <div>
-              <a href={`#${permalink}`}>Share</a> |<button>Like post</button>
+              <a href={`#${permalink}`}><i className="fa-solid fa-xl fa-link"></i></a>
               {isUserPostWriter && post.type === "question" ? (
                 <Link to={`edit`}>Edit {post.type}</Link>
               ) : isUserPostWriter && post.type === "answer" ? (

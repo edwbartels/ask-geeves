@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
+import './UserDetailPage.css'
+
 interface userDetails {
   User: {
     first_name: string
@@ -60,15 +62,19 @@ export const UserDetailPage = () => {
   console.log(userDetails)
   return (
     <div className="user-detail-page">
-      <h1>User Details</h1>
-      <h3>first name:{userDetails.User.first_name}</h3>
-      <h3>last name:{userDetails.User.last_name}</h3>
+      <div className="name-div">
+        <div className="profile-icon"><p><i className="fa-solid fa-id-badge"></i></p></div>
+        <div className="name">
+          <h3 className="name">{userDetails.User.first_name}</h3>
+          <h3 className="name">{userDetails.User.last_name}</h3>
+        </div>
+      </div>
       <div>
-        <h2>Questions</h2>
+        <h2 className="user-title">Questions</h2>
         {userDetails.questions.length > 0 ? (
           userDetails.questions.map(question => (
-            <div key={question.question_id}>
-              <h3>
+            <div className="user-question-title" key={question.question_id}>
+              <h3 className="user-questions">
                 <Link to={`/questions/${question.question_id}`}>
                   {question.title}{" "}
                 </Link>
@@ -81,14 +87,14 @@ export const UserDetailPage = () => {
         )}
       </div>
       <div>
-        --------------------------------------------------------------------------------------------------
+        <hr className="question-line" />
       </div>
       <div>
-        <h2>Answers</h2>
+        <h2 className="user-title">Answers</h2>
         {userDetails.answers.length > 0 ? (
           userDetails.answers.map(answer => (
             <div key={answer.answer_id}>
-              <h3>
+              <h3 className="user-answers">
                 <Link to={`/questions/${answer.question_id}`}>
                   {" "}
                   {answer.title}{" "}
@@ -103,7 +109,7 @@ export const UserDetailPage = () => {
         )}
       </div>
       <div>
-        --------------------------------------------------------------------------------------------------
+        <hr className="answer-line" />
       </div>
       <div>
         <h2>Comments</h2>

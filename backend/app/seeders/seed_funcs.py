@@ -133,13 +133,15 @@ def seed_question_tags():
     db.session.commit()
 
 
+def undo_question_tags():
     if environment == "production":
         db.session.execute(
             text(f"TRUNCATE table {SCHEMA}.question_tags RESTART IDENTITY CASCADE;")
         )
     else:
         db.session.execute(text("DELETE FROM question_tags"))
-        
+
+
 def seed_follow_data():
     for entry in follow_data_list:
         db.session.execute(
@@ -149,6 +151,17 @@ def seed_follow_data():
             )
         )
     db.session.commit()
+
+
+def undo_follow_data():
+    if environment == "production":
+        db.session.execute(
+            db.session.execute(
+                text(f"TRUNCATE table {SCHEMA}.follow_data RESTART INDENTITY CASCASE;")
+            )
+        )
+    else:
+        db.session.execute(text("DELETE FROM follow_data"))
 
 
 def seed_votes():
@@ -234,4 +247,3 @@ def clear_all_data():
     # db.session.query(User).delete()
     # db.session.query(Vote).delete()
     # db.session.commit()
-

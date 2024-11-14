@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom"
+import { Link } from "react-router-dom"
 import "./Footer.css"
 
 export const Footer = () => {
@@ -13,14 +13,14 @@ export const Footer = () => {
         <ul>
           <h3 className="list-title">Ask Geeves</h3>
           <ul>
-            <NavLink className="faq" to="/faq">
-              FAQ's
-            </NavLink>
+            <Link className="faq" to="/faq">
+              FAQs
+            </Link>
           </ul>
           <ul>
-            <NavLink className="questions" to="/questions">
+            <Link className="questions" to="/questions">
               Questions
-            </NavLink>
+            </Link>
           </ul>
         </ul>
       </div>
@@ -28,14 +28,14 @@ export const Footer = () => {
         <ul>
           <h3 className="list-title">Company</h3>
           <ul>
-            <NavLink className="about-us" to="/about-us">
+            <Link className="about-us" to="/about-us">
               About Us
-            </NavLink>
+            </Link>
           </ul>
           <ul>
-            <NavLink className="contact-us" to="/team">
+            <Link className="contact-us" to="/team">
               The Team
-            </NavLink>
+            </Link>
           </ul>
         </ul>
       </div>

@@ -236,10 +236,6 @@
   border-radius: 10px;
 }
 
-.page-number:active {
-  color: #000;  
-}
-
 .page-number:active:after {
   background: transparent;
 }

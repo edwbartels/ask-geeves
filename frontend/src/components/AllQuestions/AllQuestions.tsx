@@ -96,7 +96,7 @@ export const AllQuestions = () => {
       <div className="page-count-container">
         <p className="per-page">
           Per page:  
-          <button className='page-number page-active' onClick={handleSetResultsSize(5)}>5</button>
+          <button className='page-number' onClick={handleSetResultsSize(5)}>5</button>
           <button className='page-number' onClick={handleSetResultsSize(15)}>15</button>
           <button className='page-number' onClick={handleSetResultsSize(30)}>30</button>
           <button className='page-number' onClick={handleSetResultsSize(50)}>50</button>

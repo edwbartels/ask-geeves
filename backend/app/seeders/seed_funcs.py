@@ -100,7 +100,7 @@ def undo_comments():
             text(f"TRUNCATE table {SCHEMA}.comments RESTART IDENTITY CASCADE;")
         )
     else:
-        db.session.execute(text("DELETE FROM comment"))
+        db.session.execute(text("DELETE FROM comments"))
 
     db.session.commit()
 
@@ -239,7 +239,8 @@ def clear_all_data():
     undo_question_tags()
     undo_votes()
     undo_saves()
-    # db.session.execute(question_tags.delete())  # Clear join table entries first
+    # db.session.execute(follow_data.delete()) # Clear join table entries first
+    # db.session.execute(question_tags.delete())
     # db.session.query(Comment).delete()
     # db.session.query(Answer).delete()
     # db.session.query(Question).delete()

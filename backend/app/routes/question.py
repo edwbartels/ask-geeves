@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import current_user
-from sqlalchemy import asc, desc  # noqa
+from sqlalchemy import func, asc, desc  # noqa
 from ..models.question import Question
 from ..models.tag import Tag
 from ..models.db import db
@@ -38,8 +38,6 @@ def get_all_questions(page, per_page, sort_column, sort_order):
         page=page, per_page=per_page
     )
 
-    if not questions.items:
-        return jsonify({"message": "No questions found"}), 404
     questions_list = [question.to_dict(homepage=True) for question in questions.items]
 
     return jsonify(
@@ -128,7 +126,7 @@ def create_question():
             tag_name = tag_name.strip()
             if not tag_name:
                 continue
-            existing_tag = Tag.query.filter_by(name=tag_name).first()
+            existing_tag = Tag.query.filter(func.lower(Tag.name) == tag_name.lower()).first()
             if existing_tag:
                 tags.append(existing_tag)
             else:

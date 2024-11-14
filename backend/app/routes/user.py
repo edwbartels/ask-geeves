@@ -32,7 +32,7 @@ def sign_up():
         errors.append(("confirm_password", "Confirm Password is required"))
     if data.get("password") and data.get("confirm_password"):
         if data["password"] != data["confirm_password"]:
-            errors.append(("password", "Passwords must match"))
+            errors.append(("confirm_password", "Passwords must match"))
     if User.query.filter_by(username=data.get("username")).first():
         errors.append(("username", "Username is already registered"))
     if User.query.filter_by(email=data.get("email")).first():

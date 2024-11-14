@@ -9,7 +9,7 @@
 
 .signup-form {
     width: 360px;
-    height: 600px;
+    height: auto;
     padding: 10px;
     border-radius: 8px;
   }
@@ -197,3 +197,39 @@ input {
     opacity: 1;
   }
   
+  .error-input{
+    color: red;
+    text-align: center;
+  }
+
+  .form-username {
+    color: white;
+    font-size: 25px;
+    font-family: "Clip";
+    display: flex;
+    justify-self: center;
+    padding-left: 0;
+    font-weight: bolder;
+    margin: 0;
+    padding-bottom: 5px;
+}
+
+.requirement-message {
+  color: gray;
+  text-align: center;
+  font-size: 0.8em;
+}
+
+.sign-up-button.disabled {
+  background-color: #333;
+  color: gray;
+  border: gray 0.125em solid;
+  text-shadow: none;
+  box-shadow: inset 0 0 0.5em 0 gray, 0 0 0.5em 0 gray;
+  cursor: not-allowed;
+}
+
+.sign-up-button.disabled::before,
+.sign-up-button.disabled::after {
+  display: none;
+}

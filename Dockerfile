@@ -9,9 +9,7 @@ ARG FLASK_ENV
 ARG POSTGRES_URL
 ARG SCHEMA
 # ARG SECRET_KEY
-WORKDIR /var/www/frontend
-RUN npm install
-RUN npm run build
+
 
 WORKDIR /var/www/backend
 

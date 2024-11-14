@@ -12,12 +12,17 @@ class Base(db.Model):
     def __tablename__(cls):
         return cls.__name__.lower() + "s"
 
+    @property
+    def model_name(self):
+        return self.__class__.__name__
+
     @declared_attr
     def __table_args__(cls):
         if environment == "production":
             return {"schema": SCHEMA}
         return {}
         return cls.__name__.lower()
+
     id = db.Column(db.Integer, primary_key=True)
 
 

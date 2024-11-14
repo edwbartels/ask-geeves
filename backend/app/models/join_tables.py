@@ -25,8 +25,18 @@ question_tags = db.Table(
 
 follow_data = db.Table(
     "follow_data",
+    Base.metadata,
     db.Column(
-        "followed_by_id", db.Integer, db.ForeignKey("users.id"), primary_key=True
+        "followed_by_id",
+        db.Integer,
+        db.ForeignKey(add_prefix_for_prod("users.id")),
+        primary_key=True,
     ),
-    db.Column("following_id", db.Integer, db.ForeignKey("users.id"), primary_key=True),
+    db.Column(
+        "following_id",
+        db.Integer,
+        db.ForeignKey(add_prefix_for_prod("users.id")),
+        primary_key=True,
+    ),
+    schema=schema,
 )

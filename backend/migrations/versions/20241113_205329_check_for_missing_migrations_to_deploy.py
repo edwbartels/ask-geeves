@@ -1,8 +1,8 @@
-"""Time to meet God
+"""check for missing migrations to deploy
 
-Revision ID: 95c2bdd5fe24
+Revision ID: 178b815c5784
 Revises: 
-Create Date: 2024-11-08 21:36:45.635060
+Create Date: 2024-11-13 20:53:29.001425
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '95c2bdd5fe24'
+revision = '178b815c5784'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,6 +25,7 @@ def upgrade():
     schema='ask_geeves'
     )
     op.create_table('users',
+    sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=24), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('_hashed_password', sa.String(length=255), nullable=False),
@@ -32,7 +33,6 @@ def upgrade():
     sa.Column('last_name', sa.String(length=100), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('id', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username'),
@@ -49,6 +49,14 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['ask_geeves.users.id'], ),
     sa.PrimaryKeyConstraint('id'),
+    schema='ask_geeves'
+    )
+    op.create_table('follow_data',
+    sa.Column('followed_by_id', sa.Integer(), nullable=False),
+    sa.Column('following_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['followed_by_id'], ['ask_geeves.users.id'], ),
+    sa.ForeignKeyConstraint(['following_id'], ['ask_geeves.users.id'], ),
+    sa.PrimaryKeyConstraint('followed_by_id', 'following_id'),
     schema='ask_geeves'
     )
     op.create_table('questions',
@@ -118,6 +126,7 @@ def downgrade():
     op.drop_table('votes', schema='ask_geeves')
     op.drop_table('saves', schema='ask_geeves')
     op.drop_table('questions', schema='ask_geeves')
+    op.drop_table('follow_data', schema='ask_geeves')
     op.drop_table('comments', schema='ask_geeves')
     op.drop_table('users', schema='ask_geeves')
     op.drop_table('tags', schema='ask_geeves')

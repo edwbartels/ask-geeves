@@ -30,3 +30,5 @@ export const SaveButton: React.FC<SaveButtonProps> = ({ id, type }) => {
   })
   return <i className={buttonClass} onClick={handleToggleSave}></i>
 }
+
+<i className="fa-solid fa-bookmark"></i>

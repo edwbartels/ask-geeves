@@ -4,6 +4,11 @@
     color: white;
     font-family: "Clip";
     text-transform: uppercase;
+    font-size: 35px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 15px;
+    margin-left: 15px;
 }
 
 .name-div {
@@ -22,6 +27,11 @@ i {
     font-size: 75px;
 }
 
+.fa-id-badge {
+    color: darkgray;
+}
+
+
 .name-div {
     display: flex;
     flex-direction: row;
@@ -32,7 +42,6 @@ i {
 .profile-icon {
     margin: 25px;
     justify-self: center;
-
 }
 
 .question-line {
@@ -50,3 +59,24 @@ i {
     box-shadow: 0 0 12px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
 }
 
+.user-questions {
+    color: white;
+    text-decoration: none;
+    font-family: "Clip";
+}
+
+.user-answers {
+    color: white;
+    text-decoration: none;
+    font-family: "Clip";
+}
+
+.user-comments {
+    color: white;
+    text-decoration: none;
+    font-family: "Clip";
+}
+
+.user-comment-title {
+    color: white;
+}

@@ -105,7 +105,7 @@ export const CommentForm = ({ id, content_id, content_type }: Props) => {
       <div className="comment-modal-form">
         <h1 className="add-your-comment-title">Add your comment</h1>
         <form onSubmit={handleSubmitComment}>
-          <div>
+          <div className="comment-box-div">
             <textarea
               className="comment-box"
               onChange={handleChangeForm}
@@ -116,7 +116,7 @@ export const CommentForm = ({ id, content_id, content_type }: Props) => {
           </div>
           <div className="submit-comment-button-div">
             <button className="submit-new-comment-button">
-              Submit comment
+              Submit Comment
             </button>
           </div>
         </form>

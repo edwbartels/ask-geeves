@@ -89,6 +89,7 @@ class Question(BelongsToUser, HasTimestamps, HasVotes):
                 "total_score": self.total_score,
                 "num_votes": len(self.votes),
                 "num_answers": len(self.answers),
+                "num_comments": len(self.comments),
                 "Tags": [tag.to_dict() for tag in self.tags],
                 "Votes": [
                     vote.to_dict()
@@ -96,9 +97,7 @@ class Question(BelongsToUser, HasTimestamps, HasVotes):
                     if current_user.is_authenticated and vote.user_id == current_user.id
                 ],
                 "QuestionUser": self.user.to_dict_basic_info(),
-                "Comments": [
-                    comment.for_question_detail() for comment in self.comments
-                ],
+                "Comments": [comment.to_dict() for comment in self.comments],
                 "Answers": [answer.for_question_detail() for answer in self.answers],
             }
         elif search:

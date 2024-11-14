@@ -695,4 +695,94 @@ answers = [
         "content": "Search engines also benefit from semantic HTML, as they can better understand the structure and importance of different sections of a page. Using semantic elements like <header>, <article>, and <footer> helps search engines index the page more effectively, leading to better search engine rankings.",
         "accepted": False,
     },
+    {
+        "user_id": 19,
+        "question_id": 29,
+        "content": """ This is a very simple fix and you were very close!!! You were just missing your return. 
+                   ### Fixed code:
+                    \'\'\'javascript
+                    function repeatName(name) {
+                        retur name + " " + name;
+                    }
+                    let repeatDaniel = repeatName("Daniel");
+                    let repeatMark = repeatName("Mark");
+                    let repeatBeyonce = repeatName("!!!" + ("Beyonce") + "!!!");
+                    \'\'\' 
+                    \n
+                    What will print now:
+                    "Daniel Daniel"
+                    "Mark Mark"
+                    "!!!Beyonce Beyonce!!!"
+                   """,
+        "accepted": True,
+    },
+    {
+        "user_id": 22,
+        "question_id": 30,
+        "content": """ In order to fix your function, you need to make sure you are using the correct built in string lower case function. Ensure you use your documentation MDN!
+            ### Here is how it should look:
+            \'\'\'javascript
+            function whisper(str) {
+                let whispered = "..." + str.toLowerCase() + "...";
+                return whispered;
+            }
+            console.log(whisper("HEY Buddy"));
+            console.log(whisper("YEA! That was FUN"));
+            \'\'\' 
+            \n
+            What will print now:
+            "...hey buddy..."
+            "...yea! that was fun..."
+            """,
+        "accepted": True,
+    },
+    {
+        "user_id": 5,
+        "question_id": 31,
+        "content": """ I believe you are getting logic confused. If you want to check if something is odd, you should be checking if num % 2 !== 0. 
+            ### Here is the correct way to solve this function:
+            \'\'\'javascript
+            function oddNumOnly(num) {
+                if (num % 2 !== 0) {
+                    return num;
+                } else {
+                    return null;
+                }
+            }
+            console.log(oddNumOnly(2));
+            console.log(oddNumOnly(5));
+            console.log(oddNumOnly(-17));
+            console.log(oddNumOnly(0));
+            \'\'\' 
+            \n
+            What will print now:
+            "null"
+            "5"
+            "-17"
+            "null"
+            """,
+        "accepted": True,
+    },
+    {
+        "user_id": 21,
+        "question_id": 32,
+        "content": """ When to use arrow function and when not. 
+            ### When to use arrow functions:
+            1. Arrow functions provide a concise way to write small, anonymous functions, which makes them ideal for simple operations like callbacks or inline functions.
+            \n
+            2. Arrow functions are commonly used with higher-order functions like .map(), .filter(), .reduce(), etc., because they make the code more compact and readable.
+            \n
+            3. Arrow functions do not have their own this context. Instead, they inherit this from the surrounding context (lexical scoping). This makes them useful in cases where you want the function to retain the this value of its enclosing context, especially when dealing with methods in classes or event handlers.
+            \n 
+            ### When to NOT use arrow functions:
+            1. Regular functions have their own this context, which is useful if you need to dynamically change this based on how the function is called. In contrast, arrow functions inherit this from their enclosing context and don't allow dynamic binding.
+            \n
+            2. If you need to define methods that should be bound to the object they belong to (i.e., methods that rely on this), it's better to use regular function expressions rather than arrow functions. Using arrow functions in methods will cause them to not have their own this, which could break the expected behavior.
+            \n
+            3. Arrow functions do not have their own arguments object. If you need to access the arguments object inside the function, you should use a regular function expression.
+            \n
+            4. Arrow functions do not have their own arguments object. If you need to access the arguments object inside the function, you should use a regular function expression.
+            """,
+        "accepted": True,
+    },
 ]

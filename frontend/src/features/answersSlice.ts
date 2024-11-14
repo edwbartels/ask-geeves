@@ -1,7 +1,12 @@
 import { PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
 import { createAppSlice } from "../app/createAppSlice"
 import { User } from "./usersSlice"
-import { Comment } from "./api-types"
+// import { Comment } from "./api-types"
+import {
+  addManyComments,
+  createOneComment,
+  deleteOneComment,
+} from "./commentsSlice"
 import { json } from "stream/consumers"
 import { UpdateVoteResponse } from "./votesSlice"
 
@@ -24,7 +29,19 @@ export interface CreateAnswerResponse {
     answerSave: boolean
 
     AnswerUser: User
-    Comments: Comment[]
+    num_comments: number
+    commentIds: number[]
+    Comments: {
+      id: number
+      user_id: number
+      content_type: "answer"
+      content_id: number
+      content: string
+      total_score: number
+      created_at: string
+      updated_at: string
+      CommentUser: User
+    }[]
   }
 }
 export interface CreateAnswerValidationError {
@@ -55,6 +72,8 @@ export interface Answer {
   updated_at: string
 
   total_score: number // db aggregate function
+  num_comments: number
+  commentIds: number[]
 }
 export type AnswersSliceState = Record<number, Answer>
 
@@ -79,11 +98,15 @@ export const createOneAnswer = createAsyncThunk<
   const { Comments, AnswerUser, answerSave, ...remaining } = answer.answer
 
   const answerPayload: Answer = { ...remaining, user_id: AnswerUser.id }
-  const commentPayload = {}
+  const commentPayload = Comments.map(comment => {
+    const { CommentUser, ...remaining } = comment
+    return { ...remaining }
+  })
   const userPayload = {}
   const savedPayload = {}
 
   thunkApi.dispatch(addManyAnswers([answerPayload]))
+  thunkApi.dispatch(addManyComments(commentPayload))
   // dispatch comments
   // dispatch saves
   // dispatch user
@@ -170,10 +193,24 @@ export const answersSlice = createAppSlice({
     }
   },
   extraReducers: builder => {
-    builder.addCase(deleteOneAnswer.fulfilled, (state, action) => {
-      const { answerId } = action.payload
-      delete state[answerId]
-    })
+    builder
+      .addCase(deleteOneAnswer.fulfilled, (state, action) => {
+        const { answerId } = action.payload
+        delete state[answerId]
+      })
+      .addCase(createOneComment.fulfilled, (state, action) => {
+        const { content_id, content_type, id } = action.payload.comment
+        if (content_type === "answer") state[content_id].commentIds?.push(id)
+      })
+      .addCase(deleteOneComment.fulfilled, (state, action) => {
+        const { content_id, content_type, id } = action.payload
+        if (content_type === "answer") {
+          const oldCommentIds = state[content_id].commentIds
+          state[content_id].commentIds = oldCommentIds?.filter(
+            old => old !== id,
+          )
+        }
+      })
   },
   selectors: {
     selectAnswers: answers => answers,

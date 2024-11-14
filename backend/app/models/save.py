@@ -1,4 +1,5 @@
 from .db import db
+from .base_models import Base
 from .base_models import BelongsToUser
 from flask_login import current_user
 
@@ -31,4 +32,5 @@ class Save(BelongsToUser):
         db.UniqueConstraint(
             "user_id", "content_type", "content_id", name="unique_save_user"
         ),
+        Base.__table_args__,
     )

@@ -7,3 +7,4 @@ dev.db
 .gitignore
 planning
 tests
+__pycache__

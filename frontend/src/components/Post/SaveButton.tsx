@@ -3,7 +3,12 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { selectSaveByContentAndId, toggleSave } from "../../features/savesSlice"
 import classNames from "classnames"
 
-export const SaveButton: React.FC<Props> = ({ id, type }) => {
+export interface SaveButtonProps {
+  type: "question" | "answer" | "comment"
+  id: number
+}
+
+export const SaveButton: React.FC<SaveButtonProps> = ({ id, type }) => {
   const dispatch = useAppDispatch()
   const saveInstance = useAppSelector(state =>
     selectSaveByContentAndId(state, type, id),
@@ -20,12 +25,10 @@ export const SaveButton: React.FC<Props> = ({ id, type }) => {
       }),
     )
   }
-  const buttonClass = classNames("save-button", {
+  const buttonClass = classNames("save-button fa-regular fa-bookmark fa-xl", {
     "save-active": isSaved,
   })
-  return (
-    <button className={buttonClass} onClick={handleToggleSave}>
-      {isSaved ? "Saved" : "Save"}
-    </button>
-  )
+  return <i className={buttonClass} onClick={handleToggleSave}></i>
 }
+
+<i className="fa-solid fa-bookmark"></i>

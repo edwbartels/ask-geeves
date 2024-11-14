@@ -25,6 +25,7 @@
 .submit-new-answer-button {
     font-family: "Clip";
     text-transform: uppercase;
+    margin-bottom: 50px;
 }
 
 .submit-answer-button-div {
@@ -127,7 +128,7 @@ textarea.answer-box {
     color: white;
     
 }
-
+/* background-color: rgb(99, 98, 98); */
 pre {
     box-shadow: 0 0 5px 2px #feaee3,
                 0 0 10px 3px #f087d3;

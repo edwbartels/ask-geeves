@@ -8,6 +8,7 @@ class Config:
     REMEMBER_COOKIE_DURATION = timedelta(days=5)
     WTF_CSRF_ENABLED = True
     WTF_CSRF_METHODS = ["POST", "PUT", "DELETE"]
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class DevConfig(Config):

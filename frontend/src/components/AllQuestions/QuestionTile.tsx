@@ -4,6 +4,7 @@ import { selectUserById } from "../../features/usersSlice"
 import { selectTagById } from "../../features/tagsSlice"
 import { Tag } from "../Tag/Tag"
 import "./AllQuestions.css"
+import { Link } from "react-router-dom"
 interface Props {
   questionId: number
 }
@@ -34,10 +35,11 @@ export const QuestionTile = ({ questionId }: Props) => {
       </div>
       <div className="question-block">
         <p>
-          <a className="sub-title" href={`questions/${questionId}`}>
+          <Link className="sub-title" to={`${questionId}`}>
             {question.id} - {question.title}
-          </a>
+          </Link>
         </p>
+        <hr className="underline" />
         <p className="question-summary">{question.content}</p>
         <div>
           <div className="question-tags">

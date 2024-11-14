@@ -137,9 +137,9 @@ export const Post = ({ type, id }: Props) => {
               )}
               <div className="post-meta">
                 <div>
-                  <a href={`#${permalink}`}>
+                  <Link href={`#${permalink}`}>
                     <i className="fa-solid fa-xl fa-link"></i>
-                  </a>
+                  </Link>
 
                   {isUserPostWriter && post.type === "question" ? (
                     <Link to={`edit`}>Edit {post.type}</Link>

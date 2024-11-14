@@ -682,6 +682,7 @@ button.down {
   display: flex;
   flex-direction: column;
   align-content: center;
+  margin-top: 30px;
 }
 
 .fa-link {

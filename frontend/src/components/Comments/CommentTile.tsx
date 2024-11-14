@@ -1,5 +1,6 @@
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { selectUserById } from "../../features/usersSlice"
+import { Link } from "react-router-dom"
 import {
   selectCommentById,
   deleteOneComment,
@@ -34,6 +35,9 @@ export const CommentTile = ({ id }: Props) => {
         <div className="comment-body">
           <p>{comment.content}</p>
           <div className="comment-meta">
+          <p>
+            <Link to={`/user/${writer.id}`}>@{writer.username}</Link>
+          </p>
             <div>{comment.created_at}</div>
             {belongsToCurrentUser && (
               <OpenModalButton

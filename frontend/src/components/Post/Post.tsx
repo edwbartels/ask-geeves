@@ -138,7 +138,7 @@ export const Post = ({ type, id }: Props) => {
               )}
               <div className="post-meta">
                 <div>
-                  <Link href={`#${permalink}`}>
+                  <Link to={`#${permalink}`}>
                     <i className="fa-solid fa-xl fa-link"></i>
                   </Link>
 

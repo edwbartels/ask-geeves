@@ -13,7 +13,7 @@ export const HomePage = () => {
         answers, connect with experts, and turn problems into solutions—one line of code at a time.
         </div>
         <div className="image">
-          <img src="/Images/coding desktop.jpg"></img>
+          <img src="Public/Images/coding desktop.jpg"></img>
         </div>
       </div>
       <div className="languages-container">

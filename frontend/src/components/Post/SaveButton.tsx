@@ -35,6 +35,9 @@ export const SaveButton: React.FC<SaveButtonProps> = ({ id, type }) => {
       onClick={handleToggleSave}
       style={{ cursor: "pointer" }}
     ></i>
+
     // </button>
   )
 }
+
+<i className="fa-solid fa-bookmark"></i>

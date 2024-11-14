@@ -11,9 +11,10 @@ from .seeders.seed_funcs import seed_all, clear_all_data
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static", static_url_path="/")
 app.json.sort_keys = False  # Prevent flask.jsonify from sorting keys
 env = os.getenv("FLASK_ENV", "development")
+print("ENV -----> ", env)
 if env == "development":
     # Only enable cors if in development
     CORS(app)
@@ -81,17 +82,17 @@ def api_help():
     return route_list
 
 
-# @app.route("/", defaults={"path": ""})
-# @app.route("/<path:path>")
-# def react_root(path):
-#     """
-#     This route will direct to the public directory in our
-#     react builds in the production environment for favicon
-#     or index.html requests
-#     """
-#     if path == "favicon.ico":
-#         return app.send_from_directory("public", "favicon.ico")
-#     return app.send_static_file("index.html")
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def react_root(path):
+    """
+    This route will direct to the public directory in our
+    react builds in the production environment for favicon
+    or index.html requests
+    """
+    if path == "favicon.ico":
+        return app.send_from_directory("static", "favicon.ico")
+    return app.send_static_file("index.html")
 
 
 # @app.errorhandler(404)
@@ -112,6 +113,7 @@ def load_user(id):
 
 @app.cli.command("seed")
 def seed_all_command():
+    # clear_all_data()
     seed_all()
     print("Database seeded")
 

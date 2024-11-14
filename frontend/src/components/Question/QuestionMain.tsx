@@ -35,6 +35,7 @@ export const QuestionMain = () => {
     <div className="main-body">
       <h1 className="question-title">{question.title}</h1>
       <Post type="question" id={questionIdNum} />
+
       <h1 className="answers-title">{question.num_answers} Answers</h1>
       <div className="answers-list">
         {answerIds && answerIds.length > 0

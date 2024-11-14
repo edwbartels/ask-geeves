@@ -22,6 +22,12 @@ from ..models import (
     follow_data,
 )
 
+import os
+from sqlalchemy.sql import text
+
+environment = os.getenv("FLASK_ENV")
+SCHEMA = os.environ.get("SCHEMA")
+
 
 def seed_users():
     try:
@@ -34,10 +40,32 @@ def seed_users():
         print(f"Error seeding users: {e}")
 
 
+def undo_users():
+    if environment == "production":
+        db.session.execute(
+            text(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
+        )
+    else:
+        db.session.execute(text("DELETE FROM users"))
+
+    db.session.commit()
+
+
 def seed_questions():
     for entry in questions:
         question = Question(**entry)
         db.session.add(question)
+    db.session.commit()
+
+
+def undo_questions():
+    if environment == "production":
+        db.session.execute(
+            text(f"TRUNCATE table {SCHEMA}.questions RESTART IDENTITY CASCADE;")
+        )
+    else:
+        db.session.execute(text("DELETE FROM questions"))
+
     db.session.commit()
 
 
@@ -48,6 +76,17 @@ def seed_answers():
     db.session.commit()
 
 
+def undo_answers():
+    if environment == "production":
+        db.session.execute(
+            text(f"TRUNCATE table {SCHEMA}.answers RESTART IDENTITY CASCADE;")
+        )
+    else:
+        db.session.execute(text("DELETE FROM answers"))
+
+    db.session.commit()
+
+
 def seed_comments():
     for entry in comments:
         comment = Comment(**entry)
@@ -55,10 +94,32 @@ def seed_comments():
     db.session.commit()
 
 
+def undo_comments():
+    if environment == "production":
+        db.session.execute(
+            text(f"TRUNCATE table {SCHEMA}.comments RESTART IDENTITY CASCADE;")
+        )
+    else:
+        db.session.execute(text("DELETE FROM comment"))
+
+    db.session.commit()
+
+
 def seed_tags():
     for entry in tags:
         tag = Tag(**entry)
         db.session.add(tag)
+    db.session.commit()
+
+
+def undo_tags():
+    if environment == "production":
+        db.session.execute(
+            text(f"TRUNCATE table {SCHEMA}.tags RESTART IDENTITY CASCADE;")
+        )
+    else:
+        db.session.execute(text("DELETE FROM tags"))
+
     db.session.commit()
 
 
@@ -72,6 +133,15 @@ def seed_question_tags():
     db.session.commit()
 
 
+def undo_question_tags():
+    if environment == "production":
+        db.session.execute(
+            text(f"TRUNCATE table {SCHEMA}.question_tags RESTART IDENTITY CASCADE;")
+        )
+    else:
+        db.session.execute(text("DELETE FROM question_tags"))
+
+
 def seed_follow_data():
     for entry in follow_data_list:
         db.session.execute(
@@ -83,6 +153,17 @@ def seed_follow_data():
     db.session.commit()
 
 
+def undo_follow_data():
+    if environment == "production":
+        db.session.execute(
+            db.session.execute(
+                text(f"TRUNCATE table {SCHEMA}.follow_data RESTART INDENTITY CASCASE;")
+            )
+        )
+    else:
+        db.session.execute(text("DELETE FROM follow_data"))
+
+
 def seed_votes():
     for entry in votes:
         vote = Vote(**entry)
@@ -90,10 +171,32 @@ def seed_votes():
     db.session.commit()
 
 
+def undo_votes():
+    if environment == "production":
+        db.session.execute(
+            text(f"TRUNCATE table {SCHEMA}.votes RESTART IDENTITY CASCADE;")
+        )
+    else:
+        db.session.execute(text("DELETE FROM votes"))
+
+    db.session.commit()
+
+
 def seed_saves():
     for entry in saves:
         save = Save(**entry)
         db.session.add(save)
+    db.session.commit()
+
+
+def undo_saves():
+    if environment == "production":
+        db.session.execute(
+            text(f"TRUNCATE table {SCHEMA}.saves RESTART IDENTITY CASCADE;")
+        )
+    else:
+        db.session.execute(text("DELETE FROM saves"))
+
     db.session.commit()
 
 
@@ -114,6 +217,7 @@ def update_all_total_scores():
 
 
 def seed_all():
+    clear_all_data()
     seed_users()
     seed_tags()
     seed_questions()
@@ -127,12 +231,19 @@ def seed_all():
 
 
 def clear_all_data():
-    db.session.execute(follow_data.delete())
-    db.session.execute(question_tags.delete())  # Clear join table entries first
-    db.session.query(Comment).delete()
-    db.session.query(Answer).delete()
-    db.session.query(Question).delete()
-    db.session.query(Tag).delete()
-    db.session.query(User).delete()
-    db.session.query(Vote).delete()
-    db.session.commit()
+    undo_users()
+    undo_tags()
+    undo_questions()
+    undo_answers()
+    undo_comments()
+    undo_question_tags()
+    undo_votes()
+    undo_saves()
+    # db.session.execute(question_tags.delete())  # Clear join table entries first
+    # db.session.query(Comment).delete()
+    # db.session.query(Answer).delete()
+    # db.session.query(Question).delete()
+    # db.session.query(Tag).delete()
+    # db.session.query(User).delete()
+    # db.session.query(Vote).delete()
+    # db.session.commit()

@@ -66,7 +66,6 @@ export const SignupFormModal = () => {
       }
   };
 
-  console.log(errors)
   return (
     <div className="signup-form">
       <form onSubmit={handleSubmitSignUp}>

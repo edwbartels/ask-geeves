@@ -77,7 +77,7 @@ export const CommentForm = ({ id, content_id, content_type }: Props) => {
   }
   const handleSubmitComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log("submitting form")
+    // console.log("submitting form")
     if (sessionUser.user) {
       const userId = sessionUser.user.id
       const commentForm = { content_id, content_type, content: form }

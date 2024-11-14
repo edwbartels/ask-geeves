@@ -147,7 +147,6 @@ def create_question():
 @existence_check(("Question", "question_id"))
 @authorization_check(owner_check, "question")
 def edit_question(question_id, question):
-    print(question)
     data = request.get_json()
     new_content = data.get("content")
     new_title = data.get("title")

@@ -14,7 +14,7 @@ class Base(db.Model):
 
     @property
     def model_name(self):
-        return self.__class__.__name__
+        return self.__class__.__name__.lower()
 
     @declared_attr
     def __table_args__(cls):

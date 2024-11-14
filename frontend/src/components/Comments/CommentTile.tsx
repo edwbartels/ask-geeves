@@ -26,7 +26,13 @@ export const CommentTile = ({ id }: Props) => {
   const handleDeleteComment = async (
     e: React.MouseEvent<HTMLButtonElement>,
   ) => {
-    dispatch(deleteOneComment({ id: id }))
+    dispatch(
+      deleteOneComment({
+        id: comment.id,
+        content_type: comment.content_type,
+        content_id: comment.content_id,
+      }),
+    )
   }
   if (comment) {
     return (

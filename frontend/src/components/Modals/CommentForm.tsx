@@ -90,6 +90,7 @@ export const CommentForm = ({ id, content_id, content_type }: Props) => {
           editOneComment({ id, ...commentForm }),
         ).unwrap()
       }
+
       closeModal()
     }
   }

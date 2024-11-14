@@ -21,7 +21,11 @@ import {
   createOneAnswer,
   deleteOneAnswer,
 } from "./answersSlice"
-import { addManyComments } from "./commentsSlice"
+import {
+  addManyComments,
+  createOneComment,
+  deleteOneComment,
+} from "./commentsSlice"
 import { Tag, addManyTags } from "./tagsSlice"
 // import { addSave, removeSave } from "./savesSlice"
 //   import { SessionResponse, restoreSession, loginAsync } from "./sessionSlice"
@@ -418,6 +422,20 @@ export const questionsSlice = createAppSlice({
         state.questions[questionId].answerIds = oldAnswerIds?.filter(
           id => id !== answerId,
         )
+      })
+      .addCase(createOneComment.fulfilled, (state, action) => {
+        const { content_id, content_type, id } = action.payload.comment
+        if (content_type === "question")
+          state.questions[content_id].commentIds?.push(id)
+      })
+      .addCase(deleteOneComment.fulfilled, (state, action) => {
+        const { content_id, content_type, id } = action.payload
+        if (content_type === "question") {
+          const oldCommentIds = state.questions[content_id].commentIds
+          state.questions[content_id].commentIds = oldCommentIds?.filter(
+            old => old !== id,
+          )
+        }
       })
       .addCase(fetchTaggedQuestions.fulfilled, (state, action) => {
         state.questions = {}

@@ -3,26 +3,25 @@ import { useParams, useSearchParams } from "react-router-dom"
 import { QuestionTile } from "./QuestionTile"
 import "./AllQuestions.css"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { selectAllQuestionsSettings } from "../../features/sessionSlice"
 import {
   fetchTaggedQuestions,
   selectQuestionsArr,
 } from "../../features/questionsSlice"
+import { Question } from "../../features/questionsSlice"
 
 export const TaggedQuestions = () => {
   const { tagName } = useParams()
   const dispatch = useAppDispatch()
-  const pageSettings = useAppSelector(state => state.questions.allQuestionsInfo)
-  const sizeSetting = useAppSelector(state => state.session.settings.size)
-  const [searchParams, setSearchParams] = useSearchParams()
-  if (!searchParams.has("page")) {
-    searchParams.set("page", String(pageSettings.page))
-  }
-  if (!searchParams.has("size")) {
-    searchParams.set("size", String(sizeSetting))
-  }
+  const pageSettings = useAppSelector(selectAllQuestionsSettings)
+
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: pageSettings.page,
+    size: pageSettings.size,
+  })
 
   const questions = useAppSelector(selectQuestionsArr)
-  const questionIds = questions.map(question => question.id)
+  const questionIds = questions.map(question => (question as Question).id)
 
   const incrementSearchParam = () => {
     const currentPage = Number(searchParams.get("page"))

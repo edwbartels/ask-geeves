@@ -10,6 +10,7 @@ ARG POSTGRES_URL
 ARG SCHEMA
 # ARG SECRET_KEY
 
+
 WORKDIR /var/www/backend
 
 COPY backend/requirements.txt .
@@ -18,6 +19,7 @@ RUN pip install -r requirements.txt
 RUN pip install psycopg2
 
 COPY backend/ .
+
 
 RUN flask db upgrade
 RUN flask seed

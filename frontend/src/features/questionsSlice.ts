@@ -1,5 +1,7 @@
 import { PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
 import { createAppSlice } from "../app/createAppSlice"
+import { createSelector } from "reselect"
+import type { AppThunk } from "../app/store"
 import {
   FetchAllQuestionsResponse,
   FetchOneQuestionResponse,
@@ -11,7 +13,11 @@ import {
   createOneAnswer,
   deleteOneAnswer,
 } from "./answersSlice"
-import { addManyComments } from "./commentsSlice"
+import {
+  addManyComments,
+  createOneComment,
+  deleteOneComment,
+} from "./commentsSlice"
 import { Tag, addManyTags } from "./tagsSlice"
 
 interface FetchAllQuestionsError {
@@ -439,6 +445,20 @@ export const questionsSlice = createAppSlice({
           id => id !== answerId,
         )
       })
+      .addCase(createOneComment.fulfilled, (state, action) => {
+        const { content_id, content_type, id } = action.payload.comment
+        if (content_type === "question")
+          state.questions[content_id].commentIds?.push(id)
+      })
+      .addCase(deleteOneComment.fulfilled, (state, action) => {
+        const { content_id, content_type, id } = action.payload
+        if (content_type === "question") {
+          const oldCommentIds = state.questions[content_id].commentIds
+          state.questions[content_id].commentIds = oldCommentIds?.filter(
+            old => old !== id,
+          )
+        }
+      })
       .addCase(fetchTaggedQuestions.fulfilled, (state, action) => {
         state.questions = {}
         const questions = action.payload
@@ -450,7 +470,10 @@ export const questionsSlice = createAppSlice({
   },
   selectors: {
     selectQuestions: state => state,
-    selectQuestionsArr: state => Object.values(state.questions),
+    selectQuestionsArr: createSelector(
+      state => state.questions,
+      questions => Object.values(questions),
+    ),
     selectQuestionById: (state, id: number) => state.questions[id],
   },
 })

@@ -59,7 +59,7 @@ export const UserDetailPage = () => {
   if (loading) {
     return <div>Loading</div>
   }
-  console.log(userDetails)
+
   return (
     <div className="user-detail-page">
       <div className="name-div">
@@ -74,12 +74,13 @@ export const UserDetailPage = () => {
         {userDetails.questions.length > 0 ? (
           userDetails.questions.map(question => (
             <div className="user-question-title" key={question.question_id}>
-              <h3 className="user-questions">
-                <Link to={`/questions/${question.question_id}`}>
+              <h3>
+                <Link className="user-questions" to={`/questions/${question.question_id}`}>
                   {question.title}{" "}
                 </Link>
               </h3>
               <p>Question : {question.question_content}</p>
+              <hr />
             </div>
           ))
         ) : (
@@ -94,14 +95,15 @@ export const UserDetailPage = () => {
         {userDetails.answers.length > 0 ? (
           userDetails.answers.map(answer => (
             <div key={answer.answer_id}>
-              <h3 className="user-answers">
-                <Link to={`/questions/${answer.question_id}`}>
+              <h3>
+                <Link className="user-answers" to={`/questions/${answer.question_id}`}>
                   {" "}
                   {answer.title}{" "}
                 </Link>
               </h3>
               <p>Question: {answer.question_content}</p>
               <p>Answer: {answer.answer_content}</p>
+              <hr />
             </div>
           ))
         ) : (
@@ -112,18 +114,19 @@ export const UserDetailPage = () => {
         <hr className="answer-line" />
       </div>
       <div>
-        <h2>Comments</h2>
+        <h2 className="user-title">Comments</h2>
         {userDetails.comments.length > 0 ? (
           userDetails.comments.map(comment => (
             <div key={comment.comment_id}>
               <h3>
-                <Link to={`/questions/${comment.question_id}`}>
+                <Link className="user-comments" to={`/questions/${comment.question_id}`}>
                   {" "}
                   {comment.title}{" "}
                 </Link>
               </h3>
               <p>Question: {comment.question_content}</p>
               <p>Comment: {comment.comment_content}</p>
+              <hr />
             </div>
           ))
         ) : (

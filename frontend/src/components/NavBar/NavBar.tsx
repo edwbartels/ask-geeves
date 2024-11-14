@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { NavLink } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import {
@@ -30,12 +30,12 @@ export const NavBar = () => {
     <nav className="nav-bar">
       <Logo />
       <>
-        <NavLink to="/" className="home-links">
+        <Link to="/" className="home-links">
           Home
-        </NavLink>
-        <NavLink to="/questions" className="question-links">
+        </Link>
+        <Link to="/questions" className="question-links">
           Questions
-        </NavLink>
+        </Link>
       </>
       <form>
         <input className="search-links" placeholder="Search..." />
@@ -43,9 +43,13 @@ export const NavBar = () => {
       <div className="user-greeting">
         {user ? `Welcome ${user?.first_name}` : ""}
       </div>
-      <a href="/questions/ask" className="post-links">
-        Post a question
-      </a>
+
+      {user && (
+        <Link to="/questions/ask" className="post-links">
+          Post a question
+        </Link>
+      )}
+
       {!user ? (
         <div className="nav-buttons">
           <OpenModalButton

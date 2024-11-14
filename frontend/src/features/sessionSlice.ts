@@ -1,5 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "../app/createAppSlice"
+import { createSelector } from "reselect"
+import { addManyUsers, usersSlice } from "./usersSlice"
 import { Vote } from "./votesSlice"
 import { Save } from "./savesSlice"
 
@@ -80,7 +82,19 @@ export const sessionSlice = createAppSlice({
       restoreSession: create.asyncThunk(
         async (_, thunkApi) => {
           const response = await fetch("/api/session/")
-          const userSession = await response.json()
+          const userSession: SessionResponse = await response.json()
+          if (!response.ok) {
+            thunkApi.rejectWithValue(response)
+          }
+          if (userSession.user) {
+            const user = {
+              id: userSession.user.id,
+              first_name: userSession.user.first_name,
+              last_name: userSession.user.last_name,
+              username: userSession.user.username,
+            }
+            thunkApi.dispatch(addManyUsers([user]))
+          }
           return userSession
         },
         {
@@ -163,14 +177,16 @@ export const sessionSlice = createAppSlice({
   selectors: {
     selectSession: session => session,
     selectUser: session => session.user,
-    // selectAllQuestionsSettings: session => {
-    //   // const settingsToString: { [key: string]: string } = {}
-    //   // for (const [key, value] of Object.entries(session.allQuestionsSettings)) {
-    //   //   settingsToString[key] = value.toString()
-    //   // }
-    //   // return settingsToString
-    //   return session.allQuestionsSettings
-    // },
+//     selectAllQuestionsSettings: createSelector(
+//       session => session.allQuestionsSettings,
+//       allQuestionsSettings => {
+//         const settingsToString: Record<string, string> = {}
+//         for (const [key, value] of Object.entries(allQuestionsSettings)) {
+//           settingsToString[key] = (value as number).toString()
+//         }
+//         return settingsToString
+//       },
+//     ),
     // selectStatus: counter => counter.status,
   },
 })

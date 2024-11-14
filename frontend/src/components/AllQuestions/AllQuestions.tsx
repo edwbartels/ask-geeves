@@ -9,6 +9,7 @@ import {
   decrementCurrentPage,
 } from "../../features/questionsSlice"
 import { QuestionTile } from "./QuestionTile"
+import { Question } from "../../features/questionsSlice"
 import "./AllQuestions.css"
 // const questionIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -23,10 +24,6 @@ export const AllQuestions = () => {
   //   num_pages: String(pageSettings.num_pages),
   // })
   const { tagName } = useParams()
-  if (!searchParams.has("page")) {
-  }
-  if (!searchParams.has("size")) {
-  }
   searchParams.set("page", String(pageSettings.page))
   searchParams.set("per_page", String(sizeSetting))
   if (tagName) {
@@ -41,7 +38,8 @@ export const AllQuestions = () => {
   }, [searchParamsString, dispatch, fetchAllQuestions])
 
   const questions = useAppSelector(selectQuestionsArr)
-  const questionIds = questions.map(question => question.id)
+  // }
+  const questionIds = questions.map(question => (question as Question).id)
 
   const handleSetResultsSize = (numPerPage: number) => () => {
     dispatch(setPostsPerPage(numPerPage))

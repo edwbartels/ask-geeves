@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { useAppSelector } from "../../app/hooks"
 import { selectTagById } from "../../features/tagsSlice"
+import './Tag.css'
 
 interface Props {
   tagId: number
@@ -12,8 +13,8 @@ export const Tag = ({ tagId }: Props) => {
   }
   const tagNameSnakeCase = tag.name.replace(" ", "-").toLowerCase()
   return (
-    <Link to={`/tagged/${tagId}/${tagNameSnakeCase}`} className="question-tag">
-      {tag.name}
-    </Link>
+      <Link to={`/tagged/${tagId}/${tagNameSnakeCase}`} className="question-tag">
+        {tag.name}
+      </Link>
   )
 }

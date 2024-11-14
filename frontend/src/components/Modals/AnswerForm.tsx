@@ -28,12 +28,13 @@ export const AnswerForm = ({ questionId, answerId }: Props) => {
     : ""
   const sessionUser = useAppSelector(selectSession)
   const [form, setForm] = useState(answer || "")
+  const isDisabledSubmit = form.length == 0
   const handleChangeForm = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setForm(e.target.value)
   }
   const handleSubmitAnswer = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log("submitting form")
+    // console.log("submitting form")
     if (sessionUser.user) {
       const userId = sessionUser.user.id
       const questionId = question.id
@@ -67,12 +68,15 @@ export const AnswerForm = ({ questionId, answerId }: Props) => {
               className="answer-box"
               onChange={handleChangeForm}
               placeholder="Answer..."
+              required
               rows={10}
               value={form}
             />
           </div>
           <div className="submit-answer-button-div">
-          <button className="submit-new-answer-button">Submit answer</button>
+          {/* <button className="submit-new-answer-button">Submit answer</button> */}
+          <button className={`submit-new-answer-button ${isDisabledSubmit ? "disabled" : ""}`}
+          disabled={isDisabledSubmit}>Submit answer</button>
           </div>
         </form>
         <RenderPost postContent={form} />

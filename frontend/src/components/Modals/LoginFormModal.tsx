@@ -15,7 +15,6 @@ export const LoginFormModal = () => {
   const [errors, setErrors] = useState({})
   const { closeModal } = useModal()
   const dispatch = useAppDispatch()
-
   // Disable submit button if credential length < 4 or password length < 6
   const isDisabledSubmit =
     loginForm.credential.length < 4 || loginForm.password.length < 6
@@ -31,11 +30,15 @@ export const LoginFormModal = () => {
   const handleSubmitLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setErrors({})
-    // Send login request to back end
-    dispatch(loginAsync(loginForm))
-    // Set errors if any come back
-    closeModal()
-  }
+      const response = await dispatch(loginAsync(loginForm)).unwrap()
+      if (response.error) {
+          setErrors(response)
+      } else {
+          closeModal()
+      }
+}
+
+
 
   const handleLogInDemo = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -51,22 +54,17 @@ export const LoginFormModal = () => {
     } catch (e) {
       console.log("error", e)
     }
-
-    // if (loginDemoUserAsync.fulfilled.match(response)) {
-    //   closeModal()
-    // } else if (loginDemoUserAsync.rejected.match(response)) {
-    //   console.log("an error", response)
-    // }
   }
-
+  // console.log(errors)
   return (
     <div className="login-form" data-testid="login-modal">
-      <Errors errors={errors} />
+      {/* <Errors errors={errors} /> */}
       <form onSubmit={handleSubmitLogin}>
         <div>
           <label className="login-form-item">
             <h3 className="login-title">Login</h3>
             <div className="email-title">Username/Email</div>
+            {loginForm.credential.length < 4? <div className="requirement-message">Minimum 4 characters</div> : ""}
             <input className="input"
               onChange={handleChangeLoginForm("credential")}
               defaultValue={loginForm.credential}
@@ -80,6 +78,7 @@ export const LoginFormModal = () => {
         <div>
           <label className="login-form-item">
             <div className="password-title">Password</div>
+            {loginForm.password.length < 6? <div className="requirement-message">Minimum 6 characters</div> : ""}
             <input className="input"
               onChange={handleChangeLoginForm("password")}
               placeholder="Password"
@@ -90,8 +89,9 @@ export const LoginFormModal = () => {
             />
           </label>
         </div>
+        {errors.error?<div className="authentication-error">{errors.error}</div>: ""}
         <div className="button-div">
-        <button className="login-form-button"
+        <button className={`login-form-button ${isDisabledSubmit ? 'disabled' : ''}`}
           disabled={isDisabledSubmit}
           data-testid="login-button" // Identifier
         >

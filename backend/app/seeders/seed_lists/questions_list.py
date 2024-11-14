@@ -3,7 +3,8 @@ questions = [
         # question 1
         "user_id": 1,
         "title": "Flask vs Django",
-        "content": "What is the difference between Flask and Django?",
+        "content": 
+            "What is the difference between Flask and Django?",
     },
     {
         # question 2
@@ -166,5 +167,79 @@ questions = [
         "user_id": 4,
         "title": "Semantic HTML Elements",
         "content": "What are semantic HTML elements and why are they important?",
+    },
+    # question 29
+    {
+        "user_id": 5,
+        "title": "JavaScript Repeat Name",
+        "content": """ I'm having trouble getting my code to print each name twice 
+            ### My code:
+            \'\'\'javascript
+            function repeatName(name) {
+                name + " " + name;
+            }
+            let repeatDaniel = repeatName("Daniel");
+            let repeatMark = repeatName("Mark");
+            let repeatBeyonce = repeatName("!!!" + ("Beyonce") + "!!!");
+            \'\'\' 
+            \n
+            What could I *change* to fix my function?
+            """
+    },
+    # question 30
+    {
+        "user_id": 6,
+        "title": "String Operators",
+        "content": 
+            """ I am trying to get my function to return a str but in lowercase letters, but I am having issues.
+            ### Here is what it is supposed to print:
+            "...hey buddy..."
+            "...yea! that was fun..."
+            ### Here is my code:
+            \'\'\'javascript
+            function whisper(str) {
+                let whispered = "..." + str.lowercase() + "...";
+                return whispered;
+            }
+            console.log(whisper("HEY Buddy"));
+            console.log(whisper("YEA! That was FUN"));
+            \'\'\' 
+            \n
+            How do I fix my function?
+            """,
+    },
+    # question 31
+    {
+        "user_id": 7,
+        "title": "JavaScript Conditionals",
+        "content": 
+            """ I am trying to get my function to return a str but in lowercase letters, but I am having issues.
+            ### Here is what it is supposed to print:
+            "...hey buddy..."
+            "...yea! that was fun..."
+            ### Here is my code:
+            \'\'\'javascript
+            function oddNumOnly(num) {
+                if (num % 2 === 0) {
+                    return num;
+                } else {
+                    return null;
+                }
+            }
+            console.log(oddNumOnly(2));
+            console.log(oddNumOnly(5));
+            console.log(oddNumOnly(-17));
+            console.log(oddNumOnly(0));
+            \'\'\' 
+            \n
+            What am i doing wrong!!!!
+            """,
+    },
+    # question 32
+    {
+        "user_id": 8,
+        "title": "Functions vs Arrow Functions",
+        "content": 
+            """ Are 'Functions' and 'Arrow Functions' equivalent and/or interchangeable? \n ### Here is my code: \n ```javascript \n function User(name) { \n this.name = name; \n } \n \n const User = name => { \n this.name = name; \n }; \n ``` \n They look so similar to me and i just dont understand the difference. """, 
     },
 ]

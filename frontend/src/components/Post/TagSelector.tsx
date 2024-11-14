@@ -39,20 +39,23 @@ export const TagSelector = ({
    * availableTagsToAdd is the list of (all tags in DB) - (all selected tags)
    * displayTagsList is availableTagsToAdd filtered by the tag input
    */
-  const [displayTagsList, setDisplayTagsList] = useState<MinimalTag[]>([])
+  // const [displayTagsList, setDisplayTagsList] = useState<MinimalTag[]>([])
   const [tagInput, setTagInput] = useState("")
 
-  useEffect(() => {
-    if (availableTagsToAdd.length >= 0) {
-      setDisplayTagsList(availableTagsToAdd)
-    }
-  }, [allTags])
-  useEffect(() => {
-    const newDisplayTagsList = availableTagsToAdd.filter(tag =>
-      tag.cleanedName.includes(cleanTagName(tagInput)),
-    )
-    setDisplayTagsList(newDisplayTagsList)
-  }, [tagInput, setDisplayTagsList])
+  // useEffect(() => {
+  //   if (availableTagsToAdd.length >= 0) {
+  //     setDisplayTagsList(availableTagsToAdd)
+  //   }
+  // }, [allTags])
+  // useEffect(() => {
+  //   const newDisplayTagsList = availableTagsToAdd.filter(tag =>
+  //     tag.cleanedName.includes(cleanTagName(tagInput)),
+  //   )
+  //   setDisplayTagsList(newDisplayTagsList)
+  // }, [tagInput, setDisplayTagsList])
+  const tagsToShow = availableTagsToAdd.filter(tag =>
+    tag.cleanedName.includes(cleanTagName(tagInput)),
+  )
 
   const handleShowTagList = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
@@ -122,8 +125,8 @@ export const TagSelector = ({
         />
         <div className="tag-list">
           <ul>
-            {displayTagsList.length > 0
-              ? displayTagsList.map((tag, i) => (
+            {tagsToShow.length > 0
+              ? tagsToShow.map((tag, i) => (
                   <li key={i + tag.cleanedName} onClick={handleSelectTag(tag)}>
                     {tag.name}
                   </li>

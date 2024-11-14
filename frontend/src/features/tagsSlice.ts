@@ -19,8 +19,8 @@ export type TagsSliceState = {
 }
 export const cleanTagName = (name: string) => {
   return name
-    .replace(/[^a-zA-Z0-9\s]/, "")
-    .replace(/[\s]/, "-")
+    .replace(/[^a-zA-Z0-9\s]/g, "")
+    .replace(/[\s]/g, "-")
     .toLowerCase()
 }
 

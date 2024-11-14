@@ -75,10 +75,15 @@ export const Post = ({ type, id }: Props) => {
   }
 
   const getPermalinkTitle = (post: PostType) => {
-    const permalinkBase = `${post.type}`
+    const permalinkBase = `${post.type}-${post.post.id}`
     if (post.type === "question") {
       const { post: question } = post
-      return `${permalinkBase}-${question.id}-${question.title.replaceAll(" ", "-").slice(0, 20).toLowerCase()}`
+      return `${permalinkBase}-${question.title
+        .replace(/[^a-zA-Z0-9\s]/g, "")
+        .replace(/[\s]/g, "-")
+        .toLowerCase()
+        .slice(0, 20)
+        .toLowerCase()}`
     } else if (post.type === "answer") {
       return permalinkBase
     } else {
@@ -138,9 +143,9 @@ export const Post = ({ type, id }: Props) => {
               )}
               <div className="post-meta">
                 <div>
-                  <Link to={`#${permalink}`}>
+                  <a href={`#${permalink}`}>
                     <i className="fa-solid fa-xl fa-link"></i>
-                  </Link>
+                  </a>
 
                   {isUserPostWriter && post.type === "question" ? (
                     <Link to={`edit`}>Edit {post.type}</Link>

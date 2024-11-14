@@ -21,6 +21,15 @@ import "./CommentForm.css"
 import "../Post/Post.css"
 import { selectQuestionById } from "../../features/questionsSlice"
 
+interface QuestionType {
+  type: "question"
+  question: Question
+}
+
+interface AnswerType {
+  type: "answer"
+  answer: Answer
+}
 interface Props {
   content_id: number
   content_type: "question" | "answer"
@@ -30,10 +39,32 @@ interface Props {
 export const CommentForm = ({ id, content_id, content_type }: Props) => {
   const dispatch = useAppDispatch()
   const { closeModal } = useModal()
-  const parent: Question | Answer =
-    content_type === "question"
-      ? useAppSelector(state => selectQuestionById(state, content_id))
-      : useAppSelector(state => selectAnswerById(state, content_id))
+  const getQuestionOrAnswerType = (
+    content_type: "question" | "answer",
+    content_id: number,
+  ) => {
+    if (content_type === "question") {
+      const question = useAppSelector(state =>
+        selectQuestionById(state, content_id),
+      )
+      return { type: "question", question } as QuestionType
+    } else if (content_type === "answer") {
+      const answer = useAppSelector(state =>
+        selectAnswerById(state, content_id),
+      )
+      return { type: "answer", answer } as AnswerType
+    } else {
+      const absurd = (input: never): never => input
+      return absurd(content_type)
+    }
+  }
+
+  const parent = getQuestionOrAnswerType(content_type, content_id)
+
+  // const parent: Question | Answer =
+  //   content_type === "question"
+  //     ? useAppSelector(state => selectQuestionById(state, content_id))
+  //     : useAppSelector(state => selectAnswerById(state, content_id))
 
   const comment = id
     ? useAppSelector(state => selectCommentById(state, id))?.content
@@ -49,12 +80,10 @@ export const CommentForm = ({ id, content_id, content_type }: Props) => {
     console.log("submitting form")
     if (sessionUser.user) {
       const userId = sessionUser.user.id
-      const content_id = parent.id
       const commentForm = { content_id, content_type, content: form }
       if (!id) {
         const response = await dispatch(createOneComment(commentForm)).unwrap()
         const { id: commentId } = response.comment
-        // console.log("submitted form", form)
         closeModal()
       } else if (id) {
         const response = await dispatch(
@@ -94,11 +123,10 @@ export const CommentForm = ({ id, content_id, content_type }: Props) => {
       </div>
       <div className="comment-modal-parent-content">
         <h1 className="parent-title-preview">
-          {content_type === "question"
-            ? parent.title
-            : parent.content.slice(0, 50)}
+          {parent.type === "question"
+            ? parent.question.title
+            : parent.answer.content.slice(0, 50)}
         </h1>
-        <RenderPost postContent={parent.content} />
       </div>
     </div>
   )

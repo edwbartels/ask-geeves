@@ -11,7 +11,6 @@ import {
   FetchAllQuestionsResponse,
   FetchOneQuestionResponse,
   Vote,
-  Tag,
   Save,
 } from "./api-types"
 import { setAllQuestionsSettings, AllQuestionsSettings } from "./sessionSlice"
@@ -160,14 +159,14 @@ export const fetchTaggedQuestions = createAsyncThunk<
   { tagName: string; page: string; size: string },
   // Optional fields for thunkApi types
   { rejectValue: FetchAllQuestionsError }
->('questions/fetchTagged', async (pageSettings, thunkApi) => {
+>("questions/fetchTagged", async (pageSettings, thunkApi) => {
   const { page } = pageSettings || 1
   const { size } = pageSettings || 15
   const { tagName } = pageSettings
-  const fetchUrl = `/api/questions?tag=${tagName}&page=${page}&per_page=${size}&sort_by=id`;
-  const response = await fetch(fetchUrl);
+  const fetchUrl = `/api/questions?tag=${tagName}&page=${page}&per_page=${size}&sort_by=id`
+  const response = await fetch(fetchUrl)
   if (response.ok) {
-    const allQuestions: FetchAllQuestionsResponse = await response.json();
+    const allQuestions: FetchAllQuestionsResponse = await response.json()
     const { page, size, num_pages, questions } = allQuestions
     interface payload {
       questions: Question[]
@@ -317,6 +316,7 @@ export const createOneQuestion = createAsyncThunk<
     tagIds,
     num_votes: 100,
     num_answers: 100,
+    commentIds: Comments.map(comment => comment.id),
   }
   const tagsPayload = Tags
   const votesPayload = Votes
@@ -419,7 +419,7 @@ export const questionsSlice = createAppSlice({
           id => id !== answerId,
         )
       })
-      .addCase(fetchTaggedQuestions.fulfilled,(state, action) =>{
+      .addCase(fetchTaggedQuestions.fulfilled, (state, action) => {
         state.questions = {}
         const questions = action.payload
         for (const question of questions) {

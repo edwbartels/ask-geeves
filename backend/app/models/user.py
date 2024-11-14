@@ -7,7 +7,9 @@ from datetime import datetime, timezone
 
 
 class User(HasTimestamps, UserMixin):
+    __tablename_ = "users"
     id = db.Column(db.Integer, primary_key=True)
+
     username = db.Column(db.String(24), unique=True, nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     _hashed_password = db.Column(db.String(255), nullable=False)
@@ -64,10 +66,10 @@ class User(HasTimestamps, UserMixin):
         return [{"id": user.id, "username": user.username} for user in self.following]
 
     def is_following(self, user):
-        return self.following.filter_by(id = user.id).count() > 0
+        return self.following.filter_by(id=user.id).count() > 0
 
     def is_followed_by(self, user):
-        return self.followers.filter_by(id = user.id).count() > 0
+        return self.followers.filter_by(id=user.id).count() > 0
 
     def follow(self, user):
         if not self.is_following(user):

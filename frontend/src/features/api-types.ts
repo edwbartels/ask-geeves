@@ -107,11 +107,13 @@ export interface FetchAllQuestionsResponse {
     content: string
     created_at: string // datetime string is fine
     updated_at: string
+    questionSave: boolean
 
     total_score: number // db aggregate function
     num_votes: number // only votes that are not 0
     num_answers: number // db aggregate function
-
+    num_comments: number
+    commentIds: number[]
     // user object that matches questioni writer
     User: User & {
       Votes: APIVote[]
@@ -141,10 +143,12 @@ export interface FetchOneQuestionResponse {
     content: string
     created_at: string // datetime string is fine
     updated_at: string
+    questionSave: boolean
 
     total_score: number // db aggregate function
     num_votes: number // only votes that are not 0
     num_answers: number // db aggregate function
+    num_comments: number
 
     // array of tag objects
     Tags: {
@@ -199,6 +203,7 @@ export interface FetchOneQuestionResponse {
       updated_at: string
       num_comments: number
       total_score: number // db aggregate function
+      commentIds: number[]
 
       // user object that matches answer writer
       AnswerUser: {

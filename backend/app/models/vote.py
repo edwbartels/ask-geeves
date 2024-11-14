@@ -1,7 +1,7 @@
 from .db import db
 from .answer import Answer
 from .comment import Comment
-from .base_models import BelongsToUser
+from .base_models import BelongsToUser, Base
 
 class Vote(BelongsToUser):
     value = db.Column(db.Integer, nullable=False)
@@ -11,6 +11,7 @@ class Vote(BelongsToUser):
     __table_args__ = (
         db.UniqueConstraint("user_id", "content_type", "content_id"),
         db.CheckConstraint("value IN (-1, 0, 1)", name="check_vote_value"),
+        Base.__table_args__,
     )
 
     @property

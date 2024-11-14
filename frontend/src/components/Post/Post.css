@@ -347,6 +347,10 @@ p {
 .comments-here {
   color: white;
 }
+.question-footer{
+  display:flex;
+  justify-content: space-between;
+}
 
 .post-body {
   color: white;
@@ -682,6 +686,7 @@ button.down {
   display: flex;
   flex-direction: column;
   align-content: center;
+  margin-top: 30px;
 }
 
 .fa-link {

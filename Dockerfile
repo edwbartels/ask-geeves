@@ -19,6 +19,7 @@ RUN pip install psycopg2
 
 COPY backend/ .
 
+
 RUN flask db upgrade
 RUN flask seed
 

@@ -25,7 +25,7 @@ export interface SessionSliceState {
   } | null
   status: "idle" | "loading" | "failed" | "logged out" | "logged in"
   error: string | null
-  allQuestionsSettings: AllQuestionsSettings
+  settings: { size: number }
 }
 
 interface LoginRequest {
@@ -56,7 +56,7 @@ const initialState: SessionSliceState = {
   user: null,
   status: "idle",
   error: null,
-  allQuestionsSettings: { page: 1, size: 15, num_pages: 1 },
+  settings: { size: 15 },
 }
 
 // If you are not using async thunks you can use the standalone `createSlice`.
@@ -67,9 +67,14 @@ export const sessionSlice = createAppSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: create => {
     return {
-      setAllQuestionsSettings: create.reducer(
-        (state, action: PayloadAction<AllQuestionsSettings>) => {
-          state.allQuestionsSettings = action.payload
+      // setAllQuestionsSettings: create.reducer(
+      //   (state, action: PayloadAction<AllQuestionsSettings>) => {
+      //     state.allQuestionsSettings = action.payload
+      //   },
+      // ),
+      setPostsPerPage: create.reducer(
+        (state, action: PayloadAction<number>) => {
+          state.settings.size = action.payload
         },
       ),
       restoreSession: create.asyncThunk(
@@ -158,28 +163,29 @@ export const sessionSlice = createAppSlice({
   selectors: {
     selectSession: session => session,
     selectUser: session => session.user,
-    selectAllQuestionsSettings: session => {
-      const settingsToString: Record<string, string> = {}
-      for (const [key, value] of Object.entries(session.allQuestionsSettings)) {
-        settingsToString[key] = value.toString()
-      }
-      return settingsToString
-    },
+    // selectAllQuestionsSettings: session => {
+    //   // const settingsToString: { [key: string]: string } = {}
+    //   // for (const [key, value] of Object.entries(session.allQuestionsSettings)) {
+    //   //   settingsToString[key] = value.toString()
+    //   // }
+    //   // return settingsToString
+    //   return session.allQuestionsSettings
+    // },
     // selectStatus: counter => counter.status,
   },
 })
 
 // Action creators are generated for each case reducer function.
 export const {
-  setAllQuestionsSettings,
+  // setAllQuestionsSettings,
+  setPostsPerPage,
   restoreSession,
   loginAsync,
   logoutAsync,
 } = sessionSlice.actions
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectSession, selectUser, selectAllQuestionsSettings } =
-  sessionSlice.selectors
+export const { selectSession, selectUser } = sessionSlice.selectors
 
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.

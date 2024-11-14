@@ -1,78 +1,85 @@
-import { useEffect } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { QuestionTile } from './QuestionTile';
-import './AllQuestions.css';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectAllQuestionsSettings } from '../../features/sessionSlice';
-import { fetchTaggedQuestions, selectQuestionsArr } from '../../features/questionsSlice';
+import { useEffect } from "react"
+import { useParams, useSearchParams } from "react-router-dom"
+import { QuestionTile } from "./QuestionTile"
+import "./AllQuestions.css"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import {
+  fetchTaggedQuestions,
+  selectQuestionsArr,
+} from "../../features/questionsSlice"
 
 export const TaggedQuestions = () => {
-  const { tagName } = useParams();
-  const dispatch = useAppDispatch();
-  const pageSettings = useAppSelector(selectAllQuestionsSettings);
+  const { tagName } = useParams()
+  const dispatch = useAppDispatch()
+  const pageSettings = useAppSelector(state => state.questions.allQuestionsInfo)
+  const sizeSetting = useAppSelector(state => state.session.settings.size)
+  const [searchParams, setSearchParams] = useSearchParams()
+  if (!searchParams.has("page")) {
+    searchParams.set("page", String(pageSettings.page))
+  }
+  if (!searchParams.has("size")) {
+    searchParams.set("size", String(sizeSetting))
+  }
 
-  const [searchParams, setSearchParams] = useSearchParams({
-    page: pageSettings.page,
-    size: pageSettings.size,
-  });
-
-  const questions = useAppSelector(selectQuestionsArr);
-  const questionIds = questions.map((question) => question.id);
+  const questions = useAppSelector(selectQuestionsArr)
+  const questionIds = questions.map(question => question.id)
 
   const incrementSearchParam = () => {
-    const currentPage = Number(searchParams.get('page'));
+    const currentPage = Number(searchParams.get("page"))
     if (currentPage < Number(pageSettings.num_pages)) {
-      const nextPage = (currentPage + 1).toString();
-      searchParams.set('page', nextPage);
-      setSearchParams(searchParams);
+      const nextPage = (currentPage + 1).toString()
+      searchParams.set("page", nextPage)
+      setSearchParams(searchParams)
     }
-  };
+  }
 
   const decrementSearchParam = () => {
-    const currentPage = Number(searchParams.get('page'));
+    const currentPage = Number(searchParams.get("page"))
     if (currentPage > 1) {
-      const nextPage = (currentPage - 1).toString();
-      searchParams.set('page', nextPage);
-      setSearchParams(searchParams);
+      const nextPage = (currentPage - 1).toString()
+      searchParams.set("page", nextPage)
+      setSearchParams(searchParams)
     }
-  };
+  }
 
   const handleSetResultsSize = (numPerPage: number) => () => {
-    searchParams.set('size', numPerPage.toString());
-    setSearchParams(searchParams);
-  };
+    searchParams.set("size", numPerPage.toString())
+    setSearchParams(searchParams)
+  }
 
   useEffect(() => {
-    if (tagName){
+    if (tagName) {
       dispatch(
         fetchTaggedQuestions({
-          page: searchParams.get('page') || '1',
-          size: searchParams.get('size') || '15',
-          tagName:tagName,
-        })
-      );
+          page: searchParams.get("page") || "1",
+          size: searchParams.get("size") || "15",
+          tagName: tagName,
+        }),
+      )
     }
-  }, [dispatch, searchParams.get('page'), searchParams.get('size'), tagName]);
+  }, [dispatch, searchParams.get("page"), searchParams.get("size"), tagName])
 
   return (
     <div>
       <h1 className="all-questions-title">{tagName}</h1>
-      {questionIds.map((id) => (
+      {questionIds.map(id => (
         <QuestionTile key={id} questionId={id} />
       ))}
       <div className="prev-next-container">
         <p>
           <button
             className="previous-button"
-            disabled={Number(searchParams.get('page')) <= 1}
+            disabled={Number(searchParams.get("page")) <= 1}
             onClick={decrementSearchParam}
           >
             Previous
           </button>
-          Page: {searchParams.get('page')} of {pageSettings.num_pages}
+          Page: {searchParams.get("page")} of {pageSettings.num_pages}
           <button
             className="next-button"
-            disabled={Number(searchParams.get('page')) >= Number(pageSettings.num_pages)}
+            disabled={
+              Number(searchParams.get("page")) >= Number(pageSettings.num_pages)
+            }
             onClick={incrementSearchParam}
           >
             Next
@@ -97,5 +104,5 @@ export const TaggedQuestions = () => {
         </p>
       </div>
     </div>
-  );
-};
+  )
+}

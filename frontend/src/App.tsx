@@ -1,10 +1,4 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Outlet,
-  Navigate,
-} from "react-router-dom"
-import { NavLink } from "react-router-dom"
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom"
 import "./App.css"
 import { Counter } from "./features/counter/Counter"
 import { Quotes } from "./features/quotes/Quotes"
@@ -22,9 +16,7 @@ import { FAQ } from "./components/FAQ/FAQ"
 import { AboutUs } from "./components/AboutUs/AboutUs"
 import { UserDetailPage } from "./components/User/UserDetailPage"
 import { AllTags } from "./components/AllTags/AllTags"
-import { TaggedQuestions } from "./components/AllQuestions/TaggedQuestions"
-
-import { restoreSession } from "./features/sessionSlice"
+// import { TaggedQuestions } from "./components/AllQuestions/TaggedQuestions"
 
 const Layout = () => {
   return (
@@ -65,16 +57,16 @@ const router = createBrowserRouter([
           { path: "", element: <AllTags /> },
           {
             path: ":tagId/:tagName",
-            element: <TaggedQuestions/>,
+            element: <AllQuestions />,
           },
           {
-            path:":tagId/questions/:questionId",
+            path: ":tagId/questions/:questionId",
             children: [
               { path: "", element: <QuestionMain /> },
               { path: "edit", element: <CreateOrEditPost /> },
               { path: "*", element: <QuestionMain /> },
             ],
-          }
+          },
         ],
       },
       { path: "/team", element: <Contact /> },

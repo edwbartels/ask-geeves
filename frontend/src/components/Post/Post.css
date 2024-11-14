@@ -347,6 +347,10 @@ p {
 .comments-here {
   color: white;
 }
+.question-footer{
+  display:flex;
+  justify-content: space-between;
+}
 
 .post-body {
   color: white;

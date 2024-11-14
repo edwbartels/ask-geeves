@@ -16,6 +16,7 @@ import {
 import { RenderPost } from "./RenderPost"
 import { Tag } from "../Tag/Tag"
 import { AnswerForm } from "../Modals/AnswerForm"
+import { CommentForm } from "../Modals/CommentForm"
 import { OpenModalButton } from "../Modals/OpenModalButton"
 import { updateVote, selectVoteByContentAndId } from "../../features/votesSlice"
 import { toggleSave, selectSaveByContentAndId } from "../../features/savesSlice"
@@ -177,13 +178,25 @@ export const Post = ({ type, id }: Props) => {
               </div>
             </div>
           </div>
-          <a
-            className="comment-toggle"
-            style={{ cursor: "pointer" }}
-            onClick={toggleComments}
-          >
-            {isCommentsVisible ? "Hide Comments" : "Show Comments"}
-          </a>
+          <div className="question-footer">
+            <a
+              className="comment-toggle"
+              style={{ cursor: "pointer" }}
+              onClick={toggleComments}
+            >
+              {isCommentsVisible ? "Hide Comments" : "Show Comments"}
+            </a>
+            <OpenModalButton
+              additionalClassNames={["add-comment"]}
+              buttonText="Comment"
+              modalComponent={
+                <CommentForm
+                  content_type={post.type}
+                  content_id={post.post.id}
+                />
+              }
+            />
+          </div>
           <div className="comment-break"></div>
         </div>
         {isCommentsVisible && <CommentList commentIds={commentIds} />}

@@ -53,8 +53,8 @@ export interface CreateCommentValidationError {
 export interface DeleteCommentResponse {
   message: string
   id: number
-  //   content_id: number
-  //   content_type: "question" | "answer"
+  content_id: number
+  content_type: "question" | "answer"
 }
 
 export interface DeleteCommentError {
@@ -117,10 +117,10 @@ export const editOneComment = createAsyncThunk<
 
 export const deleteOneComment = createAsyncThunk<
   DeleteCommentResponse,
-  { id: number },
+  { id: number; content_type: "question" | "answer"; content_id: number },
   { rejectValue: DeleteCommentError }
 >("comments/deleteOneComment", async (deleteInput, thunkApi) => {
-  const { id } = deleteInput
+  const { id, content_type, content_id } = deleteInput
   console.log("ID ---> ", id)
   const url = `/api/comments/${id}`
   console.log("URL ---> ", url)
@@ -131,7 +131,7 @@ export const deleteOneComment = createAsyncThunk<
   }
 
   const deletedComment = await response.json()
-  return { message: deletedComment.message, id }
+  return { message: deletedComment.message, id, content_id, content_type }
 })
 
 const initialState: CommentsSliceState = {}

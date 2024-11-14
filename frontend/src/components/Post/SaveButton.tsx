@@ -30,7 +30,11 @@ export const SaveButton: React.FC<SaveButtonProps> = ({ id, type }) => {
   })
   return (
     // <button className={buttonClass} onClick={handleToggleSave}>
-    <i className={buttonClass} onClick={handleToggleSave}></i>
+    <i
+      className={buttonClass}
+      onClick={handleToggleSave}
+      style={{ cursor: "pointer" }}
+    ></i>
     // </button>
   )
 }

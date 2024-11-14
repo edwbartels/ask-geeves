@@ -35,7 +35,11 @@ export const VoteButton: React.FC<VoteButtonProps> = ({
   })
 
   return (
-    <button className={buttonClass} onClick={handleVote}>
+    <button
+      className={buttonClass}
+      onClick={handleVote}
+      style={{ cursor: "pointer" }}
+    >
       {voteType === "up" ? (
         <i className="fa-solid fa-2x fa-arrow-up"></i>
       ) : (

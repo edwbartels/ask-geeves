@@ -9,13 +9,20 @@ export interface CommentListProps {
 
 export const CommentList = ({ commentIds }: CommentListProps) => {
   return (
-    <div className="comments-container">
+    <div className="comments-container" style={{ display: "" }}>
+      <hr
+        style={{
+          backgroundColor: "cyan",
+          height: "3px",
+          boxShadow: "1px 1px 7px 1px cyan",
+        }}
+      ></hr>
       {commentIds && commentIds.length > 0
         ? commentIds.map(commentId => {
             return (
               <div key={commentId} className="comment-key">
                 <CommentTile id={commentId} />
-                <hr className="comment-line" />
+                {/* <hr className="comment-line" /> */}
               </div>
             )
           })

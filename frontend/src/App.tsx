@@ -68,7 +68,7 @@ const router = createBrowserRouter([
             element: <TaggedQuestions/>,
           },
           {
-            path:":tagId/questions/:questionId",
+            path:":tagId/:tagName/:questionId",
             children: [
               { path: "", element: <QuestionMain /> },
               { path: "edit", element: <CreateOrEditPost /> },

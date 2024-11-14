@@ -27,20 +27,10 @@ export const LoginFormModal = () => {
       })
     }
 
-  // const handleSubmitLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault()
-  //   setErrors({})
-  //   // Send login request to back end
-  //   const response = await dispatch(loginAsync(loginForm)).unwrap()
-  //   console.log("res",response)
-  //   // Set errors if any come back
-  //   closeModal()
-  // }
   const handleSubmitLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setErrors({})
       const response = await dispatch(loginAsync(loginForm)).unwrap()
-      console.log("res", response)
       if (response.error) {
           setErrors(response)
       } else {
@@ -48,7 +38,7 @@ export const LoginFormModal = () => {
       }
 }
 
-  console.log(errors.error)
+
 
   const handleLogInDemo = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()

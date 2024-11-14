@@ -204,7 +204,7 @@ export const answersSlice = createAppSlice({
       })
       .addCase(deleteOneComment.fulfilled, (state, action) => {
         const { content_id, content_type, id } = action.payload
-        if (content_type === "question") {
+        if (content_type === "answer") {
           const oldCommentIds = state[content_id].commentIds
           state[content_id].commentIds = oldCommentIds?.filter(
             old => old !== id,

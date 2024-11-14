@@ -1,5 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "../app/createAppSlice"
+import { createSelector } from "reselect"
 import { Vote } from "./votesSlice"
 import { Save } from "./savesSlice"
 
@@ -158,13 +159,16 @@ export const sessionSlice = createAppSlice({
   selectors: {
     selectSession: session => session,
     selectUser: session => session.user,
-    selectAllQuestionsSettings: session => {
-      const settingsToString: Record<string, string> = {}
-      for (const [key, value] of Object.entries(session.allQuestionsSettings)) {
-        settingsToString[key] = value.toString()
-      }
-      return settingsToString
-    },
+    selectAllQuestionsSettings: createSelector(
+      session => session.allQuestionsSettings,
+      allQuestionsSettings => {
+        const settingsToString: Record<string, string> = {}
+        for (const [key, value] of Object.entries(allQuestionsSettings)) {
+          settingsToString[key] = (value as number).toString()
+        }
+        return settingsToString
+      },
+    ),
     // selectStatus: counter => counter.status,
   },
 })

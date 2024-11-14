@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@markdoc/markdoc": "^0.4.0",
     "@reduxjs/toolkit": "^2.0.1",
     "classnames": "^2.5.1",
@@ -23,7 +25,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.1.0",
-    "react-router-dom": "^6.27.0"
+    "react-router-dom": "^6.27.0",
+    "reselect": "^5.1.1"
   },
   "devDependencies": {
     "@testing-library/dom": "^9.3.4",

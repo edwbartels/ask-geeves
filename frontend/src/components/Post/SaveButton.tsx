@@ -28,16 +28,7 @@ export const SaveButton: React.FC<SaveButtonProps> = ({ id, type }) => {
   const buttonClass = classNames("save-button fa-regular fa-bookmark fa-xl", {
     "save-active": isSaved,
   })
-  return (
-    // <button className={buttonClass} onClick={handleToggleSave}>
-    <i
-      className={buttonClass}
-      onClick={handleToggleSave}
-      style={{ cursor: "pointer" }}
-    ></i>
-
-    // </button>
-  )
+  return <i className={buttonClass} onClick={handleToggleSave}></i>
 }
 
 <i className="fa-solid fa-bookmark"></i>

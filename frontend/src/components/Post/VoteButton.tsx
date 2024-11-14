@@ -1,6 +1,7 @@
 import classNames from "classnames"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { selectVoteByContentAndId, updateVote } from "../../features/votesSlice"
+import { selectUser } from "../../features/sessionSlice"
 
 interface VoteButtonProps {
   id: number
@@ -16,16 +17,19 @@ export const VoteButton: React.FC<VoteButtonProps> = ({
   const voteInstance = useAppSelector(state =>
     selectVoteByContentAndId(state, type, id),
   )
+  const isLoggedIn = useAppSelector(state => selectUser(state)) !== null
 
   const isActive =
     (voteType === "up" && voteInstance?.value === 1) ||
     (voteType === "down" && voteInstance?.value === -1)
 
   const handleVote = () => {
-    const voteValue = voteType === "up" ? 1 : -1
-    dispatch(
-      updateVote({ content_id: id, content_type: type, value: voteValue }),
-    )
+    if (isLoggedIn) {
+      const voteValue = voteType === "up" ? 1 : -1
+      dispatch(
+        updateVote({ content_id: id, content_type: type, value: voteValue }),
+      )
+    }
   }
 
   const buttonClass = classNames({
@@ -35,11 +39,7 @@ export const VoteButton: React.FC<VoteButtonProps> = ({
   })
 
   return (
-    <button
-      className={buttonClass}
-      onClick={handleVote}
-      style={{ cursor: "pointer" }}
-    >
+    <button className={buttonClass} onClick={handleVote}>
       {voteType === "up" ? (
         <i className="fa-solid fa-2x fa-arrow-up"></i>
       ) : (

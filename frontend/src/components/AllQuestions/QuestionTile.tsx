@@ -35,7 +35,7 @@ export const QuestionTile = ({ questionId }: Props) => {
       </div>
       <div className="question-block">
         <p>
-          <Link className="sub-title" to={`questions/${questionId}`}>
+          <Link className="sub-title" to={`${questionId}`}>
             {question.id} - {question.title}
           </Link>
         </p>

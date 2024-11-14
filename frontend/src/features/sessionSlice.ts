@@ -1,5 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "../app/createAppSlice"
+import { addManyUsers, usersSlice } from "./usersSlice"
 import { Vote } from "./votesSlice"
 import { Save } from "./savesSlice"
 
@@ -75,7 +76,19 @@ export const sessionSlice = createAppSlice({
       restoreSession: create.asyncThunk(
         async (_, thunkApi) => {
           const response = await fetch("/api/session/")
-          const userSession = await response.json()
+          const userSession: SessionResponse = await response.json()
+          if (!response.ok) {
+            thunkApi.rejectWithValue(response)
+          }
+          if (userSession.user) {
+            const user = {
+              id: userSession.user.id,
+              first_name: userSession.user.first_name,
+              last_name: userSession.user.last_name,
+              username: userSession.user.username,
+            }
+            thunkApi.dispatch(addManyUsers([user]))
+          }
           return userSession
         },
         {

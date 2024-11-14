@@ -44,9 +44,9 @@ export const NavBar = () => {
       <div className="user-greeting">
         {user ? `Welcome ${user?.first_name}` : ""}
       </div>
-      <a href="/questions/ask" className="post-links">
+      <NavLink to="/questions/ask" className="post-links">
         Post a question
-      </a>
+      </NavLink>
       {!user ? (
         <div className="nav-buttons">
           <OpenModalButton

@@ -1,4 +1,4 @@
-import { Link, useParams, useNavigate } from "react-router-dom"
+import { Link, useParams, useNavigate, NavLink } from "react-router-dom"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { selectSession } from "../../features/sessionSlice"
 import { selectUserById } from "../../features/usersSlice"
@@ -130,9 +130,9 @@ export const Post = ({ type, id }: Props) => {
           )}
           <div className="post-meta">
             <div>
-              <a href={`#${permalink}`}>
+              <NavLink to={`#${permalink}`}>
                 <i className="fa-solid fa-xl fa-link"></i>
-              </a>
+              </NavLink>
 
               {isUserPostWriter && post.type === "question" ? (
                 <Link to={`edit`}>Edit {post.type}</Link>

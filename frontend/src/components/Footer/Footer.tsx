@@ -13,14 +13,14 @@ export const Footer = () => {
         <ul>
           <h3 className="list-title">Ask Geeves</h3>
           <ul>
-            <a className="faq" href="/faq">
+            <NavLink className="faq" to="/faq">
               FAQ's
-            </a>
+            </NavLink>
           </ul>
           <ul>
-            <a className="questions" href="/questions">
+            <NavLink className="questions" to="/questions">
               Questions
-            </a>
+            </NavLink>
           </ul>
         </ul>
       </div>
@@ -28,14 +28,14 @@ export const Footer = () => {
         <ul>
           <h3 className="list-title">Company</h3>
           <ul>
-            <a className="about-us" href="/about-us">
+            <NavLink className="about-us" to="/about-us">
               About Us
-            </a>
+            </NavLink>
           </ul>
           <ul>
-            <a className="contact-us" href="/team">
+            <NavLink className="contact-us" to="/team">
               The Team
-            </a>
+            </NavLink>
           </ul>
         </ul>
       </div>

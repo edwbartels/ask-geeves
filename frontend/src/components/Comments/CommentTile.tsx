@@ -1,6 +1,7 @@
 import { useAppSelector } from "../../app/hooks"
 import { selectUserById } from "../../features/usersSlice"
 import { selectCommentById } from "../../features/commentsSlice"
+import { NavLink } from "react-router-dom"
 
 interface Props {
   id: number
@@ -16,7 +17,7 @@ export const CommentTile = ({ id }: Props) => {
         <p>{comment.content}</p>
         <div className="comment-info">
           <p>
-            <a href={`/user/${writer.id}`}>@{writer.username}</a>
+            <NavLink to={`/user/${writer.id}`}>@{writer.username}</NavLink>
           </p>
           <p>{comment.created_at}</p>
         </div>

@@ -31,12 +31,12 @@ export const AllQuestions = () => {
   } else {
     searchParams.delete("tag")
   }
+
   const searchParamsString = searchParams.toString()
 
   useEffect(() => {
     dispatch(fetchAllQuestions(searchParams.toString()))
   }, [searchParamsString, dispatch, fetchAllQuestions])
-
   const questions = useAppSelector(selectQuestionsArr)
   // }
   const questionIds = questions.map(question => (question as Question).id)
@@ -79,6 +79,7 @@ export const AllQuestions = () => {
       </div>
       <div className="page-count-container">
         <p className="per-page">
+
           Per page:
           <button
             className={`page-number ${sizeSetting === 5 ? "page-active" : ""}`}

@@ -2,9 +2,7 @@ import { useState } from "react"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { selectTags, getAllTags } from "../../features/tagsSlice"
 import { Tag } from "../Tag/Tag"
-import { TagTile } from "../Tag/TagTile"
-import "../tag/devicon-base.css"
-import './AllTags.css'
+
 
 export const AllTags = () => {
   const dispatch = useAppDispatch()
@@ -20,7 +18,7 @@ export const AllTags = () => {
         <hr className="tag-line" />
         <div className="all-tags">
           {tagIds.map(tagId => (
-            <TagTile key={tagId} tagId={Number(tagId)} />
+            <Tag key={tagId} tagId={Number(tagId)} />
           ))}
         </div>
       </div>

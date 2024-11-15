@@ -41,28 +41,35 @@ export const CommentTile = ({ id }: Props) => {
         <div className="comment-body">
           <p>{comment.content}</p>
           <div className="comment-meta">
-          <p>
-            <Link to={`/user/${writer.id}`}>@{writer.username}</Link>
-          </p>
-            <div>{comment.created_at}</div>
-            {belongsToCurrentUser && (
-              <OpenModalButton
-                buttonText="Edit"
-                modalComponent={
-                  <CommentForm
-                    id={id}
-                    content_id={comment.content_id}
-                    content_type={comment.content_type}
-                  />
-                }
-              />
-            )}
-            {belongsToCurrentUser && (
-              <button className="delete-button" onClick={handleDeleteComment}>
-                Delete
-              </button>
-            )}
-            <a href={`/user/${writer.id}`}>@{writer.username}</a>
+            <div className="comment-meta-left">
+              <div>
+                <Link to={`/user/${writer.id}`} className="comment-user">
+                  @{writer.username}
+                </Link>
+              </div>
+
+              <div>{comment.created_at}</div>
+            </div>
+            <div className="comment-meta-right">
+              {belongsToCurrentUser && (
+                <OpenModalButton
+                  buttonText="Edit"
+                  additionalClassNames={["edit"]}
+                  modalComponent={
+                    <CommentForm
+                      id={id}
+                      content_id={comment.content_id}
+                      content_type={comment.content_type}
+                    />
+                  }
+                />
+              )}
+              {belongsToCurrentUser && (
+                <button className="delete-button" onClick={handleDeleteComment}>
+                  Delete
+                </button>
+              )}
+            </div>
           </div>
         </div>
         <hr className="comment-line" />

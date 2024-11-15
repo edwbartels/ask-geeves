@@ -32,9 +32,8 @@ interface Error {
   message: string
 }
 export const CreateOrEditPost = () => {
-  // console.log("first render")
+
   const { questionId } = useParams()
-  // const questionIdNum = Number(questionId)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 

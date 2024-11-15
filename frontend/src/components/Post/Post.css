@@ -625,8 +625,9 @@ edit::after {
   margin-bottom: 15px;
 }
 
-button.up {
+.up {
   cursor: pointer;
+  margin-top:6px;
   margin-bottom: 6px;
   color: black;
   background-color: rgba(0, 255, 251, 1);
@@ -638,8 +639,9 @@ button.up {
 
 }
 
-button.down {
+.down {
   cursor: pointer;
+  margin-top:6px;
   margin-bottom: 6px;
   color: black;
   background-color: rgba(0, 255, 251, 1);
@@ -648,52 +650,10 @@ button.down {
   border: 5px solid rgba(255, 255, 255, 1);
 }
 
-/* .render-question-div {
-  box-shadow: 0 0 2px 2px #feaee3,
-              0 0 5px 2px #f087d3;
-              box-shadow: 0 0 10px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
-} */
-
 .question-body {
   border: 3px solid rgba(255, 255, 255, 1);
   box-shadow: 0 0 10px 3px #feaee3,
               0 0 10px 5px #f087d3;
-}
-
-button.up:hover {
-  cursor: pointer;
-  margin-top: 6px;
-  color: black;
-  background-color: black;
-  border-radius: 60px;
-  box-shadow: none;
-  margin-bottom: 5px;
-  border: 5px solid rgba(255, 255, 255, 1);
-  box-shadow:
-    0 0 10px rgba(0, 255, 251, 1),
-    0 0 10px rgba(0, 255, 251, 1) inset,
-    0 0 20px rgba(0, 255, 251, 1),
-    0 0 20px rgba(0, 255, 251, 1) inset,
-    0 0 30px rgba(0, 255, 251, 1),
-    0 0 30px rgba(0, 255, 251, 1) inset;
-}
-
-button.down:hover {
-  cursor: pointer;
-  margin-top: 6px;
-  color: black;
-  background-color: black;
-  border-radius: 60px;
-  box-shadow: none;
-  margin-bottom: 5px;
-  border: 5px solid rgba(255, 255, 255, 1);
-  box-shadow:
-    0 0 10px rgba(0, 255, 251, 1),
-    0 0 10px rgba(0, 255, 251, 1) inset,
-    0 0 20px rgba(0, 255, 251, 1),
-    0 0 20px rgba(0, 255, 251, 1) inset,
-    0 0 30px rgba(0, 255, 251, 1),
-    0 0 30px rgba(0, 255, 251, 1) inset;
 }
 
 .vote-active {
@@ -703,6 +663,42 @@ button.down:hover {
   background-color: black;
   border-radius: 60px;
   box-shadow: none;
+  margin-bottom: 6px;
+  border: 5px solid rgba(255, 255, 255, 1);
+  box-shadow:
+    0 0 10px rgba(0, 255, 251, 1),
+    0 0 10px rgba(0, 255, 251, 1) inset,
+    0 0 20px rgba(0, 255, 251, 1),
+    0 0 20px rgba(0, 255, 251, 1) inset,
+    0 0 30px rgba(0, 255, 251, 1),
+    0 0 30px rgba(0, 255, 251, 1) inset;
+}
+
+.up:hover {
+  cursor: pointer;
+  margin-top: 6px;
+  color: black;
+  background-color: black;
+  border-radius: 60px;
+  box-shadow: none;
+  margin-bottom: 6px;
+  border: 5px solid rgba(255, 255, 255, 1);
+  box-shadow:
+    0 0 10px rgba(0, 255, 251, 1),
+    0 0 10px rgba(0, 255, 251, 1) inset,
+    0 0 20px rgba(0, 255, 251, 1),
+    0 0 20px rgba(0, 255, 251, 1) inset,
+    0 0 30px rgba(0, 255, 251, 1),
+    0 0 30px rgba(0, 255, 251, 1) inset;
+}
+
+.down:hover {
+  cursor: pointer;
+  margin-top: 6px;
+  color: black;
+  background-color: black;
+  border-radius: 60px;
+  box-shadow: none;
   margin-bottom: 5px;
   border: 5px solid rgba(255, 255, 255, 1);
   box-shadow:
@@ -713,6 +709,8 @@ button.down:hover {
     0 0 30px rgba(0, 255, 251, 1),
     0 0 30px rgba(0, 255, 251, 1) inset;
 }
+
+
 
 .save-active {
   cursor: pointer;
@@ -726,14 +724,18 @@ button.down:hover {
 .save-button {
   background-color: black;
   align-content: center;
+  margin:10px;
 }
 
 
 .save {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   align-content: center;
   margin-top: 30px;
+}
+.share-link:hover{
+  color:rgba(0, 255, 251, 1);
 }
 
 .fa-link {
@@ -743,6 +745,7 @@ button.down:hover {
 
 .save-button:hover {
   color: hsl(317 100% 54%);
+  cursor:pointer
 }
 
 .add-comment {

@@ -28,13 +28,11 @@ export const getAllTags = createAsyncThunk<GetAllTagsResponse, void>(
   "tags/getAllTags",
   async (_, thunkApi) => {
     const response = await fetch("/api/questions/tags")
-    // console.log(response)
     if (!response.ok) {
       const error = await response.json()
       return error
     }
     const tags: GetAllTagsResponse = await response.json()
-    // console.log(tags)
     return tags
   },
 )

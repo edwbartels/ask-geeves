@@ -13,8 +13,10 @@ export const Tag = ({ tagId }: Props) => {
   }
   const tagNameSnakeCase = tag.name.replace(" ", "-").toLowerCase()
   return (
-      <Link to={`/tagged/${tagId}/${tagNameSnakeCase}`} className="question-tag">
+      <div className="tag-div">
+        <Link to={`/tagged/${tagId}/${tagNameSnakeCase}`} className="question-tag">
         {tag.name}
       </Link>
+      </div>
   )
 }

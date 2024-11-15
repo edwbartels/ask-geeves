@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
-import './UserDetailPage.css'
+import "./UserDetailPage.css"
 
 interface userDetails {
   User: {
     first_name: string
     last_name: string
-    username:string
+    username: string
   }
   questions: {
     question_id: number
@@ -35,7 +35,7 @@ export const UserDetailPage = () => {
     User: {
       first_name: "",
       last_name: "",
-      username:""
+      username: "",
     },
     questions: [],
     answers: [],
@@ -63,7 +63,11 @@ export const UserDetailPage = () => {
   return (
     <div className="user-detail-page">
       <div className="name-div">
-        <div className="profile-icon"><p><i className="fa-solid fa-id-badge"></i></p></div>
+        <div className="profile-icon">
+          <p>
+            <i className="fa-solid fa-id-badge"></i>
+          </p>
+        </div>
         <div className="name">
           <h3 className="name">{userDetails.User.first_name}</h3>
           <h3 className="name">{userDetails.User.last_name}</h3>
@@ -75,7 +79,10 @@ export const UserDetailPage = () => {
           userDetails.questions.map(question => (
             <div className="user-question-title" key={question.question_id}>
               <h3>
-                <Link className="user-questions" to={`/questions/${question.question_id}`}>
+                <Link
+                  className="user-questions"
+                  to={`/questions/${question.question_id}`}
+                >
                   {question.title}{" "}
                 </Link>
               </h3>
@@ -96,7 +103,10 @@ export const UserDetailPage = () => {
           userDetails.answers.map(answer => (
             <div key={answer.answer_id}>
               <h3>
-                <Link className="user-answers" to={`/questions/${answer.question_id}`}>
+                <Link
+                  className="user-answers"
+                  to={`/questions/${answer.question_id}`}
+                >
                   {" "}
                   {answer.title}{" "}
                 </Link>
@@ -119,7 +129,10 @@ export const UserDetailPage = () => {
           userDetails.comments.map(comment => (
             <div key={comment.comment_id}>
               <h3>
-                <Link className="user-comments" to={`/questions/${comment.question_id}`}>
+                <Link
+                  className="user-comments"
+                  to={`/questions/${comment.question_id}`}
+                >
                   {" "}
                   {comment.title}{" "}
                 </Link>

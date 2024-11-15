@@ -106,7 +106,7 @@ export const savesSlice = createAppSlice({
     builder
       .addCase(toggleSave.fulfilled, (state, action) => {
         const { savedStatus, ...newSave } = action.payload
-        // console.log(newSave)
+
         if (savedStatus)
           state[newSave.content_type][newSave.content_id] = { ...newSave }
         else delete state[newSave.content_type][newSave.content_id]

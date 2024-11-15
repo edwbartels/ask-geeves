@@ -40,7 +40,7 @@ export const QuestionTile = ({ questionId }: Props) => {
           </Link>
         </p>
         <hr className="underline" />
-        <p className="question-summary">{question.content}</p>
+        <p className="question-summary">{`${question.content.slice(0, 250)}${question.content.length > 250 ? "..." : ""}`}</p>
         <div>
           <div className="question-tags">
             {question.tagIds.map(tagId => (

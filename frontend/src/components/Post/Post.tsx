@@ -133,7 +133,7 @@ export const Post = ({ type, id }: Props) => {
             <div className="post-interact" id={permalink}>
               <RenderPost postContent={post.post.content} />
               {post.type === "question" && (
-                <div className="all-tags">
+                <div className="all-tags-post">
                   {post.post.tagIds.map((tagId, i) => (
                     <Tag key={tagId} tagId={tagId} />
                   ))}
@@ -142,7 +142,9 @@ export const Post = ({ type, id }: Props) => {
               <div className="post-meta">
                 <div>
                   {isUserPostWriter && post.type === "question" ? (
-                    <Link to={`edit`}>Edit {post.type}</Link>
+                    <Link to={`edit`} className="edit-post">
+                      Edit {post.type}
+                    </Link>
                   ) : isUserPostWriter && post.type === "answer" ? (
                     <OpenModalButton
                       additionalClassNames={["edit"]}

@@ -8,7 +8,16 @@ import {
 import { useAppSelector } from "../app/hooks"
 import { createAppSlice } from "../app/createAppSlice"
 import { SessionResponse, restoreSession, loginAsync } from "./sessionSlice"
-
+export interface SaveItem {
+  question_id: number;
+  title: string;
+  question_content: string;
+  answer_id: number;
+  answer_content: string;
+  // comment_id: number;
+  // comment_content: string;
+  // parent_type: 'question' | 'answer';
+}
 export interface Save {
   id: number
   content_id: number
@@ -18,6 +27,7 @@ export type SavesSliceState = {
   question: Record<number, Save>
   answer: Record<number, Save>
   comment: Record<number, Save>
+  items: SaveItem[]
 }
 export type ToggleSaveRequest = {
   id: number
@@ -74,6 +84,22 @@ export const toggleSave = createAsyncThunk<
   }
 })
 
+export const fetchAllSaves = createAsyncThunk
+('saves/fetchAllSaves', async (_, thunkApi) => {
+  try {
+    const response = await fetch('/api/saves/currentuser');
+    if (!response.ok) {
+      const error = await response.json();
+      return thunkApi.rejectWithValue(error);
+    }
+    const data = await response.json();
+    return data.all_saves as SaveItem[];
+  } catch (error) {
+    console.error(error);
+    return thunkApi.rejectWithValue({ error: 'Failed to fetch saves' });
+  }
+});
+
 const isLogInAction = (
   action: Action,
 ): action is PayloadAction<SessionResponse> => {
@@ -88,6 +114,7 @@ const initialState: SavesSliceState = {
   question: {},
   answer: {},
   comment: {},
+  items: []
 }
 
 export const savesSlice = createAppSlice({
@@ -111,6 +138,9 @@ export const savesSlice = createAppSlice({
           state[newSave.content_type][newSave.content_id] = { ...newSave }
         else delete state[newSave.content_type][newSave.content_id]
       })
+      .addCase(fetchAllSaves.fulfilled, (state, action) => {
+        state.items = action.payload
+      })
       .addMatcher(isLogInAction, (state, action) => {
         if (action.payload && action.payload.user) {
           const { saves } = action.payload.user
@@ -130,6 +160,7 @@ export const savesSlice = createAppSlice({
     ) => {
       return state[content_type][content_id]
     },
+    selectAllSaveItems: state => state.items
   },
 })
 
@@ -137,4 +168,4 @@ export const savesSlice = createAppSlice({
 export const { addManySaves } = savesSlice.actions
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectSaves, selectSaveByContentAndId } = savesSlice.selectors
+export const { selectSaves, selectSaveByContentAndId,selectAllSaveItems } = savesSlice.selectors

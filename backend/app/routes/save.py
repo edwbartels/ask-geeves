@@ -50,42 +50,42 @@ def get_all_saves():
             "answer_content": answer.content,
         }
         final.append(newA)
-    comment_list = [
-        save
-        for save in saves_list
-        if save["parent_type"] in ["question", "answer"]
-        and save["content_type"] == "comment"
-    ]
+    # comment_list = [
+    #     save
+    #     for save in saves_list
+    #     if save["parent_type"] in ["question", "answer"]
+    #     and save["content_type"] == "comment"
+    # ]
 
-    for saved_comment in comment_list:
-        comment = Comment.query.get(saved_comment["content_id"])
-        if saved_comment["parent_type"] == "question":
-            question = Question.query.get(comment.content_id)
-            new_comment = {
-                "question_id": question.id,
-                "title": question.title,
-                # "content_type": "comment",
-                "question_content": question.content,
-                "parent_type": "question",
-                "comment_id": saved_comment["content_id"],
-                "comment_content": comment.content,
-            }
-            final.append(new_comment)
-        elif saved_comment["parent_type"] == "answer":
-            answer = Answer.query.get(comment.content_id)
-            question = Question.query.get(answer.question_id)
-            new_comment = {
-                # "id": answer.id,
-                "question_id": question.id,
-                "title": question.title,
-                # "content_type": "comment",
-                "question_content": question.content,
-                "parent_type": "answer",
-                # "answer_content": answer.content,
-                "comment_id": saved_comment["content_id"],
-                "comment_content": comment.content,
-            }
-            final.append(new_comment)
+    # for saved_comment in comment_list:
+    #     comment = Comment.query.get(saved_comment["content_id"])
+    #     if saved_comment["parent_type"] == "question":
+    #         question = Question.query.get(comment.content_id)
+    #         new_comment = {
+    #             "question_id": question.id,
+    #             "title": question.title,
+    #             # "content_type": "comment",
+    #             "question_content": question.content,
+    #             "parent_type": "question",
+    #             "comment_id": saved_comment["content_id"],
+    #             "comment_content": comment.content,
+    #         }
+    #         final.append(new_comment)
+    #     elif saved_comment["parent_type"] == "answer":
+    #         answer = Answer.query.get(comment.content_id)
+    #         question = Question.query.get(answer.question_id)
+    #         new_comment = {
+    #             # "id": answer.id,
+    #             "question_id": question.id,
+    #             "title": question.title,
+    #             # "content_type": "comment",
+    #             "question_content": question.content,
+    #             "parent_type": "answer",
+    #             # "answer_content": answer.content,
+    #             "comment_id": saved_comment["content_id"],
+    #             "comment_content": comment.content,
+    #         }
+    #         final.append(new_comment)
     return jsonify({"all_saves": final}), 200
 
 @bp.route("/<int:save_id>", methods = ["POST","DELETE"])

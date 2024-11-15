@@ -302,3 +302,53 @@
   padding-left: 10px;
   padding-right: 10px;
 }
+
+.user-profile{
+  font-size:40px;
+  margin-right:15px
+}
+.fa-regular.user-profile{
+  color: hsl(317 100% 40%);
+}
+.fa-solid.user-profile{
+  color: rgba(0, 255, 251, 1)
+}
+
+.user-dropdown{
+  position:relative;
+  display:inline-block;
+  cursor:pointer;
+}
+
+.dropdown-menu{
+  position: absolute;
+  top: 100%;
+  right: 5px;
+  width: 70px;
+  border: hsl(317 100% 40%) 5px solid;
+  border-radius:5px;
+  z-index: 1000;
+  list-style-type:none;
+  margin-top:2px;
+  padding:1px;
+  margin-right:2px;
+
+}
+.dropdown-text{
+text-decoration: none;
+color: rgba(0, 255, 251, 1);
+padding-left:5px;
+padding-bottom:1px;
+}
+.dropdown-text > a{
+text-decoration: none;
+color: rgba(0, 255, 251, 1)
+}
+.dropdown-text:hover{
+  color: hsl(317 100% 40%);
+  font-weight:bold;
+}
+.dropdown-text > a:hover{
+  color: hsl(317 100% 40%);
+  
+}

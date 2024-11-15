@@ -1,5 +1,6 @@
-import { useEffect } from "react"
+import { useEffect, useState, useRef } from "react"
 import { Link } from "react-router-dom"
+import classNames from "classnames"
 
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import {
@@ -21,6 +22,25 @@ export const NavBar = () => {
     dispatch(restoreSession())
     dispatch(getAllTags())
   }, [])
+
+  const [isHovered, setIsHovered] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const handleMouseEnter = () => setIsHovered(true)
+  const handleMouseLeave = () => setIsHovered(false)
+  const toggleDropdown = () => setIsOpen(prev => !prev)
+  const closeDropdown = () => setIsOpen(false)
+  useEffect(() => {
+    const handleAnyClick = () => {
+      closeDropdown()
+    }
+    document.addEventListener("click", handleAnyClick)
+    return () => {
+      setIsOpen(false)
+      document.removeEventListener("click", handleAnyClick)
+    }
+  }, [])
+
   // const onClick = () => {
   //   if (onModalClose) setOnModalClose(onModalClose)
   //   setModalContent(modalComponent)
@@ -64,12 +84,44 @@ export const NavBar = () => {
           />
         </div>
       ) : (
-        <button
-          className="logout-button"
-          onClick={() => dispatch(logoutAsync())}
-        >
-          Log out
-        </button>
+        <div className="nav-buttons nav-user-buttons">
+          {/* <Link to={`/user/${user.id}`}> */}
+          <div className="user-dropdown" ref={menuRef}>
+            <i
+              className={`fa-circle-user user-profile ${isHovered ? "fa-solid" : "fa-regular"}`}
+              id="profile"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onClick={e => {
+                e.stopPropagation()
+                toggleDropdown()
+              }}
+            ></i>
+            {isOpen && (
+              <ul className="dropdown-menu">
+                <li className="dropdown-text">
+                  <Link to={`/account`} className="profile-text">
+                    Profile
+                  </Link>
+                </li>
+                <li className="dropdown-text">Saves</li>
+                <li
+                  className="dropdown-text"
+                  onClick={() => dispatch(logoutAsync())}
+                >
+                  Logout
+                </li>
+              </ul>
+            )}
+          </div>
+          {/* </Link> */}
+          {/* <button
+            className="logout-button"
+            onClick={() => dispatch(logoutAsync())}
+          >
+            Log out
+          </button> */}
+        </div>
       )}
     </nav>
   )

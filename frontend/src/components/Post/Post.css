@@ -627,6 +627,7 @@ edit::after {
 
 button.up {
   cursor: pointer;
+  margin-top:6px;
   margin-bottom: 6px;
   color: black;
   background-color: rgba(0, 255, 251, 1);
@@ -640,6 +641,7 @@ button.up {
 
 button.down {
   cursor: pointer;
+  margin-top:6px;
   margin-bottom: 6px;
   color: black;
   background-color: rgba(0, 255, 251, 1);
@@ -667,7 +669,7 @@ button.up:hover {
   background-color: black;
   border-radius: 60px;
   box-shadow: none;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   border: 5px solid rgba(255, 255, 255, 1);
   box-shadow:
     0 0 10px rgba(0, 255, 251, 1),
@@ -685,7 +687,7 @@ button.down:hover {
   background-color: black;
   border-radius: 60px;
   box-shadow: none;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   border: 5px solid rgba(255, 255, 255, 1);
   box-shadow:
     0 0 10px rgba(0, 255, 251, 1),
@@ -726,14 +728,18 @@ button.down:hover {
 .save-button {
   background-color: black;
   align-content: center;
+  margin:10px;
 }
 
 
 .save {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   align-content: center;
   margin-top: 30px;
+}
+.share-link:hover{
+  color:rgba(0, 255, 251, 1);
 }
 
 .fa-link {
@@ -743,6 +749,7 @@ button.down:hover {
 
 .save-button:hover {
   color: hsl(317 100% 54%);
+  cursor:pointer
 }
 
 .add-comment {

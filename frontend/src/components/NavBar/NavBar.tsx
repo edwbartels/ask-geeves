@@ -26,7 +26,6 @@ export const NavBar = () => {
   //   setModalContent(modalComponent)
   //   if (typeof onButtonClick === "function") onButtonClick()
   // }
-  console.log("in nav bar")
   return (
     <nav className="nav-bar">
       <Logo />

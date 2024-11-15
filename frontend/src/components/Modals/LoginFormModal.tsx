@@ -51,12 +51,6 @@ export const LoginFormModal = () => {
     } catch (e) {
       console.log("error", e)
     }
-
-    // if (loginDemoUserAsync.fulfilled.match(response)) {
-    //   closeModal()
-    // } else if (loginDemoUserAsync.rejected.match(response)) {
-    //   console.log("an error", response)
-    // }
   }
 
   return (
@@ -67,7 +61,8 @@ export const LoginFormModal = () => {
           <label className="login-form-item">
             <h3 className="login-title">Login</h3>
             <div className="email-title">Username/Email</div>
-            <input className="input"
+            <input
+              className="input"
               onChange={handleChangeLoginForm("credential")}
               defaultValue={loginForm.credential}
               placeholder="Username/Email"
@@ -80,7 +75,8 @@ export const LoginFormModal = () => {
         <div>
           <label className="login-form-item">
             <div className="password-title">Password</div>
-            <input className="input"
+            <input
+              className="input"
               onChange={handleChangeLoginForm("password")}
               placeholder="Password"
               defaultValue={loginForm.password}
@@ -91,16 +87,21 @@ export const LoginFormModal = () => {
           </label>
         </div>
         <div className="button-div">
-        <button className="login-form-button"
-          disabled={isDisabledSubmit}
-          data-testid="login-button" // Identifier
-        >
-          Log In
-        </button>
-      <button className="demo-form-button" onClick={handleLogInDemo} data-testid="demo-user-login">
-        Log in Demo User
-      </button>
-      </div>
+          <button
+            className="login-form-button"
+            disabled={isDisabledSubmit}
+            data-testid="login-button" // Identifier
+          >
+            Log In
+          </button>
+          <button
+            className="demo-form-button"
+            onClick={handleLogInDemo}
+            data-testid="demo-user-login"
+          >
+            Log in Demo User
+          </button>
+        </div>
       </form>
     </div>
   )

@@ -18,16 +18,10 @@ export const AllQuestions = () => {
   if (!searchParams.has("page")) {
     searchParams.set("page", pageSettings.page)
   }
-  // if (!searchParams.has("size")) {
-  //   searchParams.set("size", pageSettings.size)
-  // }
   useEffect(() => {
     searchParams.set("size", "15")
     setSearchParams(searchParams)
   }, [])
-
-  // console.log(searchParams.get("size"))
-  // console.log(searchParams, searchParams.keys())
 
   const [gotQuestions, setGotQuestions] = useState(false)
   const questions = useAppSelector(selectQuestionsArr)

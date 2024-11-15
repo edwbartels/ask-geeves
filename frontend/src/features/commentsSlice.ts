@@ -121,9 +121,7 @@ export const deleteOneComment = createAsyncThunk<
   { rejectValue: DeleteCommentError }
 >("comments/deleteOneComment", async (deleteInput, thunkApi) => {
   const { id, content_type, content_id } = deleteInput
-  console.log("ID ---> ", id)
   const url = `/api/comments/${id}`
-  console.log("URL ---> ", url)
   const response = await fetch(url, { method: "DELETE" })
   if (!response.ok) {
     const error = await response.json()

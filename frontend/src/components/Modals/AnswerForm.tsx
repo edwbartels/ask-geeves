@@ -10,8 +10,8 @@ import {
   selectAnswerById,
 } from "../../features/answersSlice"
 import { selectSession } from "../../features/sessionSlice"
-import './AnswerForm.css'
-import '../Post/Post.css'
+import "./AnswerForm.css"
+import "../Post/Post.css"
 import { selectQuestionById } from "../../features/questionsSlice"
 interface Props {
   questionId: number
@@ -33,7 +33,6 @@ export const AnswerForm = ({ questionId, answerId }: Props) => {
   }
   const handleSubmitAnswer = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log("submitting form")
     if (sessionUser.user) {
       const userId = sessionUser.user.id
       const questionId = question.id
@@ -41,7 +40,6 @@ export const AnswerForm = ({ questionId, answerId }: Props) => {
       if (!answerId) {
         const response = await dispatch(createOneAnswer(answerForm)).unwrap()
         const { id: answerId } = response.answer
-        // console.log("submitted form", form)
         closeModal()
       } else if (answerId) {
         const response = await dispatch(
@@ -72,7 +70,7 @@ export const AnswerForm = ({ questionId, answerId }: Props) => {
             />
           </div>
           <div className="submit-answer-button-div">
-          <button className="submit-new-answer-button">Submit answer</button>
+            <button className="submit-new-answer-button">Submit answer</button>
           </div>
         </form>
         <RenderPost postContent={form} />

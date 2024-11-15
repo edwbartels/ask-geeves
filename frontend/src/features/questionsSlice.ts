@@ -46,6 +46,7 @@ export interface QuestionForm {
   title: string
   content: string
   tag?: string[]
+  id?: string
 }
 export interface CreateQuestionError {
   message: string
@@ -138,7 +139,9 @@ export const fetchAllQuestions = createAsyncThunk<
         }
       }
     }
-    thunkApi.dispatch(updateAllQuestionsInfo({ page, num_pages }))
+    num_pages === 0 || page === 0
+      ? thunkApi.dispatch(updateAllQuestionsInfo({ page: 1, num_pages: 1 }))
+      : thunkApi.dispatch(updateAllQuestionsInfo({ page, num_pages }))
     // thunkApi.dispatch(
     //   setAllQuestionsSettings({
     //     page: page,
@@ -292,8 +295,10 @@ export const createOneQuestion = createAsyncThunk<
   QuestionForm,
   { rejectValue: CreateQuestionError }
 >("questions/createOneQuestion", async (post, thunkApi) => {
-  const response = await fetch("/api/questions/", {
-    method: "POST",
+  const url = post.id ? `/api/questions/${post.id}` : `/api/questions`
+  const method = post.id ? `PUT` : `POST`
+  const response = await fetch(url, {
+    method: method,
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(post),
   })

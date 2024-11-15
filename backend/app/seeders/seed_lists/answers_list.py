@@ -766,23 +766,80 @@ answers = [
     {
         "user_id": 21,
         "question_id": 32,
-        "content": """ When to use arrow function and when not. 
-            ### When to use arrow functions:
-            1. Arrow functions provide a concise way to write small, anonymous functions, which makes them ideal for simple operations like callbacks or inline functions.
-            \n
-            2. Arrow functions are commonly used with higher-order functions like .map(), .filter(), .reduce(), etc., because they make the code more compact and readable.
-            \n
-            3. Arrow functions do not have their own this context. Instead, they inherit this from the surrounding context (lexical scoping). This makes them useful in cases where you want the function to retain the this value of its enclosing context, especially when dealing with methods in classes or event handlers.
-            \n 
-            ### When to NOT use arrow functions:
-            1. Regular functions have their own this context, which is useful if you need to dynamically change this based on how the function is called. In contrast, arrow functions inherit this from their enclosing context and don't allow dynamic binding.
-            \n
-            2. If you need to define methods that should be bound to the object they belong to (i.e., methods that rely on this), it's better to use regular function expressions rather than arrow functions. Using arrow functions in methods will cause them to not have their own this, which could break the expected behavior.
-            \n
-            3. Arrow functions do not have their own arguments object. If you need to access the arguments object inside the function, you should use a regular function expression.
-            \n
-            4. Arrow functions do not have their own arguments object. If you need to access the arguments object inside the function, you should use a regular function expression.
-            """,
+        "content": """
+# JavaScript Array Operations - Sample Response
+
+Hi! Below are the solutions to the questions about array operations in JavaScript.
+
+## 1. How can I access the title of the third book in the `books` array?
+
+To access the title of the third book, we use the index `2` (because arrays are 0-indexed). Here's how:
+
+```javascript
+const thirdBookTitle = books[2].title;
+console.log(thirdBookTitle); // "The Great Gatsby"
+```
+
+## 2. Write a JavaScript function that takes the array `books` and returns the titles of all books published after 1900.
+
+You can use the `filter()` method to find the books published after 1900 and map the result to an array of titles:
+
+```javascript
+function booksAfter1900(books) {
+    return books.filter(book => book.year > 1900).map(book => book.title);
+}
+
+console.log(booksAfter1900(books)); 
+// Output: ["To Kill a Mockingbird", "1984", "The Great Gatsby", "War and Peace"]
+```
+
+## 3. How can I add a new book `{ title: "Pride and Prejudice", author: "Jane Austen", year: 1813 }` to the `books` array?
+
+To add a new book to the array, you can use the `push()` method:
+
+```javascript
+books.push({ title: "Pride and Prejudice", author: "Jane Austen", year: 1813 });
+console.log(books);
+```
+
+## 4. How can I remove the book "Moby-Dick" from the array by title?
+
+To remove a book by its title, we can find the index of the book using `findIndex()` and then use `splice()` to remove it:
+
+```javascript
+const index = books.findIndex(book => book.title === "Moby-Dick");
+if (index !== -1) {
+    books.splice(index, 1);
+}
+console.log(books);
+```
+
+## 5. Write a function that sorts the books by their year of publication in ascending order.
+
+You can use the `sort()` method and provide a compare function to sort the books by year:
+
+```javascript
+function sortBooksByYear(books) {
+    return books.sort((a, b) => a.year - b.year);
+}
+
+console.log(sortBooksByYear(books));
+```
+
+## 6. How can I check if the book "1984" exists in the array by its title?
+
+You can use the `some()` method to check if there is any book with the title "1984":
+
+```javascript
+const exists = books.some(book => book.title === "1984");
+console.log(exists); // true
+```
+
+---
+
+I hope this helps! Let me know if you need further explanations or modifications.
+
+""",
         "accepted": True,
     },
 ]

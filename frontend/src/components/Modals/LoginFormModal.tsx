@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useModal } from "../../context/Modal"
 import { Errors } from "../Errors/Errors"
-import { useAppDispatch } from "../../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { restoreSession } from "../../features/sessionSlice"
 import { loginAsync } from "../../features/sessionSlice"
 import { log } from "console"
@@ -12,7 +12,8 @@ export const LoginFormModal = () => {
     credential: "",
     password: "",
   })
-  const [errors, setErrors] = useState({})
+  // const [errors, setErrors] = useState({})
+  const loginError = useAppSelector(state => state.session.error)
   const { closeModal } = useModal()
   const dispatch = useAppDispatch()
   // Disable submit button if credential length < 4 or password length < 6
@@ -29,20 +30,18 @@ export const LoginFormModal = () => {
 
   const handleSubmitLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setErrors({})
-      const response = await dispatch(loginAsync(loginForm)).unwrap()
-      if (response.error) {
-          setErrors(response)
-      } else {
-          closeModal()
+    // setErrors({})
+    try {
+      await dispatch(loginAsync(loginForm)).unwrap()
+      if (!loginError) {
+        closeModal()
       }
-}
-
-
+    } catch (e) {}
+  }
 
   const handleLogInDemo = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    setErrors({})
+    // setErrors({})
     try {
       const response = await dispatch(
         loginAsync({
@@ -65,8 +64,13 @@ export const LoginFormModal = () => {
             <h3 className="login-title">Login</h3>
             <div className="email-title">Username/Email</div>
 
-            {loginForm.credential.length < 4? <div className="requirement-message">Minimum 4 characters</div> : ""}
-            <input className="input"
+            {loginForm.credential.length < 4 ? (
+              <div className="requirement-message">Minimum 4 characters</div>
+            ) : (
+              ""
+            )}
+            <input
+              className="input"
               onChange={handleChangeLoginForm("credential")}
               defaultValue={loginForm.credential}
               placeholder="Username/Email"
@@ -80,8 +84,13 @@ export const LoginFormModal = () => {
           <label className="login-form-item">
             <div className="password-title">Password</div>
 
-            {loginForm.password.length < 6? <div className="requirement-message">Minimum 6 characters</div> : ""}
-            <input className="input"
+            {loginForm.password.length < 6 ? (
+              <div className="requirement-message">Minimum 6 characters</div>
+            ) : (
+              ""
+            )}
+            <input
+              className="input"
               onChange={handleChangeLoginForm("password")}
               placeholder="Password"
               defaultValue={loginForm.password}
@@ -91,19 +100,28 @@ export const LoginFormModal = () => {
             />
           </label>
         </div>
-        {errors.error?<div className="authentication-error">{errors.error}</div>: ""}
+        {loginError && <div className="authentication-error">{loginError}</div>}
+        {/* {errors.error ? (
+          <div className="authentication-error">{errors.error}</div>
+        ) : (
+          ""
+        )} */}
         <div className="button-div">
-
-        <button className={`login-form-button ${isDisabledSubmit ? 'disabled' : ''}`}
-          disabled={isDisabledSubmit}
-          data-testid="login-button" // Identifier
-        >
-          Log In
-        </button>
-      <button className="demo-form-button" onClick={handleLogInDemo} data-testid="demo-user-login">
-        Log in Demo User
-      </button>
-      </div>
+          <button
+            className={`login-form-button ${isDisabledSubmit ? "disabled" : ""}`}
+            disabled={isDisabledSubmit}
+            data-testid="login-button" // Identifier
+          >
+            Log In
+          </button>
+          <button
+            className="demo-form-button"
+            onClick={handleLogInDemo}
+            data-testid="demo-user-login"
+          >
+            Log in Demo User
+          </button>
+        </div>
       </form>
     </div>
   )

@@ -30,7 +30,7 @@ export interface CreateAnswerResponse {
 
     AnswerUser: User
     num_comments: number
-    commentIds: number[]
+    // commentIds: number[]
     Comments: {
       id: number
       user_id: number
@@ -97,7 +97,12 @@ export const createOneAnswer = createAsyncThunk<
   const answer: CreateAnswerResponse = await response.json()
   const { Comments, AnswerUser, answerSave, ...remaining } = answer.answer
 
-  const answerPayload: Answer = { ...remaining, user_id: AnswerUser.id }
+  const commentIds = Comments.map(comment => comment.id)
+  const answerPayload: Answer = {
+    ...remaining,
+    user_id: AnswerUser.id,
+    commentIds,
+  }
   const commentPayload = Comments.map(comment => {
     const { CommentUser, ...remaining } = comment
     return { ...remaining }
@@ -155,7 +160,12 @@ export const editOneAnswer = createAsyncThunk<
   const answer: CreateAnswerResponse = await response.json()
   const { Comments, AnswerUser, answerSave, ...remaining } = answer.answer
 
-  const answerPayload: Answer = { ...remaining, user_id: AnswerUser.id }
+  const commentIds = Comments.map(comment => comment.id)
+  const answerPayload: Answer = {
+    ...remaining,
+    user_id: AnswerUser.id,
+    commentIds,
+  }
   const commentPayload = {}
   const userPayload = {}
   const savedPayload = {}
@@ -200,7 +210,9 @@ export const answersSlice = createAppSlice({
       })
       .addCase(createOneComment.fulfilled, (state, action) => {
         const { content_id, content_type, id } = action.payload.comment
-        if (content_type === "answer") state[content_id].commentIds?.push(id)
+        if (content_type === "answer") {
+          state[content_id].commentIds.push(id)
+        }
       })
       .addCase(deleteOneComment.fulfilled, (state, action) => {
         const { content_id, content_type, id } = action.payload

@@ -48,7 +48,8 @@ export const AllQuestions = () => {
   return (
     <div>
       <h1 className="all-questions-title">
-        All {tagName ? tagName : ""} questions
+        {questions.length > 0 ? "All " : "No "}
+        {tagName ? tagName : ""} questions
       </h1>
       {questionIds.reverse().map(id => (
         <QuestionTile key={id} questionId={id} />
@@ -79,7 +80,6 @@ export const AllQuestions = () => {
       </div>
       <div className="page-count-container">
         <p className="per-page">
-
           Per page:
           <button
             className={`page-number ${sizeSetting === 5 ? "page-active" : ""}`}

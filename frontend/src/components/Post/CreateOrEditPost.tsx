@@ -32,7 +32,6 @@ interface Error {
   message: string
 }
 export const CreateOrEditPost = () => {
-
   const { questionId } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -156,15 +155,17 @@ export const CreateOrEditPost = () => {
           )} */}
           <label>
             <div className="question-required">Question*</div>
-            <textarea
-              className="post-body-textarea"
-              // cols={80}
-              rows={10}
-              name="content"
-              defaultValue={form.content}
-              placeholder="Question body..."
-              onChange={handleChangeForm("content")}
-            />
+            <div className="post-body-content">
+              <textarea
+                className="post-body-textarea"
+                // cols={80}
+                rows={10}
+                name="content"
+                defaultValue={form.content}
+                placeholder="Question body..."
+                onChange={handleChangeForm("content")}
+              />
+            </div>
           </label>
         </div>
         <TagSelector
@@ -174,8 +175,12 @@ export const CreateOrEditPost = () => {
         />
         <div className="buttons-div">
           {/* <button className="submit-question">Submit question</button> */}
-          <button className={`submit-question ${isDisabledSubmit ? "disabled" : ""}`}
-          disabled={isDisabledSubmit}>Submit question</button>
+          <button
+            className={`submit-question ${isDisabledSubmit ? "disabled" : ""}`}
+            disabled={isDisabledSubmit}
+          >
+            Submit question
+          </button>
           <button className="cancel-question">Cancel</button>
         </div>
       </form>

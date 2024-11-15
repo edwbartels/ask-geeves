@@ -36,6 +36,7 @@ export const VoteButton: React.FC<VoteButtonProps> = ({
     up: voteType === "up",
     down: voteType === "down",
     "vote-active": isActive,
+    "vote-btn": "vote-btn",
   })
 
   return (

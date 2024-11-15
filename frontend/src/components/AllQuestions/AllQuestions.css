@@ -36,8 +36,8 @@
   justify-content: start;
 }
 .question-tag {
-  color: white;
-  font-size: 0.75em;
+  color: black;
+  font-size: 1em;
   text-decoration: none;
   display: inline-block;
   background-color: darkgray;

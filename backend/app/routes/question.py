@@ -21,7 +21,6 @@ bp = Blueprint("question", __name__, url_prefix="/api/questions")
 @bp.route("/", methods=["GET"])
 @collect_query_params(Question)
 def get_all_questions(page, per_page, sort_column, sort_order):
-  
     filter_tag = request.args.get("tag")
     following_feed = request.args.get("follow") == "1"
 
@@ -53,6 +52,7 @@ def get_all_questions(page, per_page, sort_column, sort_order):
             "questions": questions_list,
         }
     ), 200
+
 
 @bp.route("/<int:question_id>", methods=["GET"])
 @existence_check(("Question", "question_id"))
@@ -131,7 +131,9 @@ def create_question():
             tag_name = tag_name.strip()
             if not tag_name:
                 continue
-            existing_tag = Tag.query.filter(func.lower(Tag.name) == tag_name.lower()).first()
+            existing_tag = Tag.query.filter(
+                func.lower(Tag.name) == tag_name.lower()
+            ).first()
             if existing_tag:
                 tags.append(existing_tag)
             else:
@@ -163,8 +165,32 @@ def edit_question(question_id, question):
     if errors:
         raise ValidationError(errors=errors)
 
+    input_tags = data.get("tag")
+    # current_tags = question.tags
+    # tags_to_remove = [
+    #     current_tag.name
+    #     for current_tag in current_tags
+    #     if current_tag.name not in input_tags
+    # ]
+    tags = []
+    if input_tags:
+        for tag_name in input_tags:
+            tag_name = tag_name.strip()
+            if not tag_name:
+                continue
+            existing_tag = Tag.query.filter(
+                func.lower(Tag.name) == tag_name.lower()
+            ).first()
+            if existing_tag:
+                tags.append(existing_tag)
+            else:
+                new_tag = Tag(name=tag_name)
+                db.session.add(new_tag)
+                tags.append(new_tag)
+
     question.content = new_content
     question.title = new_title
+    question.tags = tags
     db.session.commit()
     return jsonify({"question": question.to_dict(detail_page=True)}), 200
 

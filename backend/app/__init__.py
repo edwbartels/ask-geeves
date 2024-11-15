@@ -101,8 +101,13 @@ def react_root(path):
     react builds in the production environment for favicon
     or index.html requests
     """
+    print(path)
     if path == "favicon.ico":
         return app.send_from_directory("static", "favicon.ico")
+    if path.startswith("fonts"):
+        print("trying to find fonts")
+        return app.send_from_directory("static", "fonts")
+    print("something happened")
     return app.send_static_file("index.html")
 
 

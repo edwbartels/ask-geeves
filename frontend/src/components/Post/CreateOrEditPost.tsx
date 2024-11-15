@@ -121,10 +121,10 @@ export const CreateOrEditPost = () => {
     e.preventDefault()
     try {
       const tag = selectedTags.map(tag => tag.name)
-      const newQuestion = { ...form, tag }
+      const newQuestion = { ...form, tag, id: questionId }
       const response = await dispatch(createOneQuestion(newQuestion)).unwrap()
-      const { id: questionId } = response
-      navigate(`/questions/${questionId}`)
+      const { id: responseQuestionId } = response
+      navigate(`/questions/${responseQuestionId}`)
     } catch (e) {}
   }
 

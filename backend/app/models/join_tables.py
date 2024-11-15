@@ -1,7 +1,8 @@
 from .db import db, add_prefix_for_prod
 from .base_models import Base
+import os
 
-# schema = os.getenv("SCHEMA") if os.getenv("FLASK_ENV") == "production" else None
+schema = os.getenv("SCHEMA") if os.getenv("FLASK_ENV") == "production" else None
 
 question_tags = db.Table(
     "question_tags",
@@ -18,7 +19,7 @@ question_tags = db.Table(
         db.ForeignKey(add_prefix_for_prod("tags.id")),
         primary_key=True,
     ),
-    # schema=schema,
+    schema=schema,
 )
 
 follow_data = db.Table(
@@ -36,5 +37,5 @@ follow_data = db.Table(
         db.ForeignKey(add_prefix_for_prod("users.id")),
         primary_key=True,
     ),
-    # schema=schema,
+    schema=schema,
 )

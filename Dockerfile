@@ -10,6 +10,7 @@ ARG POSTGRES_URL
 ARG SCHEMA
 # ARG SECRET_KEY
 
+
 WORKDIR /var/www/backend
 
 COPY backend/requirements.txt .

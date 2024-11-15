@@ -7,6 +7,7 @@ import {
   fetchAllQuestions,
 } from "../../features/questionsSlice"
 import { QuestionTile } from "./QuestionTile"
+import { Question } from "../../features/questionsSlice"
 import "./AllQuestions.css"
 // const questionIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -21,8 +22,8 @@ export const AllQuestions = () => {
   //   searchParams.set("size", pageSettings.size)
   // }
   useEffect(() => {
-      searchParams.set("size", "15")
-    setSearchParams(searchParams) 
+    searchParams.set("size", "15")
+    setSearchParams(searchParams)
   }, [])
 
   // console.log(searchParams.get("size"))
@@ -30,7 +31,8 @@ export const AllQuestions = () => {
 
   const [gotQuestions, setGotQuestions] = useState(false)
   const questions = useAppSelector(selectQuestionsArr)
-  const questionIds = questions.map(question => question.id)
+  // }
+  const questionIds = questions.map(question => (question as Question).id)
 
   const incrementSearchParam = () => {
     const currentPage = Number(searchParams.get("page"))
@@ -53,16 +55,16 @@ export const AllQuestions = () => {
     setGotQuestions(false)
   }
 
-    if (!gotQuestions) {
-      dispatch(
-        fetchAllQuestions({
-          page: searchParams.get("page") || "1",
-          size: searchParams.get("size") || "15",
-        }),
-      )
-      setGotQuestions(true)
-    }
-    
+  if (!gotQuestions) {
+    dispatch(
+      fetchAllQuestions({
+        page: searchParams.get("page") || "1",
+        size: searchParams.get("size") || "15",
+      }),
+    )
+    setGotQuestions(true)
+  }
+
   return (
     <div>
       <h1 className="all-questions-title">All questions</h1>
@@ -95,12 +97,31 @@ export const AllQuestions = () => {
       </div>
       <div className="page-count-container">
         <p className="per-page">
+<<<<<<< HEAD
           Per page:  
           <button className='page-number' onClick={handleSetResultsSize(5)}>5</button>
           <button className='page-number' onClick={handleSetResultsSize(15)}>15</button>
           <button className='page-number' onClick={handleSetResultsSize(30)}>30</button>
           <button className='page-number' onClick={handleSetResultsSize(50)}>50</button>
 
+=======
+          Per page:
+          <button
+            className="page-number page-active"
+            onClick={handleSetResultsSize(5)}
+          >
+            5
+          </button>
+          <button className="page-number" onClick={handleSetResultsSize(15)}>
+            15
+          </button>
+          <button className="page-number" onClick={handleSetResultsSize(30)}>
+            30
+          </button>
+          <button className="page-number" onClick={handleSetResultsSize(50)}>
+            50
+          </button>
+>>>>>>> dev
         </p>
       </div>
     </div>

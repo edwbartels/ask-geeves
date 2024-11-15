@@ -6,6 +6,7 @@ import {
   createAsyncThunk,
 } from "@reduxjs/toolkit"
 import { createAppSlice } from "../app/createAppSlice"
+import { createSelector } from "reselect"
 import type { AppThunk } from "../app/store"
 import {
   FetchAllQuestionsResponse,
@@ -448,7 +449,10 @@ export const questionsSlice = createAppSlice({
   },
   selectors: {
     selectQuestions: state => state,
-    selectQuestionsArr: state => Object.values(state.questions),
+    selectQuestionsArr: createSelector(
+      state => state.questions,
+      questions => Object.values(questions),
+    ),
     selectQuestionById: (state, id: number) => state.questions[id],
   },
 })

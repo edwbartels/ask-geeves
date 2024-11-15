@@ -26,7 +26,7 @@ export const NavBar = () => {
   //   setModalContent(modalComponent)
   //   if (typeof onButtonClick === "function") onButtonClick()
   // }
-  console.log("in nav bar")
+  // console.log("in nav bar")
   return (
     <nav className="nav-bar">
       <Logo />
@@ -44,9 +44,13 @@ export const NavBar = () => {
       <div className="user-greeting">
         {user ? `Welcome ${user?.first_name}` : ""}
       </div>
-      <Link to="/questions/ask" className="post-links">
-        Post a question
-      </Link>
+
+      {user && (
+        <Link to="/questions/ask" className="post-links">
+          Post a question
+        </Link>
+      )}
+
       {!user ? (
         <div className="nav-buttons">
           <OpenModalButton

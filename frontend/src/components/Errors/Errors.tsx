@@ -6,6 +6,6 @@ export const Errors = ({ errors }: ErrorProps) => {
     return <div className="error">{errors}</div>
   } else if (typeof errors === "object") {
     const allErrors = Object.entries(errors)
-    return allErrors.map(([errorType, msg]) => <div key={errorType}>{msg}</div>)
+    return allErrors.map(([errorType, msg]) => <div className="error-message" key={errorType}>{msg}</div>)
   }
 }

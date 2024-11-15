@@ -5,6 +5,7 @@ import react from "@vitejs/plugin-react"
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   return {
+    build: { outDir: "../backend/app/static", emptyOutDir: true },
     plugins: [react()],
     server: {
       open: true,

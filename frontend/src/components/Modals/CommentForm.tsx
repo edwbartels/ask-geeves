@@ -77,7 +77,7 @@ export const CommentForm = ({ id, content_id, content_type }: Props) => {
   }
   const handleSubmitComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log("submitting form")
+    // console.log("submitting form")
     if (sessionUser.user) {
       const userId = sessionUser.user.id
       const commentForm = { content_id, content_type, content: form }
@@ -90,6 +90,7 @@ export const CommentForm = ({ id, content_id, content_type }: Props) => {
           editOneComment({ id, ...commentForm }),
         ).unwrap()
       }
+
       closeModal()
     }
   }
@@ -104,7 +105,7 @@ export const CommentForm = ({ id, content_id, content_type }: Props) => {
       <div className="comment-modal-form">
         <h1 className="add-your-comment-title">Add your comment</h1>
         <form onSubmit={handleSubmitComment}>
-          <div>
+          <div className="comment-box-div">
             <textarea
               className="comment-box"
               onChange={handleChangeForm}
@@ -115,7 +116,7 @@ export const CommentForm = ({ id, content_id, content_type }: Props) => {
           </div>
           <div className="submit-comment-button-div">
             <button className="submit-new-comment-button">
-              Submit comment
+              Submit Comment
             </button>
           </div>
         </form>

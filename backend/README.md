@@ -15,7 +15,8 @@ interpreter path   ``./mod-6-project/backend/.venv/bin/python``
 ## Install pipenv dependencies
 ```pipenv install && pipenv shell```
 
-
+## Start Server
+```pipenv run flask run```
 
 ## Create database and seed  (when there's no dev.db)
 ```pipenv run i```

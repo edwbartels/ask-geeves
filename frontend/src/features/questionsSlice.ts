@@ -1,30 +1,24 @@
-import {
-  PayloadAction,
-  Action,
-  ActionCreator,
-  ActionCreatorWithPayload,
-  createAsyncThunk,
-} from "@reduxjs/toolkit"
+import { PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
 import { createAppSlice } from "../app/createAppSlice"
+import { createSelector } from "reselect"
 import type { AppThunk } from "../app/store"
 import {
   FetchAllQuestionsResponse,
   FetchOneQuestionResponse,
-  Vote,
-  Save,
 } from "./api-types"
-import { setAllQuestionsSettings, AllQuestionsSettings } from "./sessionSlice"
-import { User, addUser, addManyUsers } from "./usersSlice"
+import { User, addManyUsers } from "./usersSlice"
 import { addManyVotes, UpdateVoteResponse } from "./votesSlice"
 import {
   addManyAnswers,
   createOneAnswer,
   deleteOneAnswer,
 } from "./answersSlice"
-import { addManyComments } from "./commentsSlice"
+import {
+  addManyComments,
+  createOneComment,
+  deleteOneComment,
+} from "./commentsSlice"
 import { Tag, addManyTags } from "./tagsSlice"
-// import { addSave, removeSave } from "./savesSlice"
-//   import { SessionResponse, restoreSession, loginAsync } from "./sessionSlice"
 
 interface FetchAllQuestionsError {
   error: string
@@ -82,6 +76,10 @@ interface Comment {
 
 export type QuestionsSliceState = {
   questions: Record<number, Question>
+  allQuestionsInfo: {
+    page: number
+    num_pages: number
+  }
   error: CreateQuestionError | null
 }
 
@@ -89,13 +87,17 @@ export const fetchAllQuestions = createAsyncThunk<
   // Return type of the payload creator
   Question[],
   // First argument to payload creator
-  { page: string; size: string },
+  string,
   // Optional fields for thunkApi types
   { rejectValue: FetchAllQuestionsError }
->("questions/fetchAll", async (pageSettings, thunkApi) => {
-  const { page } = pageSettings || 1
-  const { size } = pageSettings || 15
-  const fetchUrl = `/api/questions/?page=${page}&per_page=${size}&sort_by=id`
+>("questions/fetchAll", async (searchParams, thunkApi) => {
+  // const { page } = pageSettings || 1
+  // const { size } = pageSettings || 15
+  // const { tagName } = pageSettings
+  // const fetchUrl = tagName
+  //   ? `/api/questions/?page=${page}&per_page=${size}&sort_by=id`
+  //   : `/api/questions/?page=${page}&per_page=${size}&sort_by=id`
+  const fetchUrl = `/api/questions/?sort_by=id&${searchParams}`
   const response = await fetch(fetchUrl)
   if (response.ok) {
     const allQuestions: FetchAllQuestionsResponse = await response.json()
@@ -136,14 +138,14 @@ export const fetchAllQuestions = createAsyncThunk<
         }
       }
     }
-
-    thunkApi.dispatch(
-      setAllQuestionsSettings({
-        page: page,
-        size: size,
-        num_pages: num_pages,
-      }),
-    )
+    thunkApi.dispatch(updateAllQuestionsInfo({ page, num_pages }))
+    // thunkApi.dispatch(
+    //   setAllQuestionsSettings({
+    //     page: page,
+    //     size: size,
+    //     num_pages: num_pages,
+    //   }),
+    // )
     thunkApi.dispatch(addManyUsers(payload.users))
     thunkApi.dispatch(addManyTags(payload.tags))
     return payload.questions
@@ -202,13 +204,13 @@ export const fetchTaggedQuestions = createAsyncThunk<
       }
     }
 
-    thunkApi.dispatch(
-      setAllQuestionsSettings({
-        page: page,
-        size: size,
-        num_pages: num_pages,
-      }),
-    )
+    // thunkApi.dispatch(
+    //   setAllQuestionsSettings({
+    //     page: page,
+    //     size: size,
+    //     num_pages: num_pages,
+    //   }),
+    // )
     thunkApi.dispatch(addManyUsers(payload.users))
     thunkApi.dispatch(addManyTags(payload.tags))
     return payload.questions
@@ -366,7 +368,11 @@ export const deleteOneQuestion = createAsyncThunk<
   return { deletedId: Number(id), ...message }
 })
 
-const initialState: QuestionsSliceState = { questions: {}, error: null }
+const initialState: QuestionsSliceState = {
+  questions: {},
+  allQuestionsInfo: { page: 1, num_pages: 1 },
+  error: null,
+}
 
 // If you are not using async thunks you can use the standalone `createSlice`.
 export const questionsSlice = createAppSlice({
@@ -382,6 +388,26 @@ export const questionsSlice = createAppSlice({
           }
         },
       ),
+      updateAllQuestionsInfo: create.reducer(
+        (state, action: PayloadAction<{ page: number; num_pages: number }>) => {
+          state.allQuestionsInfo = action.payload
+        },
+      ),
+      incrementCurrentPage: create.reducer(state => {
+        const currentPage = state.allQuestionsInfo.page
+        const totalPages = state.allQuestionsInfo.num_pages
+        if (currentPage < totalPages) {
+          const nextPage = currentPage + 1
+          state.allQuestionsInfo.page = nextPage
+        }
+      }),
+      decrementCurrentPage: create.reducer(state => {
+        const currentPage = state.allQuestionsInfo.page
+        if (currentPage > 1) {
+          const nextPage = currentPage - 1
+          state.allQuestionsInfo.page = nextPage
+        }
+      }),
     }
   },
   extraReducers: builder => {
@@ -419,6 +445,20 @@ export const questionsSlice = createAppSlice({
           id => id !== answerId,
         )
       })
+      .addCase(createOneComment.fulfilled, (state, action) => {
+        const { content_id, content_type, id } = action.payload.comment
+        if (content_type === "question")
+          state.questions[content_id].commentIds?.push(id)
+      })
+      .addCase(deleteOneComment.fulfilled, (state, action) => {
+        const { content_id, content_type, id } = action.payload
+        if (content_type === "question") {
+          const oldCommentIds = state.questions[content_id].commentIds
+          state.questions[content_id].commentIds = oldCommentIds?.filter(
+            old => old !== id,
+          )
+        }
+      })
       .addCase(fetchTaggedQuestions.fulfilled, (state, action) => {
         state.questions = {}
         const questions = action.payload
@@ -430,13 +470,21 @@ export const questionsSlice = createAppSlice({
   },
   selectors: {
     selectQuestions: state => state,
-    selectQuestionsArr: state => Object.values(state.questions),
+    selectQuestionsArr: createSelector(
+      state => state.questions,
+      questions => Object.values(questions),
+    ),
     selectQuestionById: (state, id: number) => state.questions[id],
   },
 })
 
 // Action creators are generated for each case reducer function.
-export const { updateQuestionTotalScore } = questionsSlice.actions
+export const {
+  updateQuestionTotalScore,
+  updateAllQuestionsInfo,
+  incrementCurrentPage,
+  decrementCurrentPage,
+} = questionsSlice.actions
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
 export const { selectQuestions, selectQuestionsArr, selectQuestionById } =

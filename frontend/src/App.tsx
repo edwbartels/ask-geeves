@@ -18,7 +18,7 @@ import { UserDetailPage } from "./components/User/UserDetailPage"
 import { AllTags } from "./components/AllTags/AllTags"
 import { AccountDetails } from "./components/User/AccountDetails"
 // import { TaggedQuestions } from "./components/AllQuestions/TaggedQuestions"
-
+import AllSaves from "./components/Save/allSaves"
 const Layout = () => {
   return (
     <>
@@ -69,6 +69,10 @@ const router = createBrowserRouter([
             ],
           },
         ],
+      },
+      {
+        path: "saves",
+        element:<AllSaves/>
       },
       { path: "/team", element: <Contact /> },
       { path: "/faq", element: <FAQ /> },

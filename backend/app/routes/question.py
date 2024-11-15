@@ -11,6 +11,7 @@ from ..utils.decorator import (
     authorization_check,
     owner_check,
 )
+import math
 from ..utils.errors import ValidationError
 # from sqlalchemy.orm import noload, lazyload, load_only
 
@@ -33,6 +34,10 @@ def get_all_questions(page, per_page, sort_column, sort_order):
             Question.user_id.in_([user.id for user in current_user.following])
         )
 
+    total_questions = query.count()
+    legit_pages = math.ceil(total_questions / per_page)
+    if page > legit_pages:
+        page = 1
 
     questions = query.order_by(sort_order(sort_column)).paginate(
         page=page, per_page=per_page

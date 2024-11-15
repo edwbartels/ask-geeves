@@ -7,6 +7,7 @@ export const Sidebar = () => {
       <NavLink to="/" className="home">Home</NavLink>
       <NavLink to="questions" className="questions">Questions</NavLink>
       <NavLink to="tagged" className="tagged">Tagged</NavLink>
+      <NavLink to="saves" className="saves">Saves</NavLink>
     </div>
   )
 }

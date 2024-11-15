@@ -1,4 +1,4 @@
-.all-tags {
+.all-tags-list {
   display: grid;
   grid-template-columns: repeat(4, 250px);
   /* column-gap: 10px; */

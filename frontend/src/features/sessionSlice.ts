@@ -48,6 +48,7 @@ export interface SessionResponse {
   } | null
 }
 interface LoginError {
+  message: string
   error: string
 }
 interface LogoutResponse {
@@ -115,25 +116,19 @@ export const sessionSlice = createAppSlice({
         { rejectValue: LoginError }
       >(
         async (loginInfo, thunkApi) => {
-          try {
-            const response = await fetch(`/api/session/`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(loginInfo),
-            })
-            const sessionInfo = await response.json()
-            return sessionInfo
-          } catch (err: any) {
-            if (!err.ok && err.status === 400) {
-              const error: LoginError = await err.json()
-              return thunkApi.rejectWithValue(error)
-            } else {
-              const error: LoginError = {
-                error: "An unknown error occured",
-              }
+          const response = await fetch(`/api/session/`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(loginInfo),
+          })
+          if (!response.ok) {
+            if (response.status === 401) {
+              const error = await response.json()
               return thunkApi.rejectWithValue(error)
             }
           }
+          const sessionInfo = await response.json()
+          return sessionInfo
         },
         {
           fulfilled: (state, action) => {
@@ -146,9 +141,9 @@ export const sessionSlice = createAppSlice({
             }
           },
           rejected: (state, action) => {
-            state.status = "failed"
-            if (action.payload) {
-              state.error = action.payload.error
+            const response = action.payload
+            if (response) {
+              state.error = response.error
             }
           },
         },
@@ -177,16 +172,16 @@ export const sessionSlice = createAppSlice({
   selectors: {
     selectSession: session => session,
     selectUser: session => session.user,
-//     selectAllQuestionsSettings: createSelector(
-//       session => session.allQuestionsSettings,
-//       allQuestionsSettings => {
-//         const settingsToString: Record<string, string> = {}
-//         for (const [key, value] of Object.entries(allQuestionsSettings)) {
-//           settingsToString[key] = (value as number).toString()
-//         }
-//         return settingsToString
-//       },
-//     ),
+    //     selectAllQuestionsSettings: createSelector(
+    //       session => session.allQuestionsSettings,
+    //       allQuestionsSettings => {
+    //         const settingsToString: Record<string, string> = {}
+    //         for (const [key, value] of Object.entries(allQuestionsSettings)) {
+    //           settingsToString[key] = (value as number).toString()
+    //         }
+    //         return settingsToString
+    //       },
+    //     ),
     // selectStatus: counter => counter.status,
   },
 })

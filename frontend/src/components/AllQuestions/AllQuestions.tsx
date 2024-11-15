@@ -79,6 +79,14 @@ export const AllQuestions = () => {
       </div>
       <div className="page-count-container">
         <p className="per-page">
+<<<<<<< HEAD
+          Per page:  
+          <button className='page-number' onClick={handleSetResultsSize(5)}>5</button>
+          <button className='page-number' onClick={handleSetResultsSize(15)}>15</button>
+          <button className='page-number' onClick={handleSetResultsSize(30)}>30</button>
+          <button className='page-number' onClick={handleSetResultsSize(50)}>50</button>
+
+=======
           Per page:
           <button
             className={`page-number ${sizeSetting === 5 ? "page-active" : ""}`}
@@ -104,6 +112,7 @@ export const AllQuestions = () => {
           >
             50
           </button>
+>>>>>>> dev
         </p>
       </div>
     </div>

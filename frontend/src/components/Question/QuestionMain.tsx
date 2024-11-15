@@ -30,13 +30,16 @@ export const QuestionMain = () => {
     return <div className="question-tile">Trying to load question...</div>
   }
   const answerIds = question.answerIds
+  const numAnswers = answerIds.length
   const commentIds = question.commentIds
   return (
     <div className="main-body">
       <h1 className="question-title">{question.title}</h1>
       <Post type="question" id={questionIdNum} />
 
-      <h1 className="answers-title">{question.num_answers} Answers</h1>
+      <h1 className="answers-title">
+        {numAnswers} Answer{numAnswers !== 1 ? "s" : ""}
+      </h1>
       <div className="answers-list">
         {answerIds && answerIds.length > 0
           ? answerIds.map(answerId => {

@@ -100,7 +100,7 @@ export const NavBar = () => {
             {isOpen && (
               <ul className="dropdown-menu">
                 <li className="dropdown-text">
-                  <Link to={`/user/${user.id}`} className="profile-text">
+                  <Link to={`/account`} className="profile-text">
                     Profile
                   </Link>
                 </li>

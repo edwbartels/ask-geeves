@@ -125,6 +125,9 @@ export const Post = ({ type, id }: Props) => {
                 {/* <i className="fa-regular fa-bookmark fa-xl"></i> */}
                 <SaveButton id={id} type={type} />
                 {/* </ul> */}
+                <Link to={`#${permalink}`}>
+                  <i className="share-link fa-solid fa-xl fa-link"></i>
+                </Link>
               </div>
             </div>
             <div className="post-interact" id={permalink}>
@@ -138,10 +141,6 @@ export const Post = ({ type, id }: Props) => {
               )}
               <div className="post-meta">
                 <div>
-                  <Link to={`#${permalink}`}>
-                    <i className="fa-solid fa-xl fa-link"></i>
-                  </Link>
-
                   {isUserPostWriter && post.type === "question" ? (
                     <Link to={`edit`}>Edit {post.type}</Link>
                   ) : isUserPostWriter && post.type === "answer" ? (

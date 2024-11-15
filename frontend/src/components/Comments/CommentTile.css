@@ -4,3 +4,17 @@
     margin-top: 15px;
     font-size: .8rem
 }
+.comment-meta-left{
+    display:flex;
+    align-items:flex-end
+}
+.comment-meta-left > div{
+    padding-left: 5px;
+}
+.comment-user{
+    text-decoration: none;
+}
+
+hr{
+    margin-top:3px
+}

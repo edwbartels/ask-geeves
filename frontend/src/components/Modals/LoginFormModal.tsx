@@ -64,6 +64,7 @@ export const LoginFormModal = () => {
           <label className="login-form-item">
             <h3 className="login-title">Login</h3>
             <div className="email-title">Username/Email</div>
+
             {loginForm.credential.length < 4? <div className="requirement-message">Minimum 4 characters</div> : ""}
             <input className="input"
               onChange={handleChangeLoginForm("credential")}
@@ -78,6 +79,7 @@ export const LoginFormModal = () => {
         <div>
           <label className="login-form-item">
             <div className="password-title">Password</div>
+
             {loginForm.password.length < 6? <div className="requirement-message">Minimum 6 characters</div> : ""}
             <input className="input"
               onChange={handleChangeLoginForm("password")}
@@ -91,6 +93,7 @@ export const LoginFormModal = () => {
         </div>
         {errors.error?<div className="authentication-error">{errors.error}</div>: ""}
         <div className="button-div">
+
         <button className={`login-form-button ${isDisabledSubmit ? 'disabled' : ''}`}
           disabled={isDisabledSubmit}
           data-testid="login-button" // Identifier

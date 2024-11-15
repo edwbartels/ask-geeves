@@ -16,6 +16,7 @@ import { FAQ } from "./components/FAQ/FAQ"
 import { AboutUs } from "./components/AboutUs/AboutUs"
 import { UserDetailPage } from "./components/User/UserDetailPage"
 import { AllTags } from "./components/AllTags/AllTags"
+import { AccountDetails } from "./components/User/AccountDetails"
 // import { TaggedQuestions } from "./components/AllQuestions/TaggedQuestions"
 
 const Layout = () => {
@@ -60,7 +61,7 @@ const router = createBrowserRouter([
             element: <AllQuestions />,
           },
           {
-            path:":tagId/:tagName/:questionId",
+            path: ":tagId/:tagName/:questionId",
             children: [
               { path: "", element: <QuestionMain /> },
               { path: "edit", element: <CreateOrEditPost /> },
@@ -73,6 +74,7 @@ const router = createBrowserRouter([
       { path: "/faq", element: <FAQ /> },
       { path: "about-us", element: <AboutUs /> },
       { path: "user/:userId", element: <UserDetailPage /> },
+      { path: "/account", element: <AccountDetails /> },
     ],
   },
 ])

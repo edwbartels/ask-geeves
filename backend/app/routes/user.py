@@ -189,3 +189,26 @@ def get_detail_for_current_user():
             "comments": comment_list,
         }
     )
+
+
+@bp.route("/current/overview", methods=["GET"])
+@login_check
+def get_current_user_stats():
+    response_details = {
+        "username": current_user.id,
+        "email": current_user.email,
+        "first_name": current_user.first_name,
+        "last_name": current_user.last_name,
+        "total_questions": len(current_user.questions),
+        "total_answers": len(current_user.answers),
+        "total_comments": len(current_user.comments),
+        "total_saves": len(current_user.saves),
+        "total_votes": len(current_user.votes),
+        "karma": current_user.karma,
+        "followers": current_user.follower_count,
+        "following": current_user.following_count,
+        "created_at": current_user.created_at_long_suffix,
+    }
+    print(response_details)
+
+    return jsonify(response_details), 200

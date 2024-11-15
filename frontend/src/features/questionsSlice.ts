@@ -46,6 +46,7 @@ export interface QuestionForm {
   title: string
   content: string
   tag?: string[]
+  id?: string
 }
 export interface CreateQuestionError {
   message: string
@@ -294,8 +295,10 @@ export const createOneQuestion = createAsyncThunk<
   QuestionForm,
   { rejectValue: CreateQuestionError }
 >("questions/createOneQuestion", async (post, thunkApi) => {
-  const response = await fetch("/api/questions/", {
-    method: "POST",
+  const url = post.id ? `/api/questions/${post.id}` : `/api/questions`
+  const method = post.id ? `PUT` : `POST`
+  const response = await fetch(url, {
+    method: method,
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(post),
   })

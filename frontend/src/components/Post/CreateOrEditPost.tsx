@@ -32,6 +32,7 @@ interface Error {
   message: string
 }
 export const CreateOrEditPost = () => {
+
   const { questionId } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -44,7 +45,7 @@ export const CreateOrEditPost = () => {
   const [selectedTags, setSelectedTags] = useState<MinimalTag[]>([])
   const [errors, setErrors] = useState<Error | null>(null)
   const [isLoadedQuestion, setIsLoadedQuestion] = useState(false)
-
+  const isDisabledSubmit = Object.values(form).some(value => value.length === 0)
   /* Fetch question instead of accessing the store in case user directly visits the edit page or refreshes */
   if (!isLoadedQuestion && questionId) {
     fetch(`/api/questions/${questionId}`)
@@ -172,7 +173,9 @@ export const CreateOrEditPost = () => {
           allTags={Object.values(allTags)}
         />
         <div className="buttons-div">
-          <button className="submit-question">Submit question</button>
+          {/* <button className="submit-question">Submit question</button> */}
+          <button className={`submit-question ${isDisabledSubmit ? "disabled" : ""}`}
+          disabled={isDisabledSubmit}>Submit question</button>
           <button className="cancel-question">Cancel</button>
         </div>
       </form>

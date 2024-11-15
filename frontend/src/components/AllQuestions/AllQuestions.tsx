@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react"
-import { useSearchParams } from "react-router-dom"
+import { useParams, useSearchParams } from "react-router-dom"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
-import { selectAllQuestionsSettings } from "../../features/sessionSlice"
+import { setPostsPerPage } from "../../features/sessionSlice"
 import {
   selectQuestionsArr,
   fetchAllQuestions,
+  incrementCurrentPage,
+  decrementCurrentPage,
 } from "../../features/questionsSlice"
 import { QuestionTile } from "./QuestionTile"
 import { Question } from "../../features/questionsSlice"
@@ -13,56 +15,42 @@ import "./AllQuestions.css"
 
 export const AllQuestions = () => {
   const dispatch = useAppDispatch()
-  const pageSettings = useAppSelector(selectAllQuestionsSettings)
-  const [searchParams, setSearchParams] = useSearchParams()
-  if (!searchParams.has("page")) {
-    searchParams.set("page", pageSettings.page)
-  }
-  useEffect(() => {
-    searchParams.set("size", "15")
-    setSearchParams(searchParams)
-  }, [])
-
   const [gotQuestions, setGotQuestions] = useState(false)
+  const pageSettings = useAppSelector(state => state.questions.allQuestionsInfo)
+  const sizeSetting = useAppSelector(state => state.session.settings.size)
+  const [searchParams, setSearchParams] = useSearchParams()
+  // const [searchParams, setSearchParams] = useSearchParams({
+  //   page: String(pageSettings.page),
+  //   num_pages: String(pageSettings.num_pages),
+  // })
+  const { tagName } = useParams()
+  searchParams.set("page", String(pageSettings.page))
+  searchParams.set("per_page", String(sizeSetting))
+  if (tagName) {
+    searchParams.set("tag", tagName)
+  } else {
+    searchParams.delete("tag")
+  }
+
+  const searchParamsString = searchParams.toString()
+
+  useEffect(() => {
+    dispatch(fetchAllQuestions(searchParams.toString()))
+  }, [searchParamsString, dispatch, fetchAllQuestions])
   const questions = useAppSelector(selectQuestionsArr)
   // }
   const questionIds = questions.map(question => (question as Question).id)
 
-  const incrementSearchParam = () => {
-    const currentPage = Number(searchParams.get("page"))
-    if (currentPage < Number(pageSettings.num_pages)) {
-      const nextPage = (currentPage + 1).toString()
-      searchParams.set("page", nextPage)
-      setGotQuestions(false)
-    }
-  }
-  const decrementSearchParam = () => {
-    const currentPage = Number(searchParams.get("page"))
-    if (currentPage > 1) {
-      const nextPage = (currentPage - 1).toString()
-      searchParams.set("page", nextPage)
-      setGotQuestions(false)
-    }
-  }
   const handleSetResultsSize = (numPerPage: number) => () => {
-    searchParams.set("size", numPerPage.toString())
-    setGotQuestions(false)
-  }
-
-  if (!gotQuestions) {
-    dispatch(
-      fetchAllQuestions({
-        page: searchParams.get("page") || "1",
-        size: searchParams.get("size") || "15",
-      }),
-    )
-    setGotQuestions(true)
+    dispatch(setPostsPerPage(numPerPage))
   }
 
   return (
     <div>
-      <h1 className="all-questions-title">All questions</h1>
-      {questionIds.map(id => (
+      <h1 className="all-questions-title">
+        All {tagName ? tagName : ""} questions
+      </h1>
+      {questionIds.reverse().map(id => (
         <QuestionTile key={id} questionId={id} />
       ))}
       <div className="prev-next-container">
@@ -70,7 +58,7 @@ export const AllQuestions = () => {
           <button
             className="glow-on-hover"
             disabled={!(Number(searchParams.get("page")) > 1)}
-            onClick={decrementSearchParam}
+            onClick={() => dispatch(decrementCurrentPage())}
           >
             Previous
           </button>
@@ -83,7 +71,7 @@ export const AllQuestions = () => {
                 Number(pageSettings.num_pages)
               )
             }
-            onClick={incrementSearchParam}
+            onClick={() => dispatch(incrementCurrentPage())}
           >
             Next
           </button>
@@ -91,20 +79,30 @@ export const AllQuestions = () => {
       </div>
       <div className="page-count-container">
         <p className="per-page">
+
           Per page:
           <button
-            className="page-number page-active"
+            className={`page-number ${sizeSetting === 5 ? "page-active" : ""}`}
             onClick={handleSetResultsSize(5)}
           >
             5
           </button>
-          <button className="page-number" onClick={handleSetResultsSize(15)}>
+          <button
+            className={`page-number ${sizeSetting === 15 ? "page-active" : ""}`}
+            onClick={handleSetResultsSize(15)}
+          >
             15
           </button>
-          <button className="page-number" onClick={handleSetResultsSize(30)}>
+          <button
+            className={`page-number ${sizeSetting === 30 ? "page-active" : ""}`}
+            onClick={handleSetResultsSize(30)}
+          >
             30
           </button>
-          <button className="page-number" onClick={handleSetResultsSize(50)}>
+          <button
+            className={`page-number ${sizeSetting === 50 ? "page-active" : ""}`}
+            onClick={handleSetResultsSize(50)}
+          >
             50
           </button>
         </p>

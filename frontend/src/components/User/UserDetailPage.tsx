@@ -59,6 +59,7 @@ export const UserDetailPage = () => {
   if (loading) {
     return <div>Loading</div>
   }
+
   return (
     <div className="user-detail-page">
       <div className="name-div">

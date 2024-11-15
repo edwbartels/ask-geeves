@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { selectTags, getAllTags } from "../../features/tagsSlice"
 import { Tag } from "../Tag/Tag"
-import './AllTags.css'
+
 
 export const AllTags = () => {
   const dispatch = useAppDispatch()

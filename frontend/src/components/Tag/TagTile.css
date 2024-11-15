@@ -1,0 +1,129 @@
+.all-tags-list {
+  display: grid;
+  grid-template-columns: repeat(4, 250px);
+  /* column-gap: 10px; */
+  gap: 2em 2em;
+}
+.tag-tile {
+  border: 3px solid gray;
+  border-radius: 5px;
+  display: grid;
+  grid-column: 1fr;
+  row-gap: 1em;
+  justify-content: center;
+  padding: 2em;
+  text-decoration: none;
+}
+
+.tag-tile {
+  /* width: 55px;
+  height: 40px; */
+  border: none;
+  outline: none;
+  color: #fff;
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+  margin-left: 25px;
+  margin-right: 25px;
+}
+.tag-tile:before {
+  content: "";
+  background: linear-gradient(
+    45deg,
+    #2f00ff,
+    #cc00ff,
+    #f700ff,
+    #ff00b3,
+    #00ffd5,
+    #00fff2,
+    #00ccff,
+    #0099ff
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+.tag-tile:active {
+  color: #000;
+}
+
+.tag-tile:active:after {
+  background: transparent;
+}
+
+.tag-tile:hover:before {
+  opacity: 1;
+}
+
+.tag-tile:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+.tag-tile:hover .tag-icon,
+.tag-tile:hover .tag-text {
+  /* content: ""; */
+  background: linear-gradient(
+    45deg,
+    #2f00ff,
+    #cc00ff,
+    #f700ff,
+    #ff00b3,
+    #00ffd5,
+    #00fff2,
+    #00ccff,
+    #0099ff
+  );
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  /* position: absolute;
+  top: -2px;
+  left: -2px; */
+  /* background-size: 400%; */
+  /* z-index: -1; */
+  /* filter: blur(5px); */
+  /* width: calc(100% + 4px);
+  height: calc(100% + 4px); */
+  animation: glowing 20s linear infinite;
+  /* opacity: 0; */
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+@keyframes glowing {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.tag-text {
+  font-size: 1.5em;
+  color: white;
+}

@@ -138,7 +138,9 @@ export const fetchAllQuestions = createAsyncThunk<
         }
       }
     }
-    thunkApi.dispatch(updateAllQuestionsInfo({ page, num_pages }))
+    num_pages === 0 || page === 0
+      ? thunkApi.dispatch(updateAllQuestionsInfo({ page: 1, num_pages: 1 }))
+      : thunkApi.dispatch(updateAllQuestionsInfo({ page, num_pages }))
     // thunkApi.dispatch(
     //   setAllQuestionsSettings({
     //     page: page,

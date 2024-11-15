@@ -1,9 +1,15 @@
 from .db import db
+from .question import Question
+from .answer import Answer
+from .comment import Comment
+from .vote import Vote
 from .base_models import HasTimestamps
 from flask_login import UserMixin
 from .join_tables import follow_data
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
+from sqlalchemy.orm import Session
+from sqlalchemy.sql import func
 
 
 class User(HasTimestamps, UserMixin):
@@ -78,6 +84,32 @@ class User(HasTimestamps, UserMixin):
     def unfollow(self, user):
         if self.is_following(user):
             self.following.remove(user)
+
+    @property
+    def karma(self):
+        session: Session = db.session
+        question_score = (
+            session.query(db.func.sum(Vote.value))
+            .filter(Vote.content_type == "question", Question.user_id == self.id)
+            .scalar()
+            or 0
+        )
+
+        answer_score = (
+            session.query(db.func.sum(Vote.value))
+            .filter(Vote.content_type == "answer", Answer.user_id == self.id)
+            .scalar()
+            or 0
+        )
+
+        comment_score = (
+            session.query(db.func.sum(Vote.value))
+            .filter(Vote.content_type == "comment", Comment.user_id == self.id)
+            .scalar()
+            or 0
+        )
+
+        return question_score + answer_score + comment_score
 
     def __repr__(self):
         return f"<User {self.username} {self.email}>"

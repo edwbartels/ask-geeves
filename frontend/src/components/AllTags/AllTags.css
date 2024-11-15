@@ -1,20 +1,25 @@
-
 .all-tags {
-    margin-top: 60px;
-    font-size: 25px;
-    display: grid;
+  margin-top: 60px;
+  /* font-size: 25px; */
+  /* display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
+    gap: 10px; */
 }
 
 .tag-title {
-    color: white;
-    font-size: 35px;
-    font-family: 'Clip';
-    justify-self: center;
+  color: white;
+  font-size: 35px;
+  font-family: "Clip";
+  justify-self: center;
 }
 
 .tag-line {
-    border: 2px solid rgba(0, 255, 255, 1);
-    box-shadow: 0 0 12px rgba(0, 255, 251, 1),0 0 10px rgba(0, 255, 251, 1) inset,0 0 20px rgba(0, 255, 251, 1),0 0 20px rgba(0, 255, 251, 1) inset,0 0 30px rgba(0, 255, 251, 1),0 0 30px rgba(0, 255, 251, 1) inset;
+  border: 2px solid rgba(0, 255, 255, 1);
+  box-shadow:
+    0 0 12px rgba(0, 255, 251, 1),
+    0 0 10px rgba(0, 255, 251, 1) inset,
+    0 0 20px rgba(0, 255, 251, 1),
+    0 0 20px rgba(0, 255, 251, 1) inset,
+    0 0 30px rgba(0, 255, 251, 1),
+    0 0 30px rgba(0, 255, 251, 1) inset;
 }

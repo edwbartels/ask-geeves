@@ -195,7 +195,8 @@ def get_detail_for_current_user():
 @login_check
 def get_current_user_stats():
     response_details = {
-        "username": current_user.id,
+        "id": current_user.id,
+        "username": current_user.username,
         "email": current_user.email,
         "first_name": current_user.first_name,
         "last_name": current_user.last_name,
@@ -209,6 +210,17 @@ def get_current_user_stats():
         "following": current_user.following_count,
         "created_at": current_user.created_at_long_suffix,
     }
-    print(response_details)
 
     return jsonify(response_details), 200
+
+
+@bp.route("/current/edit", methods=["PUT"])
+@login_check
+def edit_account_details():
+    user = User.query.get(current_user.id)
+    data = request.get_json()
+    field = data["field"]
+    value = data["value"]
+    setattr(user, field, value)
+    db.session.commit()
+    return jsonify({"message": "Account updated successfully!"}), 201

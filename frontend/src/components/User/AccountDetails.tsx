@@ -130,6 +130,7 @@ export const AccountDetails: React.FC = () => {
         </div>
       </div>
       <div className="account-info">
+
         <div className="user-info account-list-container">
           {" "}
           <div className="user-info-title">
@@ -217,6 +218,7 @@ export const AccountDetails: React.FC = () => {
             Following: {userDetails.following}
           </div>
         </div>
+
       </div>
       {/* <div>
         <h2 className="user-title">Questions</h2>

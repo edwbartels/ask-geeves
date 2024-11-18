@@ -17,10 +17,12 @@ export const AllTags = () => {
     <div>
       <h1 className="tag-title">All Tags</h1>
       <hr className="tag-line" />
-      <div className="all-tags-list">
-        {tagIds.map(tagId => (
-          <TagTile key={tagId} tagId={Number(tagId)} />
-        ))}
+      <div className="all-tags-wrapper">
+        <div className="all-tags-list">
+          {tagIds.map(tagId => (
+            <TagTile key={tagId} tagId={Number(tagId)} />
+          ))}
+        </div>
       </div>
     </div>
   )

@@ -114,44 +114,6 @@ export const FAQ = () => {
                     learning and knowledge-sharing accessible to everyone.
                     </p>
                 </div>
-
-                <div className='faq-question-title'>
-                    <h2></h2>
-                </div>
-                <div className='faq-answer-title'>
-                    <h2 className='answer'>Answer: </h2>
-                </div>
-                <div className='faq-answer-div'>
-                    <p>
-                    
-                    </p>
-                </div>
-
-                <div className='faq-question-title'>
-                    <h2></h2>
-                </div>
-                <div className='faq-answer-title'>
-                    <h2 className='answer'>Answer: </h2>
-                </div>
-                <div className='faq-answer-div'>
-                    <p>
-                    
-                    </p>
-                </div>
-
-                <div className='faq-question-title'>
-                    <h2></h2>
-                </div>
-                <div className='faq-answer-title'>
-                    <h2 className='answer'>Answer: </h2>
-                </div>
-                <div className='faq-answer-div'>
-                    <p>
-                    
-                    </p>
-                </div>
-
-
             </div>
         </div>
     )

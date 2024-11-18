@@ -1,17 +1,18 @@
 @font-face {
-  font-family: 'devicon';
+  font-family: "devicon";
   src:
-    url('fonts/devicon.ttf?iehcku') format('truetype'),
-    url('fonts/devicon.woff?iehcku') format('woff'),
-    url('fonts/devicon.svg?iehcku#devicon') format('svg');
+    url("/fonts/devicon.ttf?iehcku") format("truetype"),
+    url("/fonts/devicon.woff?iehcku") format("woff"),
+    url("/fonts/devicon.svg?iehcku#devicon") format("svg");
   font-weight: normal;
   font-style: normal;
   font-display: block;
 }
 
-[class^="devicon-"], [class*=" devicon-"] {
+[class^="devicon-"],
+[class*=" devicon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'devicon' !important;
+  font-family: "devicon" !important;
   speak: never;
   font-style: normal;
   font-weight: normal;

@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { selectTags, getAllTags } from "../../features/tagsSlice"
 import { TagTile } from "../Tag/TagTile"
-import "../tag/devicon-base.css"
+import "../Tag/devicon-base.css"
 import "./AllTags.css"
 
 export const AllTags = () => {

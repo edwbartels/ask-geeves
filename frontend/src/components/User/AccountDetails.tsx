@@ -124,15 +124,15 @@ export const AccountDetails = () => {
         </div>
       </div>
       <div className="account-info">
-        <ul>
+        <ul className="account-title">
           {" "}
           Account Details<button>Update</button>
-          <li>Email: {userDetails.email}</li>
-          <li>First Name: {userDetails.first_name}</li>
-          <li>Last Name: {userDetails.last_name}</li>
-          <li>Member Since: {userDetails.created_at}</li>
+          <li className="email-li">Email: {userDetails.email}</li>
+          <li className="first-li">First Name: {userDetails.first_name}</li>
+          <li className="last-li">Last Name: {userDetails.last_name}</li>
+          <li className="member-li">Member Since: {userDetails.created_at}</li>
         </ul>
-        <ul>
+        <ul className="account-title">
           Total Posts:{" "}
           {userDetails.total_questions +
             userDetails.total_answers +
@@ -144,7 +144,7 @@ export const AccountDetails = () => {
           <li>Saved Posts:{userDetails.total_saves}</li>
           <li>Votes Cast:{userDetails.total_votes}</li>
         </ul>
-        <ul>
+        <ul className="account-title">
           Community Stats: <button>View</button>
           <li>Karma: {userDetails.karma}</li>
           <li>Followers :{userDetails.followers}</li>

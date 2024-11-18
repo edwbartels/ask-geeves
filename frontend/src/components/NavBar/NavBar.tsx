@@ -86,7 +86,7 @@ export const NavBar = () => {
       ) : (
         <div className="nav-buttons nav-user-buttons">
           {/* <Link to={`/user/${user.id}`}> */}
-          <div className="user-dropdown" ref={menuRef}>
+          {/* <div className="user-dropdown" ref={menuRef}>
             <i
               className={`fa-circle-user user-profile ${isHovered ? "fa-solid" : "fa-regular"}`}
               id="profile"
@@ -113,14 +113,14 @@ export const NavBar = () => {
                 </li>
               </ul>
             )}
-          </div>
+          </div> */}
           {/* </Link> */}
-          {/* <button
+          <button
             className="logout-button"
             onClick={() => dispatch(logoutAsync())}
           >
             Log out
-          </button> */}
+          </button>
         </div>
       )}
     </nav>

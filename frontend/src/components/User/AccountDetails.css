@@ -1,0 +1,137 @@
+.account-info{
+    display:flex;
+    border: solid 5px white;
+    border-radius: 20px;
+    justify-content:space-between;
+    padding:10px;
+    margin: 0px 30px 0px 0px;
+}
+.account-list-container{
+    display:flex;
+    flex-direction: column;
+}
+.fa-pencil{
+    font-size:14px;
+    cursor:pointer;
+    margin-right:8px;
+}
+.fa-pencil:hover{
+    color: #feaee3
+}
+div {color:white;}
+
+.account-list-container{
+    margin:10px;
+}
+
+.fa-eye{
+    cursor:pointer;
+    margin-right: 8px;
+}
+.fa-eye:hover{
+    color:#feaee3
+}
+.fa-check{
+    font-size:14px;
+    cursor:pointer;
+}
+.title-icon{
+    text-decoration:none;
+    font-size:18px;
+    margin-left:10px;
+}
+.user-info-title{
+    display:flex;
+    align-items:center;
+    text-align: center;
+    margin-bottom: 10px;
+    border-bottom:1px solid white;
+    box-sizing:border-box;
+    width:100%;
+    padding:0 10px;
+    justify-content:center;
+}
+
+.user-info-title > div{
+    font-weight:bold;
+    font-size:18px;
+}
+.account-detail{
+    display:flex;
+    font-size:14px;
+    align-items:center;
+    padding-bottom:3px;
+    height:16px;
+    width:229px;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+}
+.account-detail > input{
+    width:100%;
+    height:100%;
+    font-size:14px;
+}
+.posting-content{
+    display:flex;
+    font-size:14px;
+    align-items:center;
+    padding-bottom:3px;
+}
+.community-info {
+    display:flex;
+    font-size:14px;
+    align-items:center;
+    padding-bottom:3px;
+}
+.posting-content > i, div{
+    font-size:14px
+}
+.community-info > i, div{
+    font-size:14px
+}
+.account-email{
+    display:flex;
+}
+.account-first-name{
+    display:flex;
+}
+.account-last-name{
+    display:flex;
+}
+.join-date{
+    margin-top:auto
+}
+.karma{
+    align-self:center;
+    padding-bottom:3px;
+    text-decoration: underline;
+}
+.input-area{
+    position: relative;
+    display:inline-block;
+    width:100%;
+}
+.input-area input {
+    width: 100%; /* Make input take up full width */
+    padding-right: 30px; /* Add space for the icon */
+    box-sizing: border-box; /* Ensure padding is included in width */
+    font-size: 16px;
+    padding: 5px;
+    height:26px;
+  }
+  
+  .input-area .fa-check {
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Position the icon inside the input */
+    transform: translateY(-50%); /* Center vertically */
+    color: green;
+    font-size: 1.2rem;
+    transition: box-shadow 0.3s ease, color 0.3s ease;
+  }
+
+  .input-area .fa-check:hover{
+    font-size:1.3rem;
+    filter: drop-shadow(0 0 5px rgba(0,255,0,0.7));
+    color:limegreen
+  }

@@ -1,9 +1,17 @@
+
+.all-tags-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0 0;
+}
+
 .all-tags {
   margin-top: 60px;
-  /* font-size: 25px; */
-  /* display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 10px; */
+  display: grid;
+  margin: 0 auto;
+  grid-template-columns: repeat(autofill, minmax(100px, 1fr));
+  width: 50%;
+  gap: 1rem;
 }
 
 .tag-title {

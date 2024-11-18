@@ -89,7 +89,7 @@ p {
 }
 
 .post-content code {
-  background-color: #2d2d2d;
+  background-color: #333435;
   padding: 0.1em 0.4em;
   border-radius: 0.4em;
   color: #cccccc;
@@ -110,8 +110,8 @@ p {
   column-gap: 10px;
   grid-template-columns: 1fr 2fr;
   /* box-sizing: border-box; */
-  background-color: #1b2432;
-  border: 5px dashed #2c2b3c;
+  background-color: #333435;
+  border: 5px dashed #4b4b4e;
   border-radius: 25px;
   padding: 15px;
   color: white;
@@ -141,11 +141,13 @@ p {
 }
 .one-selected-tag {
   display: inline-block;
-  background-color: #403f4c;
+  background-color: #fffefe;
   border-radius: 5px;
-  color: #b76d68;
+  color: #0546fa;
   padding: 5px;
   text-transform: none;
+  font-size: 19px;
+  font-weight: bold;
 }
 .one-selected-tag:hover {
   cursor: pointer;
@@ -154,7 +156,7 @@ p {
 .tag-selector input {
   background-color: transparent;
   box-shadow: none;
-  border: 2px dashed #2c2b3c;
+  border: 2px dashed #9b9b9c;
   margin-bottom: 20px;
   padding: 10px;
   font-size: 0.9em;
@@ -176,7 +178,7 @@ p {
   border-radius: 5px;
 }
 .tag-list li:hover {
-  background-color: #403f4c;
+  background-color: #525252;
   cursor: pointer;
 }
 .buttons-div {

@@ -5,9 +5,9 @@ RUN apk add build-base
 RUN apk add postgresql-dev gcc python3-dev musl-dev
 
 # ARG FLASK_APP
-ARG FLASK_ENV
-ARG POSTGRES_URL
-ARG SCHEMA
+# ARG FLASK_ENV
+# ARG POSTGRES_URL
+# ARG SCHEMA
 # ARG SECRET_KEY
 
 
@@ -21,8 +21,8 @@ RUN pip install psycopg2
 COPY backend/ .
 
 
-RUN flask db upgrade
-RUN flask seed
+# RUN flask db upgrade
+# RUN flask seed
 
 EXPOSE 8000
 
